@@ -1,0 +1,14 @@
+.parent {
+    -fx-background-color: #fff
+}
+.sidebar {
+    -fx-background-color: gray
+}
+.bt {
+    -fx-background-color: #404040;
+}
+.bt:hover {
+    -fx-background-color: #303030; 
+}
+.box {   
+}
