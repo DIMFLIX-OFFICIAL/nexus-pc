@@ -3,10 +3,19 @@ package com.shop.database;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.shop.helper.AlertHelper;
+
+import javafx.scene.control.Alert;
+import javafx.stage.Window;
+
 
 public class DbConnection {
     private Connection con;
@@ -15,7 +24,7 @@ public class DbConnection {
     private DbConnection() {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
-            FileInputStream fis = new FileInputStream("./assets/database/connection.prop");
+            FileInputStream fis = new FileInputStream("connection.prop");
             Properties p = new Properties();
             p.load(fis);
             con = DriverManager.getConnection((String) p.get("url"), (String) p.get("username"), (String) p.get("password"));
@@ -51,5 +60,33 @@ public class DbConnection {
 
     public Connection getConnection() {
         return con;
+    }
+
+    public boolean addUser(String firstName, String lastName, String email, String username, String password) {
+        String insertUser = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(insertUser)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, email);
+            pstmt.setString(4, username);
+            pstmt.setString(5, password);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public boolean isUsernameExists(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 }

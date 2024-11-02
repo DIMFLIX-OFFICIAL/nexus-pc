@@ -57,4 +57,4 @@ buildNumber.properties
 
 ##==> My ignores
 #########################################
-assets/database/connection.prop
+connection.prop

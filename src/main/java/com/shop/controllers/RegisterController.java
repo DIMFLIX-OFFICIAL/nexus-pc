@@ -63,54 +63,31 @@ public class RegisterController implements Initializable {
     private void register() {
         window = registerButton.getScene().getWindow();
         if (this.isValidated()) {
+            DbConnection dbConnection = DbConnection.getDatabaseConnection();
 
-            try {
-                PreparedStatement ps;
-                String query = "insert into users (first_name,last_name,email,username,password)values (?,?,?,?,?)";
-                ps = con.prepareStatement(query);
-                ps.setString(1, firstName.getText());
-                ps.setString(2, lastName.getText());
-                ps.setString(3, email.getText());
-                ps.setString(4, username.getText());
-                ps.setString(5, password.getText());
-                if (ps.executeUpdate() > 0) {
-                    this.clearForm();
-                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information",
-                            "You have registered successfully.");
-                } else {
-                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                            "Something went wrong.");
-                }
+            boolean isRegistered = dbConnection.addUser(
+                firstName.getText(),
+                lastName.getText(),
+                email.getText(),
+                username.getText(),
+                password.getText()
+            );
 
-            } catch (SQLException ex) {
+            if (isRegistered) {
+                this.clearForm();
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information",
+                        "You have registered successfully.");
+            } else {
                 AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                         "Something went wrong.");
             }
         }
     }
 
-    private boolean isAlreadyRegistered() {
-        PreparedStatement ps;
-        ResultSet rs;
-        boolean usernameExist = false;
-
-        String query = "select * from users WHERE username = ?";
-        try {
-            ps = con.prepareStatement(query);
-            ps.setString(1, username.getText());
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                usernameExist = true;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return usernameExist;
-    }
-
     private boolean isValidated() {
-
         window = registerButton.getScene().getWindow();
+        DbConnection dbConnection = DbConnection.getDatabaseConnection();
+
         if (firstName.getText().equals("")) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "First name text field cannot be blank.");
@@ -163,7 +140,7 @@ public class RegisterController implements Initializable {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "Password and confirm password text fields does not match.");
             password.requestFocus();
-        } else if (isAlreadyRegistered()) {
+        } else if (dbConnection.isUsernameExists(username.getText())) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "The username is already taken by someone else.");
             username.requestFocus();

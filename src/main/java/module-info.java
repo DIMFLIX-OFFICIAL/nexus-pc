@@ -4,6 +4,7 @@ module com.shop {
     requires java.sql;
     requires org.postgresql.jdbc;
     requires org.controlsfx.controls;
+    requires javafx.graphics;
 
     opens com.shop to javafx.fxml;
     exports com.shop;
