@@ -95,10 +95,15 @@ public class AdminUsersController implements Initializable {
     @FXML
     private void handleSave() {
         for (User user : userList) {
-            if (user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getRole().isEmpty()
-                    || user.getEmail().isEmpty() || user.getFirstName().isEmpty() || user.getLastName().isEmpty()) {
+            if (
+                user.getPassword() == null || user.getPassword().isEmpty() || 
+                user.getRole() == null || user.getRole().isEmpty() ||
+                user.getEmail() == null || user.getEmail().isEmpty() || 
+                user.getFirstName() == null || user.getFirstName().isEmpty() || 
+                user.getLastName() == null || user.getLastName().isEmpty()) {
                 continue;
             }
+
             if ((user.getUsername() == null && !user.getNewUsername().isEmpty())) {
                 User usr = new User(
                         user.getNewUsername(),
