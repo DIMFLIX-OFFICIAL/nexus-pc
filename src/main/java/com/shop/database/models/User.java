@@ -11,6 +11,26 @@ public class User {
     private String role;
     private Timestamp createdAt;
 
+    public User(String username, String email, String firstName, String lastName, String password, String role) {
+        // Конструктор без createdAt
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(String username, String email, String firstName, String lastName, String password, String role, Timestamp createdAt) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
+
     public String getUsername() {
         return username;
     }

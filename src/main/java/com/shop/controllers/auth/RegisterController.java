@@ -2,13 +2,10 @@ package com.shop.controllers.auth;
 
 import com.shop.database.DbConnection;
 import com.shop.helper.AlertHelper;
+import com.shop.database.models.User;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,13 +54,16 @@ public class RegisterController implements Initializable {
         if (this.isValidated()) {
             DbConnection dbConnection = DbConnection.getDatabaseConnection();
 
-            boolean isRegistered = dbConnection.addUser(
+            User usr = new User(
                 firstName.getText(),
                 lastName.getText(),
                 email.getText(),
                 username.getText(),
-                password.getText()
+                password.getText(),
+                "user"
             );
+
+            boolean isRegistered = dbConnection.addUser(usr);
 
             if (isRegistered) {
                 this.clearForm();

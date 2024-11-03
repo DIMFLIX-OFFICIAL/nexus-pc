@@ -9,6 +9,15 @@ public class PowerSupply {
     private String efficiencyRating; 
     private String link;
 
+    public PowerSupply(int id, String name, String brand, int wattage, String efficiencyRating, String link) {
+        this.id = id; 
+        this.name = name; 
+        this.brand = brand; 
+        this.wattage = wattage; 
+        this.efficiencyRating = efficiencyRating; 
+        this.link = link;
+    }
+
 
     public int getId() { 
         return id; 

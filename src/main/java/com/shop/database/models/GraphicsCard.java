@@ -7,6 +7,15 @@ public class GraphicsCard {
     private int memorySize; 
     private String memoryType; 
     private String link;
+
+    public GraphicsCard(int id, String name, String brand, int memorySize, String memoryType, String link) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.memorySize = memorySize;
+        this.memoryType = memoryType;
+        this.link = link;
+    }
  
     // Getters and Setters
     public int getId() { 

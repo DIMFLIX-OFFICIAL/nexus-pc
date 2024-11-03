@@ -155,35 +155,6 @@ public class DbConnection {
         return con;
     }
 
-    public boolean addUser(String firstName, String lastName, String email, String username, String password) {
-        String insertUser = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(insertUser)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, email);
-            pstmt.setString(4, username);
-            pstmt.setString(5, password);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-
-    public boolean isUsernameExists(String username) {
-        String query = "SELECT * FROM users WHERE username = ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-
-
 
     //==> USER CRUD
     // ==================================================================================================================================
@@ -193,14 +164,16 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                User user = new User();
-                user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setLastName(rs.getString("last_name"));
-                user.setPassword(rs.getString("password"));
-                user.setRole(rs.getString("role"));
-                user.setCreatedAt(rs.getTimestamp("created_at"));
+                User user = new User(
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("password"),
+                    rs.getString("role"),
+                    rs.getTimestamp("created_at")
+                );
+
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -236,7 +209,49 @@ public class DbConnection {
         }
     }    
 
+    public boolean addUser(User user) {
+        String insertUser = "INSERT INTO users (first_name, last_name, email, username, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(insertUser)) {
+            pstmt.setString(1, user.getFirstName());
+            pstmt.setString(2, user.getLastName());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getUsername());
+            pstmt.setString(5, user.getPassword());
+            pstmt.setString(6, user.getRole());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 
+    public boolean isUsernameExists(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public boolean authenticateUser(String username, String password) {
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        try (Connection connection = getDatabaseConnection().getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }
 
 
 
@@ -250,15 +265,16 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Processor processor = new Processor();
-                processor.setId(rs.getInt("id"));
-                processor.setName(rs.getString("name"));
-                processor.setBrand(rs.getString("brand"));
-                processor.setCores(rs.getInt("cores"));
-                processor.setThreads(rs.getInt("threads"));
-                processor.setBaseClock(rs.getBigDecimal("base_clock"));
-                processor.setBoostClock(rs.getBigDecimal("boost_clock"));
-                processor.setLink(rs.getString("link"));
+                Processor processor = new Processor(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("cores"),
+                    rs.getInt("threads"),
+                    rs.getBigDecimal("base_clock"),
+                    rs.getBigDecimal("boost_clock"),
+                    rs.getString("link")
+                );
                 processors.add(processor);
             }
         } catch (SQLException ex) {
@@ -323,13 +339,14 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
              while (rs.next()) {
-                 GraphicsCard graphicsCard = new GraphicsCard();
-                 graphicsCard.setId(rs.getInt("id"));
-                 graphicsCard.setName(rs.getString("name"));
-                 graphicsCard.setBrand(rs.getString("brand"));
-                 graphicsCard.setMemorySize(rs.getInt("memory_size"));
-                 graphicsCard.setMemoryType(rs.getString("memory_type"));
-                 graphicsCard.setLink(rs.getString("link"));
+                 GraphicsCard graphicsCard = new GraphicsCard(
+                     rs.getInt("id"),
+                     rs.getString("name"),
+                     rs.getString("brand"),
+                     rs.getInt("memory_size"),
+                     rs.getString("memory_type"),
+                     rs.getString("link")
+                 );
                  graphicsCards.add(graphicsCard);
              }
          } catch (SQLException ex) {
@@ -393,13 +410,14 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                PowerSupply powerSupply = new PowerSupply();
-                powerSupply.setId(rs.getInt("id"));
-                powerSupply.setName(rs.getString("name"));
-                powerSupply.setBrand(rs.getString("brand"));
-                powerSupply.setWattage(rs.getInt("wattage"));
-                powerSupply.setEfficiencyRating(rs.getString("efficiency_rating"));
-                powerSupply.setLink(rs.getString("link"));
+                PowerSupply powerSupply = new PowerSupply(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("wattage"),
+                    rs.getString("efficiency_rating"),
+                    rs.getString("link")
+                );
                 powerSupplies.add(powerSupply);
             }
         } catch (SQLException ex) {
@@ -461,13 +479,14 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                RAM ram = new RAM();
-                ram.setId(rs.getInt("id"));
-                ram.setName(rs.getString("name"));
-                ram.setBrand(rs.getString("brand"));
-                ram.setCapacity(rs.getInt("capacity")); // in GB
-                ram.setSpeed(rs.getInt("speed")); // in MHz
-                ram.setLink(rs.getString("link"));
+                RAM ram = new RAM(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("capacity"), // in GB
+                    rs.getInt("speed"), // in MHz
+                    rs.getString("link")
+                );
                 rams.add(ram);
             }
         } catch (SQLException ex) {
@@ -531,14 +550,15 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Motherboard motherboard = new Motherboard();
-                motherboard.setId(rs.getInt("id"));
-                motherboard.setName(rs.getString("name"));
-                motherboard.setBrand(rs.getString("brand"));
-                motherboard.setSocketType(rs.getString("socket_type"));
-                motherboard.setFormFactor(rs.getString("form_factor"));
-                motherboard.setMaxMemory(rs.getInt("max_memory"));
-                motherboard.setLink(rs.getString("link"));
+                Motherboard motherboard = new Motherboard(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getString("socket_type"),
+                    rs.getString("form_factor"),
+                    rs.getInt("max_memory"),
+                    rs.getString("link")
+                );
                 motherboards.add(motherboard);
             }
         } catch (SQLException ex) {
@@ -603,13 +623,14 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Cooler cooler = new Cooler();
-                cooler.setId(rs.getInt("id"));
-                cooler.setName(rs.getString("name"));
-                cooler.setBrand(rs.getString("brand"));
-                cooler.setType(rs.getString("type"));
-                cooler.setCoolingCapacity(rs.getBigDecimal("cooling_capacity"));
-                cooler.setLink(rs.getString("link"));
+                Cooler cooler = new Cooler(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getString("type"),
+                    rs.getBigDecimal("cooling_capacity"),
+                    rs.getString("link")
+                );
                 coolers.add(cooler);
             }
         } catch (SQLException ex) {
@@ -671,13 +692,14 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Case computerCase = new Case();
-                computerCase.setId(rs.getInt("id"));
-                computerCase.setName(rs.getString("name"));
-                computerCase.setBrand(rs.getString("brand"));
-                computerCase.setFormFactor(rs.getString("form_factor"));
-                computerCase.setColor(rs.getString("color"));
-                computerCase.setLink(rs.getString("link"));
+                Case computerCase = new Case(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getString("form_factor"),
+                    rs.getString("color"),
+                    rs.getString("link")
+                );
                 cases.add(computerCase);
             }
         } catch (SQLException ex) {
@@ -739,16 +761,17 @@ public class DbConnection {
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                Computer computer = new Computer();
-                computer.setId(rs.getInt("id"));
-                computer.setName(rs.getString("name"));
-                computer.setDescription(rs.getString("description"));
-                computer.setPrice(rs.getBigDecimal("price")); // Using BigDecimal for currency
-                computer.setProcessorId(rs.getInt("processor_id"));
-                computer.setGraphicsCardId(rs.getInt("graphics_card_id"));
-                computer.setPowerSupplyId(rs.getInt("power_supply_id"));
-                computer.setStockQuantity(rs.getInt("stock_quantity"));
-                computer.setImagePath(rs.getString("image_path"));
+                Computer computer = new Computer(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getBigDecimal("price"),
+                    rs.getInt("processor_id"),
+                    rs.getInt("graphics_card_id"),
+                    rs.getInt("power_supply_id"),
+                    rs.getInt("stock_quantity"),
+                    rs.getString("image_path")
+                );
                 computers.add(computer);
             }
         } catch (SQLException ex) {

@@ -10,6 +10,15 @@ public class Cooler {
     private BigDecimal coolingCapacity; // Using BigDecimal for precision
     private String link;
 
+    public Cooler(int id, String name, String brand, String type, BigDecimal coolingCapacity, String link) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.type = type;
+        this.coolingCapacity = coolingCapacity;
+        this.link = link;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

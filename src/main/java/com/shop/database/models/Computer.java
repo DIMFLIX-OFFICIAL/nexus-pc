@@ -13,6 +13,18 @@ public class Computer {
     private int stockQuantity;
     private String imagePath;
 
+    public Computer(int id, String name, String description, BigDecimal price, int processorId, int graphicsCardId, int powerSupplyId, int stockQuantity, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.processorId = processorId;
+        this.graphicsCardId = graphicsCardId;
+        this.powerSupplyId = powerSupplyId;
+        this.stockQuantity = stockQuantity;
+        this.imagePath = imagePath;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

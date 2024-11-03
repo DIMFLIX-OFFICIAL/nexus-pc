@@ -9,6 +9,16 @@ public class Motherboard {
     private int maxMemory;
     private String link;
 
+    public Motherboard(int id, String name, String brand, String socketType, String formFactor, int maxMemory, String link) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.socketType = socketType;
+        this.formFactor = formFactor;
+        this.maxMemory = maxMemory;
+        this.link = link;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

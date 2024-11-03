@@ -49,41 +49,28 @@ public class LoginController implements Initializable {
 
     @FXML
     private void login() throws Exception {
-
         if (this.isValidated()) {
-            PreparedStatement ps;
-            ResultSet rs;
+            String usernameText = username.getText();
+            String passwordText = password.getText();
 
-            String query = "select * from users WHERE username = ? and password = ?";
-            try {
-                ps = con.prepareStatement(query);
-                ps.setString(1, username.getText());
-                ps.setString(2, password.getText());
-                rs = ps.executeQuery();
+            if (DbConnection.getDatabaseConnection().authenticateUser(usernameText, passwordText)) {
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.close();
 
-                if (rs.next()) {
+                Parent root = FXMLLoader.load(getClass().getResource("/com/shop/MainPanelView.fxml"));
+                Scene scene = new Scene(root);
 
-                    Stage stage = (Stage) loginButton.getScene().getWindow();
-                    stage.close();
-
-                    Parent root = FXMLLoader.load(getClass().getResource("/com/shop/MainPanelView.fxml"));
-
-                    Scene scene = new Scene(root);
-
-                    stage.setScene(scene);
-                    stage.setTitle("Admin Panel");
-                    stage.show();
-
-                } else {
-                    AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                            "Invalid username and password.");
-                    username.requestFocus();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex);
+                stage.setScene(scene);
+                stage.setTitle("Admin Panel");
+                stage.show();
+            } else {
+                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
+                        "Invalid username and password.");
+                username.requestFocus();
             }
         }
     }
+
 
     private boolean isValidated() {
 

@@ -7,6 +7,15 @@ public class Case {
     private String formFactor; 
     private String color; 
     private String link;
+
+    public Case(int id, String name, String brand, String formFactor, String color, String link) {
+        this.id = id; 
+        this.name = name; 
+        this.brand = brand; 
+        this.formFactor = formFactor; 
+        this.color = color; 
+        this.link = link; 
+    }
  
     // Getters and Setters
     public int getId() { 

@@ -12,6 +12,17 @@ public class Processor {
     private BigDecimal boostClock; // Using BigDecimal for decimal values
     private String link;
 
+    public Processor(int id, String name, String brand, int cores, int threads, BigDecimal baseClock, BigDecimal boostClock, String link) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.cores = cores;
+        this.threads = threads;
+        this.baseClock = baseClock;
+        this.boostClock = boostClock;
+        this.link = link;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

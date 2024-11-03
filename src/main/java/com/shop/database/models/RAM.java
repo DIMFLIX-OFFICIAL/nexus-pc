@@ -8,6 +8,15 @@ public class RAM {
     private int speed; // in MHz
     private String link;
 
+    public RAM(int id, String name, String brand, int capacity, int speed, String link) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.capacity = capacity;
+        this.speed = speed;
+        this.link = link;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;
