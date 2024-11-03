@@ -2,13 +2,11 @@ package com.shop.controllers.auth;
 
 import com.shop.database.DbConnection;
 import com.shop.helper.AlertHelper;
+import com.shop.controllers.MainPanelController;
+import com.shop.database.models.User;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,9 +21,6 @@ import javafx.stage.Window;
 
 
 public class LoginController implements Initializable {
-
-    private final Connection con;
-
     @FXML
     private TextField username;
 
@@ -42,11 +37,6 @@ public class LoginController implements Initializable {
 
     }
 
-    public LoginController() {
-        DbConnection dbc = DbConnection.getDatabaseConnection();
-        con = dbc.getConnection();
-    }
-
     @FXML
     private void login() throws Exception {
         if (this.isValidated()) {
@@ -54,10 +44,14 @@ public class LoginController implements Initializable {
             String passwordText = password.getText();
 
             if (DbConnection.getDatabaseConnection().authenticateUser(usernameText, passwordText)) {
+                User user = DbConnection.getDatabaseConnection().getUserByUsername(usernameText);
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.close();
 
-                Parent root = FXMLLoader.load(getClass().getResource("/com/shop/MainPanelView.fxml"));
+                FXMLLoader load = new FXMLLoader(getClass().getResource("/com/shop/MainPanelView.fxml"));
+                Parent root = load.load();
+                MainPanelController mainController = load.getController();
+                mainController.setAuthUser(user);
                 Scene scene = new Scene(root);
 
                 stage.setScene(scene);
@@ -87,9 +81,9 @@ public class LoginController implements Initializable {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "Password text field cannot be blank.");
             password.requestFocus();
-        } else if (password.getText().length() < 5 || password.getText().length() > 25) {
+        } else if (password.getText().length() < 4 || password.getText().length() > 50) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password text field cannot be less than 5 and greator than 25 characters.");
+                    "Password text field cannot be less than 4 and greator than 50 characters.");
             password.requestFocus();
         } else {
             return true;

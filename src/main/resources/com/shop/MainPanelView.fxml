@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -12,7 +13,7 @@
    <left>
       <VBox prefHeight="601.0" prefWidth="160.0" spacing="10.0" style="-fx-background-color: #1e1e2e;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="CatalogPage" mnemonicParsing="false" onAction="#loadCatalogView" prefHeight="30.0" prefWidth="173.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@mainpanel.css" text="Каталог" textAlignment="JUSTIFY">
+            <Button fx:id="CatalogPageButton" mnemonicParsing="false" onAction="#loadCatalogView" prefHeight="30.0" prefWidth="173.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Каталог" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -20,7 +21,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="ShoppingCartPage" mnemonicParsing="false" onAction="#loadShoppingCartView" prefHeight="30.0" prefWidth="172.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@mainpanel.css" text="Корзина" textAlignment="JUSTIFY">
+            <Button fx:id="ShoppingCartPageButton" mnemonicParsing="false" onAction="#loadShoppingCartView" prefHeight="30.0" prefWidth="172.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Корзина" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -28,7 +29,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="MyOrdersPage" mnemonicParsing="false" onAction="#loadMyOrdersView" prefHeight="30.0" prefWidth="168.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@mainpanel.css" text="Мои заказы" textAlignment="JUSTIFY">
+            <Button fx:id="OrdersPageButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" onAction="#loadMyOrdersView" prefHeight="35.0" prefWidth="168.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Мои заказы" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -36,6 +37,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <SplitMenuButton fx:id="AdminPagesButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" style="-fx-background-color: #303446;" stylesheets="@styles/splitMenuButton.css" text="Admin Panel">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </SplitMenuButton>
          </children>
          <padding>
             <Insets left="10.0" right="10.0" top="40.0" />
@@ -45,7 +51,7 @@
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="1360.0" style="-fx-background-color: #181825;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1;" styleClass="bt" stylesheets="@mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
+            <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

@@ -1,0 +1,36 @@
+/* Общий стиль для таблицы */
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-background-color: #313244; /* Цвет фона всей таблицы */
+}
+
+/* Стиль для заголовков колонок */
+.table-view .column-header {
+    -fx-background-color: #b4befe; /* Цвет фона заголовков колонок */
+    -fx-text-fill: white; /* Цвет текста заголовков колонок */
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white; /* Цвет текста заголовков */
+    -fx-font-weight: bold; /* Жирный шрифт */
+}
+
+/* Стиль для строк с данными */
+.table-view .table-row-cell {
+    -fx-background-color: #45475a; /* Цвет фона строк с данными */
+}
+
+/* Стиль для пустых строк */
+.table-view .table-row-cell:empty {
+    -fx-background-color: #313244; /* Цвет фона пустых строк */
+}
+
+.table-view .table-cell{
+    -fx-text-fill: white;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #b4befe;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}

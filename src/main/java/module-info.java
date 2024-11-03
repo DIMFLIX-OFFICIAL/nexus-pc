@@ -14,5 +14,8 @@ module com.shop {
     opens com.shop.controllers.main_pages to javafx.fxml;
     exports com.shop.controllers.auth;
     opens com.shop.controllers.auth to javafx.fxml;
-
+    exports com.shop.controllers.admin;
+    opens com.shop.controllers.admin to javafx.fxml;
+    exports com.shop.database.models;
+    opens com.shop.database.models to javafx.base;
 }

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class User {
     private String username;
+    private String new_username;
     private String email;
     private String firstName;
     private String lastName;
@@ -14,6 +15,7 @@ public class User {
     public User(String username, String email, String firstName, String lastName, String password, String role) {
         // Конструктор без createdAt
         this.username = username;
+        this.new_username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,6 +25,7 @@ public class User {
 
     public User(String username, String email, String firstName, String lastName, String password, String role, Timestamp createdAt) {
         this.username = username;
+        this.new_username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,7 +39,11 @@ public class User {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.new_username = username;
+    }
+
+    public String getNewUsername() {
+        return new_username;
     }
 
     public String getEmail() {

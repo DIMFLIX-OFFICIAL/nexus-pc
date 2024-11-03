@@ -55,10 +55,10 @@ public class RegisterController implements Initializable {
             DbConnection dbConnection = DbConnection.getDatabaseConnection();
 
             User usr = new User(
+                username.getText(),
+                email.getText(),
                 firstName.getText(),
                 lastName.getText(),
-                email.getText(),
-                username.getText(),
                 password.getText(),
                 "user"
             );
@@ -108,25 +108,25 @@ public class RegisterController implements Initializable {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "Username text field cannot be blank.");
             username.requestFocus();
-        } else if (username.getText().length() < 5 || username.getText().length() > 25) {
+        } else if (username.getText().length() < 4 || username.getText().length() > 25) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Username text field cannot be less than 5 and greator than 25 characters.");
+                    "Username text field cannot be less than 4 and greator than 25 characters.");
             username.requestFocus();
         } else if (password.getText().equals("")) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "Password text field cannot be blank.");
             password.requestFocus();
-        } else if (password.getText().length() < 5 || password.getText().length() > 25) {
+        } else if (password.getText().length() < 4 || password.getText().length() > 50) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password text field cannot be less than 5 and greator than 25 characters.");
+                    "Password text field cannot be less than 4 and greator than 50 characters.");
             password.requestFocus();
         } else if (confirmPassword.getText().equals("")) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
                     "Confirm password text field cannot be blank.");
             confirmPassword.requestFocus();
-        } else if (confirmPassword.getText().length() < 5 || password.getText().length() > 25) {
+        } else if (confirmPassword.getText().length() < 4 || password.getText().length() > 50) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Confirm password text field cannot be less than 5 and greator than 25 characters.");
+                    "Confirm password text field cannot be less than 4 and greator than 50 characters.");
             confirmPassword.requestFocus();
         } else if (!password.getText().equals(confirmPassword.getText())) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",

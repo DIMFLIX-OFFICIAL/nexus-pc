@@ -1,9 +1,9 @@
 package com.shop.controllers;
 
+import com.shop.database.models.User;
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,19 +16,21 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class MainPanelController implements Initializable {
+    User user;
 
     @FXML
     private BorderPane borderPane;
 
     @FXML
     private HBox pagesWindow;
-
-    private List<Button> menus;
 
     @FXML
     private AreaChart<?, ?> chartPurchase;
@@ -40,22 +42,36 @@ public class MainPanelController implements Initializable {
     private LineChart<?, ?> chartReceipt;
 
     @FXML
-    private Button buttonCatalog; // Example button from FXML
+    private Button CatalogPageButton;
 
     @FXML
-    private Button buttonShoppingCart; // Another example button
+    private Button ShoppingCartPageButton;
 
     @FXML
-    private Button buttonMyOrders; // Another example button
+    private Button OrdersPageButton;
+
+    @FXML
+    private SplitMenuButton AdminPagesButton;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        menus = new ArrayList<>();
-        menus.add(buttonCatalog);
-        menus.add(buttonShoppingCart);
-        menus.add(buttonMyOrders);
+        MenuItem usersAdminTable = new MenuItem("Users");
 
-        loadFXML("CatalogView"); // start page
+        AdminPagesButton.getItems().addAll(usersAdminTable);
+        AdminPagesButton.setOnAction((e)-> {
+            loadFXML("/com/shop/admin_pages/users");
+        });
+
+        loadCatalogView(null); // start page
+    }
+
+    public void setAuthUser(User user) {
+        this.user = user;
+        System.out.println(this.user.getRole());
+        if (this.user == null || !this.user.getRole().equals("admin")) {
+            AdminPagesButton.setVisible(false);
+        }
     }
 
     @FXML
@@ -67,7 +83,8 @@ public class MainPanelController implements Initializable {
     private void loadFXML(String fileName) {
         Parent parent;
         try {
-            parent = FXMLLoader.load(getClass().getResource("/com/shop/main_pages/" + fileName + ".fxml"));
+            parent = FXMLLoader.load(getClass().getResource(fileName + ".fxml"));
+            HBox.setHgrow(parent, Priority.ALWAYS);
             clear();
             pagesWindow.getChildren().add(parent);
         } catch (IOException ex) {
@@ -89,16 +106,16 @@ public class MainPanelController implements Initializable {
 
     @FXML
     private void loadCatalogView(ActionEvent e) {
-        loadFXML("CatalogView");
+        loadFXML("/com/shop/main_pages/CatalogView");
     }
 
     @FXML
     private void loadShoppingCartView(ActionEvent e) {
-        loadFXML("ShoppingCartView");
+        loadFXML("/com/shop/main_pages/ShoppingCartView");
     }
 
     @FXML
     private void loadMyOrdersView(ActionEvent e) {
-        loadFXML("MyOrdersView");
+        loadFXML("/com/shop/main_pages/MyOrdersView");
     }
 }

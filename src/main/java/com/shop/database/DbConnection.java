@@ -28,105 +28,93 @@ public class DbConnection {
     private Connection con;
     private static DbConnection dbc;
 
-    private DbConnection() {
-        try {
-            DriverManager.registerDriver(new org.postgresql.Driver());
-            FileInputStream fis = new FileInputStream("connection.prop");
-            Properties p = new Properties();
-            p.load(fis);
-            con = DriverManager.getConnection((String) p.get("url"), (String) p.get("username"), (String) p.get("password"));
-        } catch (Exception ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public void createTablesIfNotExists() {
         String createUsersTable = "CREATE TABLE IF NOT EXISTS users (" +
-                "username VARCHAR(25) PRIMARY KEY NOT NULL, " +
-                "email VARCHAR(45) NOT NULL, " +
-                "first_name VARCHAR(25) NOT NULL, " +
-                "last_name VARCHAR(25) NOT NULL, " +
-                "password VARCHAR(64) NOT NULL, " +
+                "username TEXT PRIMARY KEY NOT NULL, " +
+                "email TEXT NOT NULL, " +
+                "first_name TEXT NOT NULL, " +
+                "last_name TEXT NOT NULL, " +
+                "password TEXT NOT NULL, " +
                 "role VARCHAR(25) NOT NULL DEFAULT 'user', " +
                 "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 
         String createProcessorsTable = "CREATE TABLE IF NOT EXISTS processors (" +
                 "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
-                "brand VARCHAR(50) NOT NULL, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT NOT NULL, " +
                 "cores INT NOT NULL, " +
                 "threads INT NOT NULL, " +
                 "base_clock DECIMAL(5,2) NOT NULL, " +
                 "boost_clock DECIMAL(5,2) NOT NULL, " +
-                "link VARCHAR(255) NOT NULL" +
+                "link TEXT NOT NULL" +
                 ");";
 
         String createGraphicsCardsTable = "CREATE TABLE IF NOT EXISTS graphics_cards (" +
                 "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
-                "brand VARCHAR(50) NOT NULL, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT NOT NULL, " +
                 "memory_size INT NOT NULL, " +
-                "memory_type VARCHAR(50) NOT NULL, " +
-                "link VARCHAR(255) NOT NULL" +
+                "memory_type TEXT NOT NULL, " +
+                "link TEXT NOT NULL" +
                 ");";
 
         String createPowerSuppliesTable = "CREATE TABLE IF NOT EXISTS power_supplies (" +
                 "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
-                "brand VARCHAR(50) NOT NULL, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT NOT NULL, " +
                 "wattage INT NOT NULL, " +
-                "efficiency_rating VARCHAR(10) NOT NULL, " +
-                "link VARCHAR(255) NOT NULL" +
+                "efficiency_rating TEXT NOT NULL, " +
+                "link TEXT NOT NULL" +
                 ");";
 
         String createMotherboardsTable = "CREATE TABLE IF NOT EXISTS motherboards (" +
                 "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
-                "brand VARCHAR(50) NOT NULL, " +
-                "socket_type VARCHAR(50) NOT NULL, " +
-                "form_factor VARCHAR(50) NOT NULL, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT NOT NULL, " +
+                "socket_type TEXT NOT NULL, " +
+                "form_factor TEXT NOT NULL, " +
                 "max_memory INT NOT NULL, " +
-                "link VARCHAR(255) NOT NULL" +
+                "link TEXT NOT NULL" +
                 ");";
 
         String createCoolersTable =  "CREATE TABLE IF NOT EXISTS coolers (" + 
                 "id SERIAL PRIMARY KEY, "+ 
-                "name VARCHAR(100) NOT NULL," + 
-                "brand VARCHAR(50) NOT NULL," + 
-                "type VARCHAR(50) NOT NULL," + 
+                "name TEXT NOT NULL," + 
+                "brand TEXT NOT NULL," + 
+                "type TEXT NOT NULL," + 
                 "cooling_capacity DECIMAL(5,2) NOT NULL," + 
-                "link VARCHAR(255) NOT NULL" + 
+                "link TEXT NOT NULL" + 
                 ");"; 
 
         String createCasesTable =  "CREATE TABLE IF NOT EXISTS cases (" + 
                 "id SERIAL PRIMARY KEY," + 
-                "name VARCHAR(100) NOT NULL," + 
-                "brand VARCHAR(50) NOT NULL," + 
-                "form_factor VARCHAR(50) NOT NULL," + 
-                "color VARCHAR(30)," + 
-                "link VARCHAR(255) NOT NULL" + 
+                "name TEXT NOT NULL," + 
+                "brand TEXT NOT NULL," + 
+                "form_factor TEXT NOT NULL," + 
+                "color TEXT," + 
+                "link TEXT NOT NULL" + 
                 ");"; 
 
         String createRAMTable =  "CREATE TABLE IF NOT EXISTS ram (" + 
                 "id SERIAL PRIMARY KEY," + 
-                "name VARCHAR(100) NOT NULL," + 
-                "brand VARCHAR(50) NOT NULL," + 
+                "name TEXT NOT NULL," + 
+                "brand TEXT NOT NULL," + 
                 "capacity INT NOT NULL," + // Объем памяти в ГБ
                 "speed INT NOT NULL," + // Скорость в МГц
-                "link VARCHAR(255) NOT NULL" + 
+                "link TEXT NOT NULL" + 
                 ");";
         
         String createComputersTable = "CREATE TABLE IF NOT EXISTS computers (" +
                 "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
+                "name TEXT NOT NULL, " +
                 "description TEXT NOT NULL, " +
                 "price DECIMAL(10,2) NOT NULL, " +
                 "processor_id INT NOT NULL REFERENCES processors(id), " +
                 "graphics_card_id INT NOT NULL REFERENCES graphics_cards(id), " +
                 "power_supply_id INT NOT NULL REFERENCES power_supplies(id), " +
                 "stock_quantity INT NOT NULL, " +
-                "image_path VARCHAR(255) NOT NULL" +
+                "image_path TEXT NOT NULL" +
                 ");";
     
         try (Statement statement = con.createStatement()) {
@@ -144,6 +132,18 @@ public class DbConnection {
         }
     }
 
+    private DbConnection() {
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+            FileInputStream fis = new FileInputStream("connection.prop");
+            Properties p = new Properties();
+            p.load(fis);
+            con = DriverManager.getConnection((String) p.get("url"), (String) p.get("username"), (String) p.get("password"));
+        } catch (Exception ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static DbConnection getDatabaseConnection() {
         if (dbc == null) {
             dbc = new DbConnection();
@@ -180,6 +180,32 @@ public class DbConnection {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return users;
+    }
+
+    public User getUserByUsername(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                User user = new User(
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("password"),
+                    rs.getString("role"),
+                    rs.getTimestamp("created_at")
+                );
+                return user;
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
     public boolean deleteUser(String username) {
@@ -240,8 +266,7 @@ public class DbConnection {
 
     public boolean authenticateUser(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-        try (Connection connection = getDatabaseConnection().getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = con.prepareStatement(query)) { // Use existing connection
             ps.setString(1, username);
             ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
