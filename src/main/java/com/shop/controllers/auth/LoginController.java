@@ -1,4 +1,4 @@
-package com.shop.controllers;
+package com.shop.controllers.auth;
 
 import com.shop.database.DbConnection;
 import com.shop.helper.AlertHelper;
@@ -115,7 +115,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/shop/RegisterView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/shop/auth/RegisterView.fxml"));
 
         Scene scene = new Scene(root);
 

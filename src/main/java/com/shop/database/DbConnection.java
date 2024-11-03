@@ -11,11 +11,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.shop.helper.AlertHelper;
-
-import javafx.scene.control.Alert;
-import javafx.stage.Window;
-
 
 public class DbConnection {
     private Connection con;
@@ -43,9 +38,94 @@ public class DbConnection {
                 "role VARCHAR(25) NOT NULL DEFAULT 'user', " +
                 "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP" +
                 ");";
+
+        String createProcessorsTable = "CREATE TABLE IF NOT EXISTS processors (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "brand VARCHAR(50) NOT NULL, " +
+                "cores INT NOT NULL, " +
+                "threads INT NOT NULL, " +
+                "base_clock DECIMAL(5,2) NOT NULL, " +
+                "boost_clock DECIMAL(5,2) NOT NULL, " +
+                "link VARCHAR(255) NOT NULL" +
+                ");";
+
+        String createGraphicsCardsTable = "CREATE TABLE IF NOT EXISTS graphics_cards (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "brand VARCHAR(50) NOT NULL, " +
+                "memory_size INT NOT NULL, " +
+                "memory_type VARCHAR(50) NOT NULL, " +
+                "link VARCHAR(255) NOT NULL" +
+                ");";
+
+        String createPowerSuppliesTable = "CREATE TABLE IF NOT EXISTS power_supplies (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "wattage INT NOT NULL, " +
+                "efficiency_rating VARCHAR(10) NOT NULL, " +
+                "link VARCHAR(255) NOT NULL" +
+                ");";
+
+        String createMotherboardsTable = "CREATE TABLE IF NOT EXISTS motherboards (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "brand VARCHAR(50) NOT NULL, " +
+                "socket_type VARCHAR(50) NOT NULL, " +
+                "form_factor VARCHAR(50) NOT NULL, " +
+                "max_memory INT NOT NULL, " +
+                "link VARCHAR(255) NOT NULL" +
+                ");";
+
+        String createCoolersTable =  "CREATE TABLE IF NOT EXISTS coolers (" + 
+                "id SERIAL PRIMARY KEY, "+ 
+                "name VARCHAR(100) NOT NULL," + 
+                "brand VARCHAR(50) NOT NULL," + 
+                "type VARCHAR(50) NOT NULL," + 
+                "cooling_capacity DECIMAL(5,2) NOT NULL," + 
+                "link VARCHAR(255) NOT NULL" + 
+                ");"; 
+
+        String createCasesTable =  "CREATE TABLE IF NOT EXISTS cases (" + 
+                "id SERIAL PRIMARY KEY," + 
+                "name VARCHAR(100) NOT NULL," + 
+                "brand VARCHAR(50) NOT NULL," + 
+                "form_factor VARCHAR(50) NOT NULL," + 
+                "color VARCHAR(30)," + 
+                "link VARCHAR(255) NOT NULL" + 
+                ");"; 
+
+        String createRAMTable =  "CREATE TABLE IF NOT EXISTS ram (" + 
+                "id SERIAL PRIMARY KEY," + 
+                "name VARCHAR(100) NOT NULL," + 
+                "brand VARCHAR(50) NOT NULL," + 
+                "capacity INT NOT NULL," + // Объем памяти в ГБ
+                "speed INT NOT NULL," + // Скорость в МГц
+                "link VARCHAR(255) NOT NULL" + 
+                ");";
+        
+        String createComputersTable = "CREATE TABLE IF NOT EXISTS computers (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(100) NOT NULL, " +
+                "description TEXT NOT NULL, " +
+                "price DECIMAL(10,2) NOT NULL, " +
+                "processor_id INT NOT NULL REFERENCES processors(id), " +
+                "graphics_card_id INT NOT NULL REFERENCES graphics_cards(id), " +
+                "power_supply_id INT NOT NULL REFERENCES power_supplies(id), " +
+                "stock_quantity INT NOT NULL, " +
+                "image_path VARCHAR(255) NOT NULL" +
+                ");";
     
         try (Statement statement = con.createStatement()) {
             statement.executeUpdate(createUsersTable);
+            statement.executeUpdate(createProcessorsTable);
+            statement.executeUpdate(createGraphicsCardsTable);
+            statement.executeUpdate(createPowerSuppliesTable);
+            statement.executeUpdate(createMotherboardsTable);
+            statement.executeUpdate(createCoolersTable);
+            statement.executeUpdate(createCasesTable);
+            statement.executeUpdate(createRAMTable);
+            statement.executeUpdate(createComputersTable);
         } catch (Exception ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

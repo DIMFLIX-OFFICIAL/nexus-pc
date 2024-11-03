@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="825.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.MainPanelController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="825.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.MainPanelController">
    <left>
       <VBox prefHeight="601.0" prefWidth="160.0" spacing="10.0" style="-fx-background-color: #1e1e2e;" BorderPane.alignment="CENTER">
          <children>
@@ -45,7 +45,7 @@
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="1360.0" style="-fx-background-color: #181825;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="logout" mnemonicParsing="false" onAction="#close" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1;" styleClass="bt" stylesheets="@mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
+            <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1;" styleClass="bt" stylesheets="@mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -65,12 +65,6 @@
          </BorderPane.margin></HBox>
    </top>
    <center>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #313244;" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="108.0" prefWidth="1190.0" style="-fx-background-color: #313244;" />
-            <HBox prefHeight="243.0" prefWidth="1099.0" style="-fx-background-color: #313244;" />
-            <HBox prefHeight="254.0" prefWidth="1190.0" style="-fx-background-color: #313244;" />
-         </children>
-      </VBox>
+      <HBox fx:id="pagesWindow" alignment="CENTER" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

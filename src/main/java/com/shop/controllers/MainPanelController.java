@@ -17,12 +17,16 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class MainPanelController implements Initializable {
 
     @FXML
     private BorderPane borderPane;
+
+    @FXML
+    private HBox pagesWindow;
 
     private List<Button> menus;
 
@@ -56,7 +60,7 @@ public class MainPanelController implements Initializable {
 
     @FXML
     private void clear() {
-        borderPane.setCenter(null);
+        pagesWindow.getChildren().clear();
     }
 
     @FXML
@@ -64,18 +68,19 @@ public class MainPanelController implements Initializable {
         Parent parent;
         try {
             parent = FXMLLoader.load(getClass().getResource("/com/shop/main_pages/" + fileName + ".fxml"));
-            borderPane.setCenter(parent);
+            clear();
+            pagesWindow.getChildren().add(parent);
         } catch (IOException ex) {
             Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
-    private void close() throws IOException {
+    private void logout() throws IOException {
         Stage stage = (Stage) borderPane.getScene().getWindow();
         stage.close();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/shop/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/shop/auth/LoginView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("User Login");

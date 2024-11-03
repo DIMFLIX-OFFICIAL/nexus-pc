@@ -1,4 +1,4 @@
-package com.shop.controllers;
+package com.shop.controllers.auth;
 
 import com.shop.database.DbConnection;
 import com.shop.helper.AlertHelper;
@@ -23,9 +23,6 @@ import javafx.stage.Window;
 
 
 public class RegisterController implements Initializable {
-
-    private final Connection con;
-
     @FXML
     private TextField firstName;
 
@@ -52,11 +49,6 @@ public class RegisterController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-    }
-
-    public RegisterController() {
-        DbConnection dbc = DbConnection.getDatabaseConnection();
-        con = dbc.getConnection();
     }
 
     @FXML
@@ -165,7 +157,7 @@ public class RegisterController implements Initializable {
         Stage stage = (Stage) registerButton.getScene().getWindow();
         stage.close();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/shop/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/shop/auth/LoginView.fxml"));
 
         Scene scene = new Scene(root);
 

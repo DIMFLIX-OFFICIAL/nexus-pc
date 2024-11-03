@@ -6,11 +6,13 @@ module com.shop {
     requires org.controlsfx.controls;
     requires javafx.graphics;
 
-    opens com.shop to javafx.fxml;
+    opens com.shop.database to javafx.fxml;
     exports com.shop;
     exports com.shop.controllers;
     opens com.shop.controllers to javafx.fxml;
     exports com.shop.controllers.main_pages;
     opens com.shop.controllers.main_pages to javafx.fxml;
+    exports com.shop.controllers.auth;
+    opens com.shop.controllers.auth to javafx.fxml;
 
 }

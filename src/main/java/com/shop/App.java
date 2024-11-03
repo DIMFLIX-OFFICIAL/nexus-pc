@@ -23,7 +23,7 @@ public class App extends Application {
         DbConnection dbConnection = DbConnection.getDatabaseConnection();
         dbConnection.createTablesIfNotExists();
 
-        scene = new Scene(loadFXML("LoginView"), 640, 480);
+        scene = new Scene(loadFXML("auth/LoginView"), 640, 480);
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
