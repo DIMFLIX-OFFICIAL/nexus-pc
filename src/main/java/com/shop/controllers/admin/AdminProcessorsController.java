@@ -12,12 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Window;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.BigDecimalStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
 
 public class AdminProcessorsController implements Initializable {
     @FXML
@@ -50,80 +51,56 @@ public class AdminProcessorsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        nameColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            processor.setName(event.getNewValue());
-        });
-        brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
-        brandColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        brandColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            processor.setBrand(event.getNewValue());
-        });
-        coresColumn.setCellValueFactory(new PropertyValueFactory<>("cores"));
-        coresColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        coresColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            try {
-                processor.setCores(event.getNewValue());
-            } catch(Exception e) {
-                window = addButton.getScene().getWindow();
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "The value in the “cores” column must be a number");
-            }
-        });
-
-        threadsColumn.setCellValueFactory(new PropertyValueFactory<>("threads"));
-        threadsColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        threadsColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            try {
-                processor.setThreads(event.getNewValue());
-            } catch(Exception e) {
-                window = addButton.getScene().getWindow();
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "The value in the “threads” column must be a number");
-            }
-        });
-
-        baseClockColumn.setCellValueFactory(new PropertyValueFactory<>("baseClock"));
-        baseClockColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BigDecimalStringConverter()));
-        baseClockColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            try {
-                processor.setBaseClock(event.getNewValue());
-            } catch(Exception e) {
-                window = addButton.getScene().getWindow();
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "The value in the “Base Clock” column must be a decimal");
-            }
-        });
-
-        boostClockColumn.setCellValueFactory(new PropertyValueFactory<>("boostClock"));
-        boostClockColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BigDecimalStringConverter()));
-        boostClockColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            try {
-                processor.setBoostClock(event.getNewValue());
-            } catch(Exception e) {
-                window = addButton.getScene().getWindow();
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "The value in the “Boost Clock” column must be a decimal");
-            }
-        });
-
-        linkColumn.setCellValueFactory(new PropertyValueFactory<>("link"));
-        linkColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        linkColumn.setOnEditCommit(event -> {
-            Processor processor = event.getRowValue();
-            processor.setLink(event.getNewValue());
-        });
-
+        setupColumn(nameColumn, "name", Processor::setName);
+        setupColumn(brandColumn, "brand", Processor::setBrand);
+        setupIntegerColumn(coresColumn, "cores", Processor::setCores);
+        setupIntegerColumn(threadsColumn, "threads", Processor::setThreads);
+        setupBigDecimalColumn(baseClockColumn, "baseClock", Processor::setBaseClock);
+        setupBigDecimalColumn(boostClockColumn, "boostClock", Processor::setBoostClock);
+        setupColumn(linkColumn, "link", Processor::setLink);
 
         loadData();
         tableView.setItems(processorsList);
+    }
+
+    private void setupColumn(TableColumn<Processor, String> column, String column_name, BiConsumer<Processor, String> setter) {
+        column.setCellValueFactory(new PropertyValueFactory<>(column_name));
+        column.setCellFactory(TextFieldTableCell.forTableColumn());
+        column.setOnEditCommit(event -> {
+            Processor processor = event.getRowValue();
+            setter.accept(processor, event.getNewValue());
+        });
+    }
+
+    private void setupIntegerColumn(TableColumn<Processor, Integer> column, String column_name, BiConsumer<Processor, Integer> setter) {
+        column.setCellValueFactory(new PropertyValueFactory<>(column_name));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        column.setOnEditCommit(event -> {
+            Processor processor = event.getRowValue();
+            try {
+                setter.accept(processor, event.getNewValue());
+            } catch (Exception e) {
+                showErrorAlert("The value in the “" + column.getText() + "” column must be a number");
+            }
+        });
+    }
+
+    private void setupBigDecimalColumn(TableColumn<Processor, BigDecimal> column, String column_name, BiConsumer<Processor, BigDecimal> setter) {
+        column.setCellValueFactory(new PropertyValueFactory<>(column_name));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new BigDecimalStringConverter()));
+        column.setOnEditCommit(event -> {
+            Processor processor = event.getRowValue();
+            try {
+                setter.accept(processor, event.getNewValue());
+            } catch (Exception e) {
+                showErrorAlert("The value in the “" + column.getText() + "” column must be a decimal");
+            }
+        });
+    }
+
+    private void showErrorAlert(String message) {
+        window = addButton.getScene().getWindow();
+        AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", message);
     }
 
     private void loadData() {
@@ -131,30 +108,30 @@ public class AdminProcessorsController implements Initializable {
         processorsList.addAll(DbConnection.getDatabaseConnection().getAllProcessors());
     }
 
+    private boolean isValid(Processor proc) {
+        return proc.getName() != null && !proc.getName().isEmpty() &&
+               proc.getBrand() != null && !proc.getBrand().isEmpty() &&
+               proc.getCores() != null &&
+               proc.getThreads() != null &&
+               proc.getBaseClock() != null &&
+               proc.getBoostClock() != null &&
+               proc.getLink() != null && !proc.getLink().isEmpty();
+    }
+
     @FXML
     private void handleSave() {
         for (Processor proc : processorsList) {
-            if (
-                proc.getName() == null || proc.getName().isEmpty() || 
-                proc.getBrand() == null || proc.getBrand().isEmpty() ||
-                proc.getCores() == null ||
-                proc.getThreads() == null ||
-                proc.getBaseClock() == null ||
-                proc.getBoostClock() == null ||
-                proc.getLink() == null || proc.getLink().isEmpty()) {
-                continue;
-            }
-
-            if (proc.getId() == null) {
-                DbConnection.getDatabaseConnection().addProcessor(proc);
-            } else {
-                DbConnection.getDatabaseConnection().updateProcessor(proc);
+            if (isValid(proc)) {
+                if (proc.getId() == null) {
+                    DbConnection.getDatabaseConnection().addProcessor(proc);
+                } else {
+                    DbConnection.getDatabaseConnection().updateProcessor(proc);
+                }
             }
         }
-
         loadData();
     }
- 
+
     @FXML
     private void handleAdd() {
         Processor newProc = new Processor(null, null, null, null, null, null, null, null);
