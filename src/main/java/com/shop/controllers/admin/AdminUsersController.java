@@ -1,7 +1,7 @@
 package com.shop.controllers.admin;
 
 import com.shop.database.DbConnection;
-import com.shop.database.models.User; // Ensure you have the User model imported
+import com.shop.database.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
