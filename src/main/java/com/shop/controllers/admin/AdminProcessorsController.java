@@ -74,26 +74,46 @@ public class AdminProcessorsController implements Initializable {
 
     private void setupIntegerColumn(TableColumn<Processor, Integer> column, String column_name, BiConsumer<Processor, Integer> setter) {
         column.setCellValueFactory(new PropertyValueFactory<>(column_name));
-        column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter() {
+            @Override
+            public Integer fromString(String string) {
+                try {
+                    return super.fromString(string);
+                } catch (NumberFormatException e) {
+                    showErrorAlert("The value in the “" + column.getText() + "” column must be a number");
+                    return null;
+                }
+            }
+        }));
+        
         column.setOnEditCommit(event -> {
             Processor processor = event.getRowValue();
-            try {
-                setter.accept(processor, event.getNewValue());
-            } catch (Exception e) {
-                showErrorAlert("The value in the “" + column.getText() + "” column must be a number");
+            Integer newValue = event.getNewValue();
+            if (newValue != null) {
+                setter.accept(processor, newValue);
             }
         });
     }
 
     private void setupBigDecimalColumn(TableColumn<Processor, BigDecimal> column, String column_name, BiConsumer<Processor, BigDecimal> setter) {
         column.setCellValueFactory(new PropertyValueFactory<>(column_name));
-        column.setCellFactory(TextFieldTableCell.forTableColumn(new BigDecimalStringConverter()));
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new BigDecimalStringConverter() {
+            @Override
+            public BigDecimal fromString(String string) {
+                try {
+                    return super.fromString(string);
+                } catch (NumberFormatException e) {
+                    showErrorAlert("The value in the “" + column.getText() + "” column must be a decimal");
+                    return null;
+                }
+            }
+        }));
+    
         column.setOnEditCommit(event -> {
             Processor processor = event.getRowValue();
-            try {
-                setter.accept(processor, event.getNewValue());
-            } catch (Exception e) {
-                showErrorAlert("The value in the “" + column.getText() + "” column must be a decimal");
+            BigDecimal newValue = event.getNewValue();
+            if (newValue != null) {
+                setter.accept(processor, newValue);
             }
         });
     }
