@@ -1,36 +1,47 @@
 package com.shop.database.models;
-
 import java.math.BigDecimal;
 
 public class Computer {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
-    private BigDecimal price; // Using BigDecimal for currency precision
-    private int processorId; // Foreign key reference to Processor
-    private int graphicsCardId; // Foreign key reference to Graphics Card
-    private int powerSupplyId; // Foreign key reference to Power Supply
-    private int stockQuantity;
+    private BigDecimal price;
+    private Integer processorId;
+    private Integer graphicCardId; 
+    private Integer motherboardId;
+    private Integer ramId;
+    private Integer ramsCount; 
+    private Integer powerSupplyId;
+    private Integer coolerId; 
+    private Integer caseId;
     private String imagePath;
 
-    public Computer(int id, String name, String description, BigDecimal price, int processorId, int graphicsCardId, int powerSupplyId, int stockQuantity, String imagePath) {
+    public Computer(Integer id, String name, String description, BigDecimal price,
+                    Integer processorId, Integer graphicCardId, Integer motherboardId,
+                    Integer ramId, Integer ramsCount, Integer powerSupplyId,
+                    Integer coolerId, Integer caseId, String imagePath) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.processorId = processorId;
-        this.graphicsCardId = graphicsCardId;
+        this.graphicCardId = graphicCardId;
+        this.motherboardId = motherboardId;
+        this.ramId = ramId;
+        this.ramsCount = ramsCount;
         this.powerSupplyId = powerSupplyId;
-        this.stockQuantity = stockQuantity;
+        this.coolerId = coolerId;
+        this.caseId = caseId;
         this.imagePath = imagePath;
     }
 
-    // Getters and Setters
-    public int getId() {
+    // Геттеры и сеттеры
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -58,43 +69,75 @@ public class Computer {
         this.price = price;
     }
 
-    public int getProcessorId() {
+    public Integer getProcessorId() {
         return processorId;
     }
 
-    public void setProcessorId(int processorId) {
+    public void setProcessorId(Integer processorId) {
         this.processorId = processorId;
     }
 
-    public int getGraphicsCardId() {
-        return graphicsCardId;
+    public Integer getGraphicCardId() {
+        return graphicCardId;
     }
 
-    public void setGraphicsCardId(int graphicsCardId) {
-        this.graphicsCardId = graphicsCardId;
+    public void setGraphicCardId(Integer graphicCardId) {
+        this.graphicCardId = graphicCardId;
     }
 
-   public int getPowerSupplyId() { 
-       return powerSupplyId; 
-   } 
+    public Integer getMotherboardId() {
+        return motherboardId;
+    }
 
-   public void setPowerSupplyId(int powerSupplyId) { 
-       this.powerSupplyId = powerSupplyId; 
-   } 
+    public void setMotherboardId(Integer motherboardId) {
+        this.motherboardId = motherboardId;
+    }
 
-   public int getStockQuantity() { 
-       return stockQuantity; 
-   } 
+    public Integer getRamId() {
+        return ramId;
+    }
 
-   public void setStockQuantity(int stockQuantity) { 
-       this.stockQuantity = stockQuantity; 
-   } 
+    public void setRamId(Integer ramId) {
+        this.ramId = ramId;
+    }
 
-   public String getImagePath() { 
-       return imagePath; 
-   } 
+    public Integer getRamsCount() {
+        return ramsCount;
+    }
 
-   public void setImagePath(String imagePath) { 
-       this.imagePath = imagePath; 
-   }
+    public void setRamsCount(Integer ramsCount) {
+        this.ramsCount = ramsCount;
+    }
+
+    public Integer getPowerSupplyId() {
+        return powerSupplyId;
+    }
+
+    public void setPowerSupplyId(Integer powerSupplyId) {
+        this.powerSupplyId = powerSupplyId;
+    }
+
+    public Integer getCoolerId() {
+        return coolerId;
+    }
+
+    public void setCoolerId(Integer coolerId) {
+        this.coolerId = coolerId;
+    }
+
+    public Integer getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(Integer caseId) {
+        this.caseId = caseId;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

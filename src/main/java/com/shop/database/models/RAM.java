@@ -1,14 +1,14 @@
 package com.shop.database.models;
 
 public class RAM {
-    private int id;
+    private Integer id;
     private String name;
     private String brand;
-    private int capacity; // in GB
-    private int speed; // in MHz
+    private Integer capacity; // in GB
+    private Integer speed; // in MHz
     private String link;
 
-    public RAM(int id, String name, String brand, int capacity, int speed, String link) {
+    public RAM(Integer id, String name, String brand, Integer capacity, Integer speed, String link) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -18,11 +18,11 @@ public class RAM {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -42,19 +42,19 @@ public class RAM {
         this.brand = brand;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
-    public int getSpeed() {
+    public Integer getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(Integer speed) {
         this.speed = speed;
     }
 

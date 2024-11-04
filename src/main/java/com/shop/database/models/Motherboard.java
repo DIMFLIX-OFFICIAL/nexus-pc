@@ -1,15 +1,15 @@
 package com.shop.database.models;
 
 public class Motherboard {
-    private int id;
+    private Integer id;
     private String name;
     private String brand;
     private String socketType;
     private String formFactor;
-    private int maxMemory;
+    private Integer maxMemory;
     private String link;
 
-    public Motherboard(int id, String name, String brand, String socketType, String formFactor, int maxMemory, String link) {
+    public Motherboard(Integer id, String name, String brand, String socketType, String formFactor, Integer maxMemory, String link) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -20,11 +20,11 @@ public class Motherboard {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -60,11 +60,11 @@ public class Motherboard {
         this.formFactor = formFactor;
     }
 
-    public int getMaxMemory() {
+    public Integer getMaxMemory() {
         return maxMemory;
     }
 
-    public void setMaxMemory(int maxMemory) {
+    public void setMaxMemory(Integer maxMemory) {
         this.maxMemory = maxMemory;
     }
 

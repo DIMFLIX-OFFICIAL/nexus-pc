@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import com.shop.database.models.User;
 import com.shop.database.models.Processor;
-import com.shop.database.models.GraphicsCard;
+import com.shop.database.models.GraphicCard;
 import com.shop.database.models.Motherboard;
 import com.shop.database.models.PowerSupply;
 import com.shop.database.models.RAM;
@@ -50,7 +50,7 @@ public class DbConnection {
                 "link TEXT NOT NULL" +
                 ");";
 
-        String createGraphicsCardsTable = "CREATE TABLE IF NOT EXISTS graphics_cards (" +
+        String createGraphicsCardsTable = "CREATE TABLE IF NOT EXISTS graphic_cards (" +
                 "id SERIAL PRIMARY KEY, " +
                 "name TEXT NOT NULL, " +
                 "brand TEXT NOT NULL, " +
@@ -96,7 +96,7 @@ public class DbConnection {
                 "link TEXT NOT NULL" + 
                 ");"; 
 
-        String createRAMTable =  "CREATE TABLE IF NOT EXISTS ram (" + 
+        String createRAMTable =  "CREATE TABLE IF NOT EXISTS rams (" + 
                 "id SERIAL PRIMARY KEY," + 
                 "name TEXT NOT NULL," + 
                 "brand TEXT NOT NULL," + 
@@ -111,9 +111,13 @@ public class DbConnection {
                 "description TEXT NOT NULL, " +
                 "price DECIMAL(10,2) NOT NULL, " +
                 "processor_id INT NOT NULL REFERENCES processors(id), " +
-                "graphics_card_id INT NOT NULL REFERENCES graphics_cards(id), " +
+                "graphic_card_id INT NOT NULL REFERENCES graphic_cards(id), " +
+                "motherboard_id INT NOT NULL REFERENCES motherboards(id), " +
+                "ram_id INT NOT NULL REFERENCES rams(id), " +
+                "rams_count INT NOT NULL, " +
                 "power_supply_id INT NOT NULL REFERENCES power_supplies(id), " +
-                "stock_quantity INT NOT NULL, " +
+                "cooler_id INT NOT NULL REFERENCES coolers(id), " +
+                "case_id INT NOT NULL REFERENCES cases(id), " +
                 "image_path TEXT NOT NULL" +
                 ");";
     
@@ -358,13 +362,13 @@ public class DbConnection {
 
     //==> GRAPHICSCARD CRUD
     // ==================================================================================================================================
-    public List<GraphicsCard> getAllGraphicsCards() {
-        List<GraphicsCard> graphicsCards = new ArrayList<>();
-        String query = "SELECT * FROM graphics_cards";
+    public List<GraphicCard> getAllGraphicsCards() {
+        List<GraphicCard> graphicsCards = new ArrayList<>();
+        String query = "SELECT * FROM graphic_cards";
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
              while (rs.next()) {
-                 GraphicsCard graphicsCard = new GraphicsCard(
+                 GraphicCard graphicsCard = new GraphicCard(
                      rs.getInt("id"),
                      rs.getString("name"),
                      rs.getString("brand"),
@@ -380,8 +384,8 @@ public class DbConnection {
          return graphicsCards;
     }
     
-    public boolean deleteGraphicsCard(int id) {
-        String deleteGraphicsCard = "DELETE FROM graphics_cards WHERE id = ?";
+    public boolean deleteGraphicsCard(Integer id) {
+        String deleteGraphicsCard = "DELETE FROM graphic_cards WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteGraphicsCard)) {
              pstmt.setInt(1, id);
              return pstmt.executeUpdate() > 0;
@@ -391,8 +395,8 @@ public class DbConnection {
          }
     }
     
-    public boolean addGraphicsCard(GraphicsCard graphicsCard) {
-       String insertGraphicsCard = "INSERT INTO graphics_cards (name, brand, memory_size, memory_type, link) VALUES (?, ?, ?, ?, ?)";
+    public boolean addGraphicsCard(GraphicCard graphicsCard) {
+       String insertGraphicsCard = "INSERT INTO graphic_cards (name, brand, memory_size, memory_type, link) VALUES (?, ?, ?, ?, ?)";
        try (PreparedStatement pstmt = con.prepareStatement(insertGraphicsCard)) {
            pstmt.setString(1, graphicsCard.getName());
            pstmt.setString(2, graphicsCard.getBrand());
@@ -406,8 +410,8 @@ public class DbConnection {
        }
     }
     
-    public boolean updateGraphicsCard(GraphicsCard graphicsCard) {
-       String updateGraphicsCard = "UPDATE graphics_cards SET name = ?, brand = ?, memory_size = ?, memory_type = ?, link = ? WHERE id = ?";
+    public boolean updateGraphicsCard(GraphicCard graphicsCard) {
+       String updateGraphicsCard = "UPDATE graphic_cards SET name = ?, brand = ?, memory_size = ?, memory_type = ?, link = ? WHERE id = ?";
        try (PreparedStatement pstmt = con.prepareStatement(updateGraphicsCard)) {
            pstmt.setString(1, graphicsCard.getName());
               pstmt.setString(2, graphicsCard.getBrand());
@@ -451,7 +455,7 @@ public class DbConnection {
         return powerSupplies;
     }
     
-    public boolean deletePowerSupply(int id) {
+    public boolean deletePowerSupply(Integer id) {
         String deletePowerSupply = "DELETE FROM power_supplies WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deletePowerSupply)) {
             pstmt.setInt(1, id);
@@ -499,7 +503,7 @@ public class DbConnection {
     // ==================================================================================================================================
     public List<RAM> getAllRAMs() {
         List<RAM> rams = new ArrayList<>();
-        String query = "SELECT * FROM ram";
+        String query = "SELECT * FROM rams";
         
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
@@ -520,8 +524,8 @@ public class DbConnection {
         return rams;
     }
     
-    public boolean deleteRAM(int id) {
-        String deleteRAM = "DELETE FROM ram WHERE id = ?";
+    public boolean deleteRAM(Integer id) {
+        String deleteRAM = "DELETE FROM rams WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteRAM)) {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;
@@ -532,7 +536,7 @@ public class DbConnection {
     }
     
     public boolean addRAM(RAM ram) {
-        String insertRAM = "INSERT INTO ram (name, brand, capacity, speed, link) VALUES (?, ?, ?, ?, ?)";
+        String insertRAM = "INSERT INTO rams (name, brand, capacity, speed, link) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = con.prepareStatement(insertRAM)) {
             pstmt.setString(1, ram.getName());
             pstmt.setString(2, ram.getBrand());
@@ -547,7 +551,7 @@ public class DbConnection {
     }
     
     public boolean updateRAM(RAM ram) {
-        String updateRAM = "UPDATE ram SET name = ?, brand = ?, capacity = ?, speed = ?, link = ? WHERE id = ?";
+        String updateRAM = "UPDATE rams SET name = ?, brand = ?, capacity = ?, speed = ?, link = ? WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(updateRAM)) {
             pstmt.setString(1, ram.getName());
             pstmt.setString(2, ram.getBrand());
@@ -592,7 +596,7 @@ public class DbConnection {
         return motherboards;
     }
     
-    public boolean deleteMotherboard(int id) {
+    public boolean deleteMotherboard(Integer id) {
         String deleteMotherboard = "DELETE FROM motherboards WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteMotherboard)) {
             pstmt.setInt(1, id);
@@ -664,7 +668,7 @@ public class DbConnection {
         return coolers;
     }
     
-    public boolean deleteCooler(int id) {
+    public boolean deleteCooler(Integer id) {
         String deleteCooler = "DELETE FROM coolers WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteCooler)) {
             pstmt.setInt(1, id);
@@ -733,7 +737,7 @@ public class DbConnection {
         return cases;
     }
     
-    public boolean deleteCase(int id) {
+    public boolean deleteCase(Integer id) {
         String deleteCase = "DELETE FROM cases WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteCase)) {
             pstmt.setInt(1, id);
@@ -782,7 +786,7 @@ public class DbConnection {
     public List<Computer> getAllComputers() {
         List<Computer> computers = new ArrayList<>();
         String query = "SELECT * FROM computers";
-        
+
         try (PreparedStatement pstmt = con.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
@@ -792,9 +796,13 @@ public class DbConnection {
                     rs.getString("description"),
                     rs.getBigDecimal("price"),
                     rs.getInt("processor_id"),
-                    rs.getInt("graphics_card_id"),
+                    rs.getInt("graphic_card_id"),
+                    rs.getInt("motherboard_id"),
+                    rs.getInt("ram_id"),
+                    rs.getInt("rams_count"),
                     rs.getInt("power_supply_id"),
-                    rs.getInt("stock_quantity"),
+                    rs.getInt("cooler_id"),
+                    rs.getInt("case_id"),
                     rs.getString("image_path")
                 );
                 computers.add(computer);
@@ -804,8 +812,56 @@ public class DbConnection {
         }
         return computers;
     }
-    
-    public boolean deleteComputer(int id) {
+
+    // Добавление нового компьютера
+    public boolean addComputer(Computer computer) {
+        String insertComputer = "INSERT INTO computers (name, description, price, processor_id, graphic_card_id, motherboard_id, ram_id, rams_count, power_supply_id, cooler_id, case_id, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(insertComputer)) {
+            pstmt.setString(1, computer.getName());
+            pstmt.setString(2, computer.getDescription());
+            pstmt.setBigDecimal(3, computer.getPrice());
+            pstmt.setInt(4, computer.getProcessorId());
+            pstmt.setInt(5, computer.getGraphicCardId());
+            pstmt.setInt(6, computer.getMotherboardId());
+            pstmt.setInt(7, computer.getRamId());
+            pstmt.setInt(8, computer.getRamsCount());
+            pstmt.setInt(9, computer.getPowerSupplyId());
+            pstmt.setInt(10, computer.getCoolerId());
+            pstmt.setInt(11, computer.getCaseId());
+            pstmt.setString(12, computer.getImagePath());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    // Обновление существующего компьютера
+    public boolean updateComputer(Computer computer) {
+        String updateComputer = "UPDATE computers SET name = ?, description = ?, price = ?, processor_id = ?, graphic_card_id = ?, motherboard_id = ?, ram_id = ?, rams_count = ?, power_supply_id = ?, cooler_id = ?, case_id = ?, image_path = ? WHERE id = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(updateComputer)) {
+            pstmt.setString(1, computer.getName());
+            pstmt.setString(2, computer.getDescription());
+            pstmt.setBigDecimal(3, computer.getPrice());
+            pstmt.setInt(4, computer.getProcessorId());
+            pstmt.setInt(5, computer.getGraphicCardId());
+            pstmt.setInt(6, computer.getMotherboardId());
+            pstmt.setInt(7, computer.getRamId());
+            pstmt.setInt(8, computer.getRamsCount());
+            pstmt.setInt(9, computer.getPowerSupplyId());
+            pstmt.setInt(10, computer.getCoolerId());
+            pstmt.setInt(11, computer.getCaseId());
+            pstmt.setString(12, computer.getImagePath());
+            pstmt.setInt(13, computer.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    // Удаление компьютера по ID
+    public boolean deleteComputer(Integer id) {
         String deleteComputer = "DELETE FROM computers WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteComputer)) {
             pstmt.setInt(1, id);
@@ -815,41 +871,4 @@ public class DbConnection {
             return false;
         }
     }
-    
-    public boolean addComputer(Computer computer) {
-        String insertComputer = "INSERT INTO computers (name, description, price, processor_id, graphics_card_id, power_supply_id, stock_quantity, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(insertComputer)) {
-            pstmt.setString(1, computer.getName());
-            pstmt.setString(2, computer.getDescription());
-            pstmt.setBigDecimal(3, computer.getPrice());
-            pstmt.setInt(4, computer.getProcessorId());
-            pstmt.setInt(5, computer.getGraphicsCardId());
-            pstmt.setInt(6, computer.getPowerSupplyId());
-            pstmt.setInt(7, computer.getStockQuantity());
-            pstmt.setString(8, computer.getImagePath());
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-    
-    public boolean updateComputer(Computer computer) {
-        String updateComputer = "UPDATE computers SET name = ?, description = ?, price = ?, processor_id = ?, graphics_card_id = ?, power_supply_id = ?, stock_quantity = ?, image_path = ? WHERE id = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(updateComputer)) {
-            pstmt.setString(1, computer.getName());
-               pstmt.setString(2 ,computer .getDescription()); 
-            pstmt.setBigDecimal (3,computer .getPrice()); 
-            pstmt.setInt (4, computer .getProcessorId()); 
-            pstmt.setInt (5, computer .getGraphicsCardId()); 
-            pstmt.setInt (6, computer .getPowerSupplyId()); 
-            pstmt.setInt (7, computer .getStockQuantity()); 
-            pstmt.setString (8, computer .getImagePath()); 
-            pstmt.setInt (9, computer .getId()); 
-            return	pstmt.executeUpdate()>0; 
-        } catch(SQLException	ex){ 
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE,null ,ex); 
-            return false; 
-        } 
-    }    
 }   

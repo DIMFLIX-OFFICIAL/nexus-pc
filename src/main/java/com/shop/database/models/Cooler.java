@@ -3,14 +3,14 @@ package com.shop.database.models;
 import java.math.BigDecimal;
 
 public class Cooler {
-    private int id;
+    private Integer id;
     private String name;
     private String brand;
     private String type;
     private BigDecimal coolingCapacity; // Using BigDecimal for precision
     private String link;
 
-    public Cooler(int id, String name, String brand, String type, BigDecimal coolingCapacity, String link) {
+    public Cooler(Integer id, String name, String brand, String type, BigDecimal coolingCapacity, String link) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -20,11 +20,11 @@ public class Cooler {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

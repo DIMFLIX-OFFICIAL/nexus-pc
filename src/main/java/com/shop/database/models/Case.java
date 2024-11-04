@@ -1,14 +1,14 @@
 package com.shop.database.models;
 
 public class Case {
-    private int id; 
+    private Integer id; 
     private String name; 
     private String brand; 
     private String formFactor; 
     private String color; 
     private String link;
 
-    public Case(int id, String name, String brand, String formFactor, String color, String link) {
+    public Case(Integer id, String name, String brand, String formFactor, String color, String link) {
         this.id = id; 
         this.name = name; 
         this.brand = brand; 
@@ -18,11 +18,11 @@ public class Case {
     }
  
     // Getters and Setters
-    public int getId() { 
+    public Integer getId() { 
         return id; 
     } 
  
-    public void setId(int id) { 
+    public void setId(Integer id) { 
         this.id = id; 
     } 
  

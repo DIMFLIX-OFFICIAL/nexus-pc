@@ -1,14 +1,14 @@
 package com.shop.database.models;
 
-public class GraphicsCard {
-    private int id; 
+public class GraphicCard {
+    private Integer id; 
     private String name; 
     private String brand; 
-    private int memorySize; 
+    private Integer memorySize; 
     private String memoryType; 
     private String link;
 
-    public GraphicsCard(int id, String name, String brand, int memorySize, String memoryType, String link) {
+    public GraphicCard(Integer id, String name, String brand, Integer memorySize, String memoryType, String link) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -18,11 +18,11 @@ public class GraphicsCard {
     }
  
     // Getters and Setters
-    public int getId() { 
+    public Integer getId() { 
         return id; 
     } 
  
-    public void setId(int id) { 
+    public void setId(Integer id) { 
         this.id = id; 
     } 
  
@@ -42,11 +42,11 @@ public class GraphicsCard {
         this.brand = brand; 
     } 
  
-    public int getMemorySize() { 
+    public Integer getMemorySize() { 
         return memorySize; 
     } 
  
-    public void setMemorySize(int memorySize) { 
+    public void setMemorySize(Integer memorySize) { 
         this.memorySize = memorySize; 
     } 
  

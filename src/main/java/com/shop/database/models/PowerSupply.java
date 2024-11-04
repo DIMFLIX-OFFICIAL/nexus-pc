@@ -2,14 +2,14 @@ package com.shop.database.models;
 
 
 public class PowerSupply {
-    private int id; 
+    private Integer id; 
     private String name; 
     private String brand;
-    private int wattage; 
+    private Integer wattage; 
     private String efficiencyRating; 
     private String link;
 
-    public PowerSupply(int id, String name, String brand, int wattage, String efficiencyRating, String link) {
+    public PowerSupply(Integer id, String name, String brand, Integer wattage, String efficiencyRating, String link) {
         this.id = id; 
         this.name = name; 
         this.brand = brand; 
@@ -19,11 +19,11 @@ public class PowerSupply {
     }
 
 
-    public int getId() { 
+    public Integer getId() { 
         return id; 
     } 
  
-    public void setId(int id) { 
+    public void setId(Integer id) { 
         this.id = id; 
     } 
  
@@ -43,11 +43,11 @@ public class PowerSupply {
         this.brand = brand;
     }
 
-    public int getWattage() { 
+    public Integer getWattage() { 
         return wattage; 
     } 
  
-    public void setWattage(int wattage) { 
+    public void setWattage(Integer wattage) { 
         this.wattage = wattage; 
     } 
  
