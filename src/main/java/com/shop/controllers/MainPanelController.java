@@ -57,10 +57,14 @@ public class MainPanelController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         MenuItem usersAdminTable = new MenuItem("Users");
+        MenuItem processorsAdminTable = new MenuItem("Processors");
 
-        AdminPagesButton.getItems().addAll(usersAdminTable);
-        AdminPagesButton.setOnAction((e)-> {
+        AdminPagesButton.getItems().addAll(usersAdminTable,processorsAdminTable );
+        usersAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/users");
+        });
+        processorsAdminTable.setOnAction((e)-> {
+            loadFXML("/com/shop/admin_pages/processors");
         });
 
         loadCatalogView(null); // start page

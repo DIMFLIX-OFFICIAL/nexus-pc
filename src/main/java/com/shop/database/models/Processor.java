@@ -3,16 +3,16 @@ package com.shop.database.models;
 import java.math.BigDecimal;
 
 public class Processor {
-    private int id;
+    private Integer id;
     private String name;
     private String brand;
-    private int cores;
-    private int threads;
+    private Integer cores;
+    private Integer threads;
     private BigDecimal baseClock; // Using BigDecimal for decimal values
     private BigDecimal boostClock; // Using BigDecimal for decimal values
     private String link;
 
-    public Processor(int id, String name, String brand, int cores, int threads, BigDecimal baseClock, BigDecimal boostClock, String link) {
+    public Processor(Integer id, String name, String brand, Integer cores, Integer threads, BigDecimal baseClock, BigDecimal boostClock, String link) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -24,11 +24,11 @@ public class Processor {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -48,19 +48,19 @@ public class Processor {
         this.brand = brand;
     }
 
-    public int getCores() {
+    public Integer getCores() {
         return cores;
     }
 
-    public void setCores(int cores) {
+    public void setCores(Integer cores) {
         this.cores = cores;
     }
 
-    public int getThreads() {
+    public Integer getThreads() {
         return threads;
     }
 
-    public void setThreads(int threads) {
+    public void setThreads(Integer threads) {
         this.threads = threads;
     }
 

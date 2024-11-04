@@ -1,7 +1,7 @@
 package com.shop.controllers.admin;
 
 import com.shop.database.DbConnection;
-import com.shop.database.models.User; // Ensure you have the User model imported
+import com.shop.database.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +12,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
 
 public class AdminUsersController implements Initializable {
     @FXML
@@ -40,51 +41,24 @@ public class AdminUsersController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
-
-        usernameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        usernameColumn.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setUsername(event.getNewValue());
-        });
-
-        emailColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        emailColumn.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setEmail(event.getNewValue());
-        });
-
-        firstNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        firstNameColumn.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setFirstName(event.getNewValue());
-        });
-
-        lastNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        lastNameColumn.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setLastName(event.getNewValue());
-        });
-
-        passwordColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        passwordColumn.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setPassword(event.getNewValue());
-        });
-
-        roleColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        roleColumn.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setRole(event.getNewValue());
-        });
+        setupColumn(usernameColumn, "username", User::setUsername);
+        setupColumn(emailColumn, "email", User::setEmail);
+        setupColumn(firstNameColumn, "firstName", User::setFirstName);
+        setupColumn(lastNameColumn, "lastName", User::setLastName);
+        setupColumn(passwordColumn, "password", User::setPassword);
+        setupColumn(roleColumn, "role", User::setRole);
 
         loadData();
         tableView.setItems(userList);
+    }
+
+    private void setupColumn(TableColumn<User, String> column, String column_name, BiConsumer<User, String> setter) {
+        column.setCellValueFactory(new PropertyValueFactory<>(column_name));
+        column.setCellFactory(TextFieldTableCell.forTableColumn());
+        column.setOnEditCommit(event -> {
+            User processor = event.getRowValue();
+            setter.accept(processor, event.getNewValue());
+        });
     }
 
     private void loadData() {
@@ -92,42 +66,43 @@ public class AdminUsersController implements Initializable {
         userList.addAll(DbConnection.getDatabaseConnection().getAllUsers());
     }
 
+    private boolean isValid(User user) {
+        return user.getPassword() != null && !user.getPassword().isEmpty() && 
+                user.getRole() != null && !user.getRole().isEmpty() &&
+                user.getEmail() != null && !user.getEmail().isEmpty() &&
+                user.getFirstName() != null && !user.getFirstName().isEmpty() && 
+                user.getLastName() != null && !user.getLastName().isEmpty();
+    }
+
     @FXML
     private void handleSave() {
         for (User user : userList) {
-            if (
-                user.getPassword() == null || user.getPassword().isEmpty() || 
-                user.getRole() == null || user.getRole().isEmpty() ||
-                user.getEmail() == null || user.getEmail().isEmpty() || 
-                user.getFirstName() == null || user.getFirstName().isEmpty() || 
-                user.getLastName() == null || user.getLastName().isEmpty()) {
-                continue;
-            }
-
-            if ((user.getUsername() == null && !user.getNewUsername().isEmpty())) {
-                User usr = new User(
-                        user.getNewUsername(),
-                        user.getEmail(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getPassword(),
-                        "user");
-                DbConnection.getDatabaseConnection().addUser(usr);
-            } else if (user.getUsername() != null && !user.getUsername().equals(user.getNewUsername())) {
-                User usr = new User(
-                        user.getNewUsername(),
-                        user.getEmail(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getPassword(),
-                        user.getRole(),
-                        user.getCreatedAt());
-                if (DbConnection.getDatabaseConnection().deleteUser(user.getUsername())) {
+            if (isValid(user)) {
+                if ((user.getUsername() == null && !user.getNewUsername().isEmpty())) {
+                    User usr = new User(
+                            user.getNewUsername(),
+                            user.getEmail(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getPassword(),
+                            "user");
                     DbConnection.getDatabaseConnection().addUser(usr);
-                }
-            } else {
-                if (!user.getUsername().isEmpty()) {
-                    DbConnection.getDatabaseConnection().updateUser(user);
+                } else if (user.getUsername() != null && !user.getUsername().equals(user.getNewUsername())) {
+                    User usr = new User(
+                            user.getNewUsername(),
+                            user.getEmail(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getPassword(),
+                            user.getRole(),
+                            user.getCreatedAt());
+                    if (DbConnection.getDatabaseConnection().deleteUser(user.getUsername())) {
+                        DbConnection.getDatabaseConnection().addUser(usr);
+                    }
+                } else {
+                    if (!user.getUsername().isEmpty()) {
+                        DbConnection.getDatabaseConnection().updateUser(user);
+                    }
                 }
             }
         }
@@ -148,8 +123,8 @@ public class AdminUsersController implements Initializable {
         if (selectedUser != null) {
             userList.remove(selectedUser);
 
-            if (DbConnection.getDatabaseConnection().deleteUser(selectedUser.getUsername())) {
-                System.out.println("Deleted: " + selectedUser.getUsername());
+            if (selectedUser.getUsername() != null) {
+                DbConnection.getDatabaseConnection().deleteUser(selectedUser.getUsername());
             }
 
             tableView.refresh();

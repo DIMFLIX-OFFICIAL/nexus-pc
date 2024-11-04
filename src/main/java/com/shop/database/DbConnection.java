@@ -308,7 +308,7 @@ public class DbConnection {
         return processors;
     }
     
-    public boolean deleteProcessor(int id) {
+    public boolean deleteProcessor(Integer id) {
         String deleteProcessor = "DELETE FROM processors WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteProcessor)) {
             pstmt.setInt(1, id);
