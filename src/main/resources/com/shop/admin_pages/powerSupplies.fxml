@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="398.0" prefWidth="477.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.admin.">
+<AnchorPane prefHeight="398.0" prefWidth="477.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.admin.AdminPowerSuppliesController">
    <HBox layoutX="4.0" layoutY="5.0" prefHeight="26.0" prefWidth="279.0" spacing="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
           <Button fx:id="addButton" onAction="#handleAdd" style="-fx-background-color: #a6e3a1; -fx-text-fill: #ffffff;" text="Add Row" HBox.hgrow="ALWAYS">

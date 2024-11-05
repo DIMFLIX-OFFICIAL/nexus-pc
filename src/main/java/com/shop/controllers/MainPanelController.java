@@ -60,6 +60,8 @@ public class MainPanelController implements Initializable {
         MenuItem processorsAdminTable = new MenuItem("Processors");
         MenuItem graphicCardsAdminTable = new MenuItem("Graphic Cards");
         MenuItem motherboardsAdminTable = new MenuItem("Motherboards");
+        MenuItem powerSuppliesAdminTable = new MenuItem("Power Supply");
+
 
         usersAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/users");
@@ -73,8 +75,14 @@ public class MainPanelController implements Initializable {
         motherboardsAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/motherboards");
         });
+        powerSuppliesAdminTable.setOnAction((e)-> {
+            loadFXML("/com/shop/admin_pages/powerSupplies");
+        });
         
-        AdminPagesButton.getItems().addAll(usersAdminTable,processorsAdminTable, graphicCardsAdminTable, motherboardsAdminTable);
+        AdminPagesButton.getItems().addAll(
+            usersAdminTable,processorsAdminTable, graphicCardsAdminTable, 
+            motherboardsAdminTable, powerSuppliesAdminTable
+        );
         loadCatalogView(null); // start page
     }
 
