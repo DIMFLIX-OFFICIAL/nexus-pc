@@ -362,7 +362,7 @@ public class DbConnection {
 
     //==> GRAPHICSCARD CRUD
     // ==================================================================================================================================
-    public List<GraphicCard> getAllGraphicsCards() {
+    public List<GraphicCard> getAllGraphicCards() {
         List<GraphicCard> graphicsCards = new ArrayList<>();
         String query = "SELECT * FROM graphic_cards";
         try (PreparedStatement pstmt = con.prepareStatement(query);
@@ -384,7 +384,7 @@ public class DbConnection {
          return graphicsCards;
     }
     
-    public boolean deleteGraphicsCard(Integer id) {
+    public boolean deleteGraphicCard(Integer id) {
         String deleteGraphicsCard = "DELETE FROM graphic_cards WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteGraphicsCard)) {
              pstmt.setInt(1, id);
@@ -395,7 +395,7 @@ public class DbConnection {
          }
     }
     
-    public boolean addGraphicsCard(GraphicCard graphicsCard) {
+    public boolean addGraphicCard(GraphicCard graphicsCard) {
        String insertGraphicsCard = "INSERT INTO graphic_cards (name, brand, memory_size, memory_type, link) VALUES (?, ?, ?, ?, ?)";
        try (PreparedStatement pstmt = con.prepareStatement(insertGraphicsCard)) {
            pstmt.setString(1, graphicsCard.getName());
@@ -410,7 +410,7 @@ public class DbConnection {
        }
     }
     
-    public boolean updateGraphicsCard(GraphicCard graphicsCard) {
+    public boolean updateGraphicCard(GraphicCard graphicsCard) {
        String updateGraphicsCard = "UPDATE graphic_cards SET name = ?, brand = ?, memory_size = ?, memory_type = ?, link = ? WHERE id = ?";
        try (PreparedStatement pstmt = con.prepareStatement(updateGraphicsCard)) {
            pstmt.setString(1, graphicsCard.getName());

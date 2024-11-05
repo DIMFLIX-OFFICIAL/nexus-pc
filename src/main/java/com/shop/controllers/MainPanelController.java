@@ -58,14 +58,19 @@ public class MainPanelController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         MenuItem usersAdminTable = new MenuItem("Users");
         MenuItem processorsAdminTable = new MenuItem("Processors");
+        MenuItem graphicCardsAdminTable = new MenuItem("Graphic Cards");
 
-        AdminPagesButton.getItems().addAll(usersAdminTable,processorsAdminTable );
+        AdminPagesButton.getItems().addAll(usersAdminTable,processorsAdminTable, graphicCardsAdminTable);
         usersAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/users");
         });
         processorsAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/processors");
         });
+        graphicCardsAdminTable.setOnAction((e)-> {
+            loadFXML("/com/shop/admin_pages/graphicCards");
+        });
+        
 
         loadCatalogView(null); // start page
     }
