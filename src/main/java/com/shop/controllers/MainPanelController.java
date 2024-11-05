@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.layout.BorderPane;
@@ -53,6 +54,9 @@ public class MainPanelController implements Initializable {
     @FXML
     private SplitMenuButton AdminPagesButton;
 
+    @FXML
+    private Label windowName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -67,28 +71,28 @@ public class MainPanelController implements Initializable {
 
 
         usersAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/users");
+            loadFXML("/com/shop/admin_pages/users", "Users Table");
         });
         processorsAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/processors");
+            loadFXML("/com/shop/admin_pages/processors", "Processors Table");
         });
         graphicCardsAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/graphicCards");
+            loadFXML("/com/shop/admin_pages/graphicCards", "Grapic Cards Table");
         });
         motherboardsAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/motherboards");
+            loadFXML("/com/shop/admin_pages/motherboards", "Motherboards Table");
         });
         powerSuppliesAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/powerSupplies");
+            loadFXML("/com/shop/admin_pages/powerSupplies", "Power Supplies Table");
         });
         ramsAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/rams");
+            loadFXML("/com/shop/admin_pages/rams", "RAMs Table");
         });
         coolersAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/coolers");
+            loadFXML("/com/shop/admin_pages/coolers", "Coolers Table");
         });
         casesAdminTable.setOnAction((e)-> {
-            loadFXML("/com/shop/admin_pages/cases");
+            loadFXML("/com/shop/admin_pages/cases", "Caces Table");
         });
         
         AdminPagesButton.getItems().addAll(
@@ -113,13 +117,14 @@ public class MainPanelController implements Initializable {
     }
 
     @FXML
-    private void loadFXML(String fileName) {
+    private void loadFXML(String fileName, String PageName) {
         Parent parent;
         try {
             parent = FXMLLoader.load(getClass().getResource(fileName + ".fxml"));
             HBox.setHgrow(parent, Priority.ALWAYS);
             clear();
             pagesWindow.getChildren().add(parent);
+            windowName.setText(PageName);
         } catch (IOException ex) {
             Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -139,16 +144,16 @@ public class MainPanelController implements Initializable {
 
     @FXML
     private void loadCatalogView(ActionEvent e) {
-        loadFXML("/com/shop/main_pages/CatalogView");
+        loadFXML("/com/shop/main_pages/CatalogView", "Catalog");
     }
 
     @FXML
     private void loadShoppingCartView(ActionEvent e) {
-        loadFXML("/com/shop/main_pages/ShoppingCartView");
+        loadFXML("/com/shop/main_pages/ShoppingCartView", "Shopping Cart");
     }
 
     @FXML
     private void loadMyOrdersView(ActionEvent e) {
-        loadFXML("/com/shop/main_pages/MyOrdersView");
+        loadFXML("/com/shop/main_pages/MyOrdersView", "My Orders");
     }
 }
