@@ -132,7 +132,7 @@ public class AdminRAMsController implements Initializable {
         if (selectedRAM != null) {
             ramsList.remove(selectedRAM);
             if (selectedRAM.getId() != null) {
-                DbConnection.getDatabaseConnection().deletePowerSupply(selectedRAM.getId());
+                DbConnection.getDatabaseConnection().deleteRAM(selectedRAM.getId());
             }
             tableView.refresh();
         }

@@ -134,7 +134,7 @@ public class AdminGraphicCardsController implements Initializable {
         if (selectedGPU != null) {
             graphicCardsList.remove(selectedGPU);
             if (selectedGPU.getId() != null) {
-                DbConnection.getDatabaseConnection().deleteProcessor(selectedGPU.getId());
+                DbConnection.getDatabaseConnection().deleteGraphicCard(selectedGPU.getId());
             }
             tableView.refresh();
         }
