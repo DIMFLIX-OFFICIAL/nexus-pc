@@ -1,6 +1,6 @@
 package com.shop.database.models;
 
-public class GraphicCard {
+public class GraphicCard implements Identifiable {
     private Integer id; 
     private String name; 
     private String brand; 
@@ -64,6 +64,11 @@ public class GraphicCard {
  
     public void setLink(String link) { 
         this.link = link; 
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
  }
  

@@ -2,7 +2,7 @@ package com.shop.database.models;
 
 import java.math.BigDecimal;
 
-public class Cooler {
+public class Cooler implements Identifiable {
     private Integer id;
     private String name;
     private String brand;
@@ -66,5 +66,10 @@ public class Cooler {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

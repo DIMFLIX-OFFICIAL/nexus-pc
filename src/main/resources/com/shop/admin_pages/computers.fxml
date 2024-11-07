@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="398.0" prefWidth="477.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.admin.AdminProcessorsController">
+<AnchorPane prefHeight="398.0" prefWidth="477.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.admin.AdminComputersController">
    <HBox layoutX="4.0" layoutY="5.0" prefHeight="26.0" prefWidth="279.0" spacing="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
           <Button fx:id="addButton" onAction="#handleAdd" style="-fx-background-color: #a6e3a1; -fx-text-fill: #ffffff;" text="Add Row" HBox.hgrow="ALWAYS">
@@ -35,7 +35,7 @@
         <columns>
             <TableColumn fx:id="nameColumn" text="Name" />
             <TableColumn fx:id="descriptionColumn" text="Description" />
-            <TableColumn fx:id="priceFactorColumn" text="Price" />
+            <TableColumn fx:id="priceColumn" text="Price" />
             <TableColumn fx:id="processorIdColumn" text="Processor Id" />
             <TableColumn fx:id="graphicCardIdColumn" text="Graphic Card Id" />
             <TableColumn fx:id="motherboardIdColumn" text="Motherboard Id" />
@@ -44,7 +44,7 @@
             <TableColumn fx:id="powerSupplyIdColumn" text="Power Supply Id" />
             <TableColumn fx:id="coolerIdColumn" text="Cooler Id" />
             <TableColumn fx:id="caseIdColumn" text="Case Id" />
-            <TableColumn fx:id="imagePathColumn" text="Image Path" />
+            <TableColumn fx:id="imageUrlColumn" text="Image Url" />
         </columns>
       <columnResizePolicy>
          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

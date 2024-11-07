@@ -1,7 +1,7 @@
 package com.shop.database.models;
 
 
-public class PowerSupply {
+public class PowerSupply implements Identifiable {
     private Integer id; 
     private String name; 
     private String brand;
@@ -65,6 +65,11 @@ public class PowerSupply {
  
     public void setLink(String link) { 
         this.link = link; 
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
  }
  

@@ -68,6 +68,7 @@ public class MainPanelController implements Initializable {
         MenuItem ramsAdminTable = new MenuItem("RAMs");
         MenuItem coolersAdminTable = new MenuItem("Coolers");
         MenuItem casesAdminTable = new MenuItem("Cases");
+        MenuItem computersAdminTable = new MenuItem("Computers");
 
 
         usersAdminTable.setOnAction((e)-> {
@@ -94,11 +95,14 @@ public class MainPanelController implements Initializable {
         casesAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/cases", "Caces Table");
         });
+        computersAdminTable.setOnAction((e)-> {
+            loadFXML("/com/shop/admin_pages/computers", "Computers Table");
+        });
         
         AdminPagesButton.getItems().addAll(
             usersAdminTable,processorsAdminTable, graphicCardsAdminTable, 
             motherboardsAdminTable, powerSuppliesAdminTable, ramsAdminTable,
-            coolersAdminTable, casesAdminTable
+            coolersAdminTable, casesAdminTable, computersAdminTable
         );
         loadCatalogView(null); // start page
     }

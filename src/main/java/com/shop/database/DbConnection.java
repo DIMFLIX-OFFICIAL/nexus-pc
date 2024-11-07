@@ -828,7 +828,7 @@ public class DbConnection {
             pstmt.setInt(9, computer.getPowerSupplyId());
             pstmt.setInt(10, computer.getCoolerId());
             pstmt.setInt(11, computer.getCaseId());
-            pstmt.setString(12, computer.getImagePath());
+            pstmt.setString(12, computer.getImageUrl());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -851,7 +851,7 @@ public class DbConnection {
             pstmt.setInt(9, computer.getPowerSupplyId());
             pstmt.setInt(10, computer.getCoolerId());
             pstmt.setInt(11, computer.getCaseId());
-            pstmt.setString(12, computer.getImagePath());
+            pstmt.setString(12, computer.getImageUrl());
             pstmt.setInt(13, computer.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {

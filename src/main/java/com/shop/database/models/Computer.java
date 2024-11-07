@@ -14,12 +14,12 @@ public class Computer {
     private Integer powerSupplyId;
     private Integer coolerId; 
     private Integer caseId;
-    private String imagePath;
+    private String imageUrl;
 
     public Computer(Integer id, String name, String description, BigDecimal price,
                     Integer processorId, Integer graphicCardId, Integer motherboardId,
                     Integer ramId, Integer ramsCount, Integer powerSupplyId,
-                    Integer coolerId, Integer caseId, String imagePath) {
+                    Integer coolerId, Integer caseId, String imageUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -32,7 +32,7 @@ public class Computer {
         this.powerSupplyId = powerSupplyId;
         this.coolerId = coolerId;
         this.caseId = caseId;
-        this.imagePath = imagePath;
+        this.imageUrl = imageUrl;
     }
 
     // Геттеры и сеттеры
@@ -133,11 +133,16 @@ public class Computer {
         this.caseId = caseId;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

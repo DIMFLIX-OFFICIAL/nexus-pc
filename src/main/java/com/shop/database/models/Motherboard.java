@@ -1,6 +1,6 @@
 package com.shop.database.models;
 
-public class Motherboard {
+public class Motherboard implements Identifiable {
     private Integer id;
     private String name;
     private String brand;
@@ -74,6 +74,11 @@ public class Motherboard {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
 

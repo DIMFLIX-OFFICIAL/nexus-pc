@@ -1,6 +1,6 @@
 package com.shop.database.models;
 
-public class Case {
+public class Case implements Identifiable {
     private Integer id; 
     private String name; 
     private String brand; 
@@ -64,6 +64,11 @@ public class Case {
  
     public void setLink(String link) { 
         this.link = link; 
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
  }
  
