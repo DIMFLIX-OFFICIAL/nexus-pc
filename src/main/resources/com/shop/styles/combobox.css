@@ -1,0 +1,37 @@
+.combo-box .list-cell {
+    -fx-background: #313244;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #313244;
+    -fx-background-insets: 0, 1;
+    -fx-text-fill: #ffffff;
+}    
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #313244;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover {
+    -fx-background: -fx-accent;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #b4befe;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box-base {
+    -fx-background-color: #313244;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+}
+
+.combo-box .arrow{
+    -fx-background-color:#ffffff;
+}

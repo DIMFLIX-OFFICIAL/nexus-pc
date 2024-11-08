@@ -1,14 +1,13 @@
-.menu-button {
-    -fx-background-color:  #303446;
+.split-menu-button {
+    -fx-background-color:  #303446 #303446;
     -fx-text-fill: white;
-}
-
-.menu-button .menu {
-    -fx-background-color:  #303446;
+    -fx-background-insets: 0 0 -1 0, 0;
+    -fx-background-radius: 3, 3;
+    -fx-padding: 0;
 }
 
 .split-menu-button .label {
-    -fx-background-color:  #303446;
+    -fx-background-color:  #303446 #303446;
     -fx-text-fill: white;
 }
 
@@ -19,3 +18,18 @@
 .split-menu-button .arrow-button {
     -fx-background-color: #303446 ;
 }
+
+.split-menu-button .menu-item {
+    -fx-background-color: #303446 #303446;
+}
+
+.split-menu-button .menu-item .label {
+    -fx-background-color: transparent;
+}
+
+.split-menu-button .menu-item:hover {
+    -fx-background-color: #b4befe;
+    -fx-text-fill: #ffffff;
+}
+
+              

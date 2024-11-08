@@ -109,7 +109,6 @@ public class MainPanelController implements Initializable {
 
     public void setAuthUser(User user) {
         this.user = user;
-        System.out.println(this.user.getRole());
         if (this.user == null || !this.user.getRole().equals("admin")) {
             AdminPagesButton.setVisible(false);
         }
