@@ -118,7 +118,7 @@ public class DbConnection {
                 "power_supply_id INT NOT NULL REFERENCES power_supplies(id), " +
                 "cooler_id INT NOT NULL REFERENCES coolers(id), " +
                 "case_id INT NOT NULL REFERENCES cases(id), " +
-                "image_path TEXT NOT NULL" +
+                "image_url TEXT NOT NULL" +
                 ");";
     
         try (Statement statement = con.createStatement()) {
@@ -803,7 +803,7 @@ public class DbConnection {
                     rs.getInt("power_supply_id"),
                     rs.getInt("cooler_id"),
                     rs.getInt("case_id"),
-                    rs.getString("image_path")
+                    rs.getString("image_url")
                 );
                 computers.add(computer);
             }
@@ -813,10 +813,12 @@ public class DbConnection {
         return computers;
     }
 
-    // Добавление нового компьютера
     public boolean addComputer(Computer computer) {
-        String insertComputer = "INSERT INTO computers (name, description, price, processor_id, graphic_card_id, motherboard_id, ram_id, rams_count, power_supply_id, cooler_id, case_id, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(insertComputer)) {
+        String insertComputerSQL = "INSERT INTO computers (name, description, price, processor_id, graphic_card_id, " +
+                "motherboard_id, ram_id, rams_count, power_supply_id, cooler_id, case_id, image_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(insertComputerSQL)) {
             pstmt.setString(1, computer.getName());
             pstmt.setString(2, computer.getDescription());
             pstmt.setBigDecimal(3, computer.getPrice());
@@ -829,16 +831,17 @@ public class DbConnection {
             pstmt.setInt(10, computer.getCoolerId());
             pstmt.setInt(11, computer.getCaseId());
             pstmt.setString(12, computer.getImageUrl());
+    
             return pstmt.executeUpdate() > 0;
+    
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
-
-    // Обновление существующего компьютера
+    
     public boolean updateComputer(Computer computer) {
-        String updateComputer = "UPDATE computers SET name = ?, description = ?, price = ?, processor_id = ?, graphic_card_id = ?, motherboard_id = ?, ram_id = ?, rams_count = ?, power_supply_id = ?, cooler_id = ?, case_id = ?, image_path = ? WHERE id = ?";
+        String updateComputer = "UPDATE computers SET name = ?, description = ?, price = ?, processor_id = ?, graphic_card_id = ?, motherboard_id = ?, ram_id = ?, rams_count = ?, power_supply_id = ?, cooler_id = ?, case_id = ?, image_url = ? WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(updateComputer)) {
             pstmt.setString(1, computer.getName());
             pstmt.setString(2, computer.getDescription());
@@ -860,7 +863,6 @@ public class DbConnection {
         }
     }
 
-    // Удаление компьютера по ID
     public boolean deleteComputer(Integer id) {
         String deleteComputer = "DELETE FROM computers WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteComputer)) {
