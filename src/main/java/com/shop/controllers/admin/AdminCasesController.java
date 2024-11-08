@@ -38,6 +38,8 @@ public class AdminCasesController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<Case> casesList = FXCollections.observableArrayList();
 
@@ -94,6 +96,11 @@ public class AdminCasesController implements Initializable {
         Case newCase = new Case(null, null, null, null, null, null);
         casesList.add(newCase);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

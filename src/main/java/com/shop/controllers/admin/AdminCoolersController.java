@@ -41,6 +41,8 @@ public class AdminCoolersController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<Cooler> coolersList = FXCollections.observableArrayList();
 
@@ -112,6 +114,11 @@ public class AdminCoolersController implements Initializable {
                 }
             }
         }
+        loadData();
+    }
+
+    @FXML
+    private void handleRefresh() {
         loadData();
     }
 

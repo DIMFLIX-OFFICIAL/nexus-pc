@@ -46,6 +46,8 @@ public class AdminProcessorsController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<Processor> processorsList = FXCollections.observableArrayList();
 
@@ -152,6 +154,11 @@ public class AdminProcessorsController implements Initializable {
         Processor newProc = new Processor(null, null, null, null, null, null, null, null);
         processorsList.add(newProc);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

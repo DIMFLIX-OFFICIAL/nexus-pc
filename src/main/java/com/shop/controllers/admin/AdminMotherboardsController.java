@@ -1,7 +1,6 @@
 package com.shop.controllers.admin;
 
 import com.shop.database.DbConnection;
-import com.shop.database.models.GraphicCard;
 import com.shop.database.models.Motherboard;
 import com.shop.helper.AlertHelper;
 
@@ -13,10 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Window;
-import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
@@ -45,6 +42,8 @@ public class AdminMotherboardsController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<Motherboard> motherboardsList = FXCollections.observableArrayList();
 
@@ -126,6 +125,11 @@ public class AdminMotherboardsController implements Initializable {
         Motherboard newMotherboard = new Motherboard(null, null, null, null, null, null, null);
         motherboardsList.add(newMotherboard);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

@@ -40,6 +40,8 @@ public class AdminRAMsController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<RAM> ramsList = FXCollections.observableArrayList();
 
@@ -119,6 +121,11 @@ public class AdminRAMsController implements Initializable {
         RAM newRAM = new RAM(null, null, null, null, null, null);
         ramsList.add(newRAM);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

@@ -40,6 +40,8 @@ public class AdminPowerSuppliesController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<PowerSupply> powerSuppliesList = FXCollections.observableArrayList();
 
@@ -119,6 +121,11 @@ public class AdminPowerSuppliesController implements Initializable {
         PowerSupply newPS = new PowerSupply(null, null, null, null, null, null);
         powerSuppliesList.add(newPS);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

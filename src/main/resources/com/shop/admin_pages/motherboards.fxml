@@ -21,7 +21,12 @@
                <Font name="System Bold" size="13.0" />
             </font>
          </Button>
-          <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #b4befe; -fx-text-fill: #ffffff;" text="Save Changes" HBox.hgrow="ALWAYS">
+         <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #fab387; -fx-text-fill: #ffffff;" text="Save Changes" HBox.hgrow="ALWAYS">
+            <font>
+               <Font name="System Bold" size="13.0" />
+            </font>
+         </Button>
+         <Button fx:id="refreshButton" onAction="#handleRefresh" style="-fx-background-color: #89dceb; -fx-text-fill: #ffffff;" text="Refresh" HBox.hgrow="ALWAYS">
             <font>
                <Font name="System Bold" size="13.0" />
             </font>

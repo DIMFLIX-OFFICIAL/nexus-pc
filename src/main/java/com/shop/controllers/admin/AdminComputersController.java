@@ -66,6 +66,8 @@ public class AdminComputersController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<Computer> computersList = FXCollections.observableArrayList();
 
@@ -214,6 +216,11 @@ public class AdminComputersController implements Initializable {
         Computer newRAM = new Computer(null, null, null, null, null, null, null, null, null, null, null, null, null);
         computersList.add(newRAM);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

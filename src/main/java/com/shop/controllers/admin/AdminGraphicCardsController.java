@@ -12,10 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Window;
-import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
@@ -42,6 +40,8 @@ public class AdminGraphicCardsController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<GraphicCard> graphicCardsList = FXCollections.observableArrayList();
 
@@ -121,6 +121,11 @@ public class AdminGraphicCardsController implements Initializable {
         GraphicCard newGPU = new GraphicCard(null, null, null, null, null, null);
         graphicCardsList.add(newGPU);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML

@@ -36,6 +36,8 @@ public class AdminUsersController implements Initializable {
     private Button addButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button refreshButton;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
@@ -115,6 +117,11 @@ public class AdminUsersController implements Initializable {
         User newUser = new User(null, null, null, null, null, "user");
         userList.add(newUser);
         tableView.refresh();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        loadData();
     }
 
     @FXML
