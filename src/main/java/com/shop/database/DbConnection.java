@@ -121,6 +121,28 @@ public class DbConnection {
                 "case_id INT NOT NULL REFERENCES cases(id), " +
                 "image_url TEXT NOT NULL" +
                 ");";
+
+        String createShoppingCartTable = "CREATE TABLE IF NOT EXISTS shopping_cart (" +
+                "id SERIAL PRIMARY KEY, " +
+                "owner TEXT NOT NULL REFERENCES users(username), " +
+                "computer_id INT NOT NULL REFERENCES computers(id), " +
+                "quantity INT NOT NULL DEFAULT 1" +
+                ");";
+
+        String createOrdersTable = "CREATE TABLE IF NOT EXISTS orders (" +
+                "id SERIAL PRIMARY KEY, " +
+                "customer TEXT NOT NULL REFERENCES users(username), " +
+                "order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                "total_amount DECIMAL(10,2) NOT NULL, " +
+                "status VARCHAR(25) NOT NULL DEFAULT 'pending'" +
+                ");";
+
+        String createOrderItemsTable = "CREATE TABLE IF NOT EXISTS order_items (" +
+                "id SERIAL PRIMARY KEY, " +
+                "order_id INT NOT NULL REFERENCES orders(id), " +
+                "computer_id INT NOT NULL REFERENCES computers(id), " +
+                "quantity INT NOT NULL" +
+                ");";
     
         try (Statement statement = con.createStatement()) {
             statement.executeUpdate(createUsersTable);
@@ -132,6 +154,9 @@ public class DbConnection {
             statement.executeUpdate(createCasesTable);
             statement.executeUpdate(createRAMTable);
             statement.executeUpdate(createComputersTable);
+            statement.executeUpdate(createShoppingCartTable);
+            statement.executeUpdate(createOrdersTable);
+            statement.executeUpdate(createOrderItemsTable);
         } catch (Exception ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
             AlertHelper.showErrorAlert("Unknown Error. Try again");
