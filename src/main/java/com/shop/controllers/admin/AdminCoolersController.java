@@ -73,7 +73,7 @@ public class AdminCoolersController implements Initializable {
                 try {
                     return super.fromString(string);
                 } catch (NumberFormatException e) {
-                    showErrorAlert("The value in the “" + column.getText() + "” column must be a decimal");
+                    AlertHelper.showErrorAlert("The value in the “" + column.getText() + "” column must be a decimal");
                     return null;
                 }
             }
@@ -86,11 +86,6 @@ public class AdminCoolersController implements Initializable {
                 setter.accept(cooler, newValue);
             }
         });
-    }
-
-    private void showErrorAlert(String message) {
-        window = addButton.getScene().getWindow();
-        AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", message);
     }
 
     private void loadData() {

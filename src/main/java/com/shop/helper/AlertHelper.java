@@ -10,7 +10,7 @@ public class AlertHelper {
 
     public static boolean result = false;
 
-    public static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
+    public static void showAlert(Alert.AlertType alertType, String title, String message) {
         if (alertType.name() == null ? AlertType.INFORMATION.name() == null : alertType.name().equals(AlertType.INFORMATION.name())) {
             Notifications.create()
                     .darkStyle()
@@ -24,5 +24,13 @@ public class AlertHelper {
                     .text(message).hideAfter(Duration.seconds(10))
                     .showError();
         }
+    }
+
+    public static void showErrorAlert(String message) {
+        AlertHelper.showAlert(Alert.AlertType.ERROR, "Error", message);
+    }
+
+    public static void showSuccessAlert(String message) {
+        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, "Success", message);
     }
 }

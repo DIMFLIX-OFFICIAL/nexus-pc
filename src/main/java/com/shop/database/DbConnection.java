@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.shop.database.models.User;
+import com.shop.helper.AlertHelper;
 import com.shop.database.models.Processor;
 import com.shop.database.models.GraphicCard;
 import com.shop.database.models.Motherboard;
@@ -133,6 +134,7 @@ public class DbConnection {
             statement.executeUpdate(createComputersTable);
         } catch (Exception ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
     }
 
@@ -145,6 +147,7 @@ public class DbConnection {
             con = DriverManager.getConnection((String) p.get("url"), (String) p.get("username"), (String) p.get("password"));
         } catch (Exception ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
     }
     
@@ -182,6 +185,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return users;
     }
@@ -208,6 +212,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return null;
         }
     }
@@ -219,6 +224,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -235,6 +241,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }    
@@ -251,6 +258,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -264,20 +272,22 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
 
     public boolean authenticateUser(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) { // Use existing connection
+        try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, username);
             ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -308,6 +318,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return processors;
     }
@@ -319,6 +330,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -336,6 +348,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -354,6 +367,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -366,64 +380,67 @@ public class DbConnection {
         List<GraphicCard> graphicsCards = new ArrayList<>();
         String query = "SELECT * FROM graphic_cards";
         try (PreparedStatement pstmt = con.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
-             while (rs.next()) {
+            ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
                  GraphicCard graphicsCard = new GraphicCard(
-                     rs.getInt("id"),
-                     rs.getString("name"),
-                     rs.getString("brand"),
-                     rs.getInt("memory_size"),
-                     rs.getString("memory_type"),
-                     rs.getString("link")
-                 );
-                 graphicsCards.add(graphicsCard);
-             }
-         } catch (SQLException ex) {
-             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         return graphicsCards;
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("memory_size"),
+                    rs.getString("memory_type"),
+                    rs.getString("link")
+                );
+                graphicsCards.add(graphicsCard);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return graphicsCards;
     }
     
     public boolean deleteGraphicCard(Integer id) {
         String deleteGraphicsCard = "DELETE FROM graphic_cards WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteGraphicsCard)) {
-             pstmt.setInt(1, id);
-             return pstmt.executeUpdate() > 0;
-         } catch (SQLException ex) {
-             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-             return false;
-         }
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
     }
     
     public boolean addGraphicCard(GraphicCard graphicsCard) {
-       String insertGraphicsCard = "INSERT INTO graphic_cards (name, brand, memory_size, memory_type, link) VALUES (?, ?, ?, ?, ?)";
-       try (PreparedStatement pstmt = con.prepareStatement(insertGraphicsCard)) {
-           pstmt.setString(1, graphicsCard.getName());
-           pstmt.setString(2, graphicsCard.getBrand());
-           pstmt.setInt(3, graphicsCard.getMemorySize());
-           pstmt.setString(4, graphicsCard.getMemoryType());
-           pstmt.setString(5, graphicsCard.getLink());
-           return pstmt.executeUpdate() > 0;
-       } catch (SQLException ex) {
-           Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-           return false;
-       }
+        String insertGraphicsCard = "INSERT INTO graphic_cards (name, brand, memory_size, memory_type, link) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(insertGraphicsCard)) {
+            pstmt.setString(1, graphicsCard.getName());
+            pstmt.setString(2, graphicsCard.getBrand());
+            pstmt.setInt(3, graphicsCard.getMemorySize());
+            pstmt.setString(4, graphicsCard.getMemoryType());
+            pstmt.setString(5, graphicsCard.getLink());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
     }
     
     public boolean updateGraphicCard(GraphicCard graphicsCard) {
-       String updateGraphicsCard = "UPDATE graphic_cards SET name = ?, brand = ?, memory_size = ?, memory_type = ?, link = ? WHERE id = ?";
-       try (PreparedStatement pstmt = con.prepareStatement(updateGraphicsCard)) {
-           pstmt.setString(1, graphicsCard.getName());
-              pstmt.setString(2, graphicsCard.getBrand());
-              pstmt.setInt(3, graphicsCard.getMemorySize());
-              pstmt.setString(4, graphicsCard.getMemoryType());
-              pstmt.setString(5, graphicsCard.getLink());
-              pstmt.setInt(6, graphicsCard.getId());
-              return pstmt.executeUpdate() > 0;
-       } catch (SQLException ex) {
+        String updateGraphicsCard = "UPDATE graphic_cards SET name = ?, brand = ?, memory_size = ?, memory_type = ?, link = ? WHERE id = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(updateGraphicsCard)) {
+            pstmt.setString(1, graphicsCard.getName());
+            pstmt.setString(2, graphicsCard.getBrand());
+            pstmt.setInt(3, graphicsCard.getMemorySize());
+            pstmt.setString(4, graphicsCard.getMemoryType());
+            pstmt.setString(5, graphicsCard.getLink());
+            pstmt.setInt(6, graphicsCard.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null ,ex);
            return false;
-       }
+        }
     }   
     
     
@@ -437,7 +454,7 @@ public class DbConnection {
         String query = "SELECT * FROM power_supplies";
         
         try (PreparedStatement pstmt = con.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+            ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 PowerSupply powerSupply = new PowerSupply(
                     rs.getInt("id"),
@@ -451,6 +468,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return powerSupplies;
     }
@@ -462,6 +480,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -477,6 +496,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -493,6 +513,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -506,7 +527,7 @@ public class DbConnection {
         String query = "SELECT * FROM rams";
         
         try (PreparedStatement pstmt = con.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+            ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 RAM ram = new RAM(
                     rs.getInt("id"),
@@ -520,6 +541,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return rams;
     }
@@ -531,6 +553,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -546,6 +569,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -562,6 +586,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -592,6 +617,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return motherboards;
     }
@@ -603,6 +629,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -619,6 +646,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -631,11 +659,12 @@ public class DbConnection {
             pstmt.setString(3, motherboard.getSocketType());
             pstmt.setString(4, motherboard.getFormFactor());
             pstmt.setInt(5, motherboard.getMaxMemory());
-               pstmt.setString(6,motherboard .getLink()); 
+            pstmt.setString(6,motherboard .getLink()); 
             pstmt .setInt (7,motherboard .getId()); 
-            return	pstmt.executeUpdate()>0; 
-        } catch(SQLException	ex){ 
-            Logger .getLogger(DbConnection.class .getName()).log(Level.SEVERE,null ,ex); 
+            return	pstmt.executeUpdate() > 0; 
+        } catch(SQLException ex){ 
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return	false; 
         } 
     }    
@@ -664,6 +693,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return coolers;
     }
@@ -675,6 +705,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -690,6 +721,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -706,6 +738,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -733,6 +766,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return cases;
     }
@@ -744,6 +778,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -759,6 +794,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -774,7 +810,8 @@ public class DbConnection {
             pstmt.setInt (6 ,computerCase .getId()); 
             return	pstmt.executeUpdate()>0; 
         } catch(SQLException ex){ 
-            Logger.getLogger(DbConnection.class .getName()).log(Level.SEVERE, null, ex); 
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false; 
         } 
     }    
@@ -809,6 +846,7 @@ public class DbConnection {
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return computers;
     }
@@ -836,6 +874,7 @@ public class DbConnection {
     
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -859,6 +898,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }
@@ -870,6 +910,7 @@ public class DbConnection {
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
     }

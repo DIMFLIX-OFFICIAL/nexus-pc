@@ -13,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -58,8 +57,7 @@ public class LoginController implements Initializable {
                 stage.setTitle("Admin Panel");
                 stage.show();
             } else {
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                        "Invalid username and password.");
+                AlertHelper.showErrorAlert("Invalid username and password.");
                 username.requestFocus();
             }
         }
@@ -70,20 +68,16 @@ public class LoginController implements Initializable {
 
         window = loginButton.getScene().getWindow();
         if (username.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Username text field cannot be blank.");
+            AlertHelper.showErrorAlert("Username text field cannot be blank.");
             username.requestFocus();
         } else if (username.getText().length() < 5 || username.getText().length() > 25) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Username text field cannot be less than 5 and greator than 25 characters.");
+            AlertHelper.showErrorAlert("Username text field cannot be less than 5 and greator than 25 characters.");
             username.requestFocus();
         } else if (password.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password text field cannot be blank.");
+            AlertHelper.showErrorAlert("Password text field cannot be blank.");
             password.requestFocus();
         } else if (password.getText().length() < 4 || password.getText().length() > 50) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password text field cannot be less than 4 and greator than 50 characters.");
+            AlertHelper.showErrorAlert("Password text field cannot be less than 4 and greator than 50 characters.");
             password.requestFocus();
         } else {
             return true;

@@ -74,7 +74,7 @@ public class AdminGraphicCardsController implements Initializable {
                 try {
                     return super.fromString(string);
                 } catch (NumberFormatException e) {
-                    showErrorAlert("The value in the “" + column.getText() + "” column must be a number");
+                    AlertHelper.showErrorAlert("The value in the “" + column.getText() + "” column must be a number");
                     return null;
                 }
             }
@@ -87,11 +87,6 @@ public class AdminGraphicCardsController implements Initializable {
                 setter.accept(gpu, newValue);
             }
         });
-    }
-
-    private void showErrorAlert(String message) {
-        window = addButton.getScene().getWindow();
-        AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error", message);
     }
 
     private void loadData() {

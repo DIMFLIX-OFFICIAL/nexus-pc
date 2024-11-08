@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -67,11 +66,9 @@ public class RegisterController implements Initializable {
 
             if (isRegistered) {
                 this.clearForm();
-                AlertHelper.showAlert(Alert.AlertType.INFORMATION, window, "Information",
-                        "You have registered successfully.");
+                AlertHelper.showSuccessAlert("You have registered successfully.");
             } else {
-                AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                        "Something went wrong.");
+                AlertHelper.showErrorAlert("Something went wrong.");
             }
         }
     }
@@ -81,60 +78,46 @@ public class RegisterController implements Initializable {
         DbConnection dbConnection = DbConnection.getDatabaseConnection();
 
         if (firstName.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "First name text field cannot be blank.");
+            AlertHelper.showErrorAlert("First name text field cannot be blank.");
             firstName.requestFocus();
         } else if (firstName.getText().length() < 2 || firstName.getText().length() > 25) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "First name text field cannot be less than 2 and greator than 25 characters.");
+            AlertHelper.showErrorAlert("First name text field cannot be less than 2 and greator than 25 characters.");
             firstName.requestFocus();
         } else if (lastName.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Last name text field cannot be blank.");
+            AlertHelper.showErrorAlert("Last name text field cannot be blank.");
             lastName.requestFocus();
         } else if (lastName.getText().length() < 2 || lastName.getText().length() > 25) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Last name text field cannot be less than 2 and greator than 25 characters.");
+            AlertHelper.showErrorAlert("Last name text field cannot be less than 2 and greator than 25 characters.");
             lastName.requestFocus();
         } else if (email.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Email text field cannot be blank.");
+            AlertHelper.showErrorAlert("Email text field cannot be blank.");
             email.requestFocus();
         } else if (email.getText().length() < 5 || email.getText().length() > 45) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Email text field cannot be less than 5 and greator than 45 characters.");
+            AlertHelper.showErrorAlert("Email text field cannot be less than 5 and greator than 45 characters.");
             email.requestFocus();
         } else if (username.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Username text field cannot be blank.");
+            AlertHelper.showErrorAlert("Username text field cannot be blank.");
             username.requestFocus();
         } else if (username.getText().length() < 4 || username.getText().length() > 25) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Username text field cannot be less than 4 and greator than 25 characters.");
+            AlertHelper.showErrorAlert("Username text field cannot be less than 4 and greator than 25 characters.");
             username.requestFocus();
         } else if (password.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password text field cannot be blank.");
+            AlertHelper.showErrorAlert("Password text field cannot be blank.");
             password.requestFocus();
         } else if (password.getText().length() < 4 || password.getText().length() > 50) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password text field cannot be less than 4 and greator than 50 characters.");
+            AlertHelper.showErrorAlert("Password text field cannot be less than 4 and greator than 50 characters.");
             password.requestFocus();
         } else if (confirmPassword.getText().equals("")) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Confirm password text field cannot be blank.");
+            AlertHelper.showErrorAlert("Confirm password text field cannot be blank.");
             confirmPassword.requestFocus();
         } else if (confirmPassword.getText().length() < 4 || password.getText().length() > 50) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Confirm password text field cannot be less than 4 and greator than 50 characters.");
+            AlertHelper.showErrorAlert("Confirm password text field cannot be less than 4 and greator than 50 characters.");
             confirmPassword.requestFocus();
         } else if (!password.getText().equals(confirmPassword.getText())) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "Password and confirm password text fields does not match.");
+            AlertHelper.showErrorAlert("Password and confirm password text fields does not match.");
             password.requestFocus();
         } else if (dbConnection.isUsernameExists(username.getText())) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, window, "Error",
-                    "The username is already taken by someone else.");
+            AlertHelper.showErrorAlert("The username is already taken by someone else.");
             username.requestFocus();
         } else {
             return true;
