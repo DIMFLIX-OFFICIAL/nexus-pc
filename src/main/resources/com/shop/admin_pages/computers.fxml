@@ -50,6 +50,7 @@
             <TableColumn fx:id="coolerIdColumn" text="Cooler Id" />
             <TableColumn fx:id="caseIdColumn" text="Case Id" />
             <TableColumn fx:id="imageUrlColumn" text="Image Url" />
+            <TableColumn fx:id="stockQuantityColumn" text="Stock Quantity" />
         </columns>
       <columnResizePolicy>
          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

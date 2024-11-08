@@ -15,11 +15,12 @@ public class Computer {
     private Integer coolerId; 
     private Integer caseId;
     private String imageUrl;
+    private Integer stock_quantity;
 
     public Computer(Integer id, String name, String description, BigDecimal price,
                     Integer processorId, Integer graphicCardId, Integer motherboardId,
                     Integer ramId, Integer ramsCount, Integer powerSupplyId,
-                    Integer coolerId, Integer caseId, String imageUrl) {
+                    Integer coolerId, Integer caseId, String imageUrl, Integer stock_quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,6 +34,7 @@ public class Computer {
         this.coolerId = coolerId;
         this.caseId = caseId;
         this.imageUrl = imageUrl;
+        this.stock_quantity = stock_quantity;
     }
 
     // Геттеры и сеттеры
@@ -139,6 +141,14 @@ public class Computer {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Integer getStockQuantity() {
+        return stock_quantity;
+    }
+
+    public void setStockQuantity(Integer stock_quantity) {
+        this.stock_quantity = stock_quantity;
     }
 
     @Override

@@ -57,6 +57,8 @@ public class AdminComputersController implements Initializable {
     private TableColumn<Computer, Case> caseIdColumn;
     @FXML
     private TableColumn<Computer, String> imageUrlColumn;
+    @FXML
+    private TableColumn<Computer, Integer> stockQuantityColumn;
 
     Window window;
 
@@ -100,6 +102,8 @@ public class AdminComputersController implements Initializable {
         setupComboColumn(caseIdColumn, "caseId", cases, Computer::setCaseId);
 
         setupColumn(imageUrlColumn, "imageUrl", Computer::setImageUrl);
+
+        setupIntegerColumn(stockQuantityColumn, "stockQuantity", Computer::setStockQuantity);
         
         loadData();
         tableView.setItems(computersList);
@@ -213,7 +217,7 @@ public class AdminComputersController implements Initializable {
 
     @FXML
     private void handleAdd() {
-        Computer newRAM = new Computer(null, null, null, null, null, null, null, null, null, null, null, null, null);
+        Computer newRAM = new Computer(null, null, null, null, null, null, null, null, null, null, null, null, null, 0);
         computersList.add(newRAM);
         tableView.refresh();
     }
