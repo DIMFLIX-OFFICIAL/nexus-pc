@@ -1,0 +1,8 @@
+.scroll-pane {
+    -fx-background: #313244; /* Цвет фона ScrollPane */
+    -fx-background-color: #313244; /* Цвет фона */
+}
+
+.scroll-pane > .viewport {
+    -fx-background: #313244; /* Цвет фона области просмотра */
+}
