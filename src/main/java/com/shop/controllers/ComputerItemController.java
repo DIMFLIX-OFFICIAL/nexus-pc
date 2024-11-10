@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class ComputerItemController {
@@ -23,6 +24,8 @@ public class ComputerItemController {
     private Label computerDescription;
     @FXML
     private Label computerPrice;
+    @FXML
+    private Button addToCartBtn;
 
     public void setProductData(String imageUrl, String name, String description, BigDecimal price) {
         computerImage.setImage(new Image(imageUrl));
@@ -34,6 +37,14 @@ public class ComputerItemController {
 
     @FXML
     private void addToShoppingCart() {
-        System.out.println("addToShoppingCart event");
+        if (addToCartBtn.getText().equals("Add to cart")) { 
+            addToCartBtn.setText("Remove from cart");
+            addToCartBtn.setStyle("-fx-background-color: #eba0ac;");
+            System.out.println("addToShoppingCart event");
+        } else {
+            addToCartBtn.setText("Add to cart");
+            addToCartBtn.setStyle("-fx-background-color: #b4befe;");
+            System.out.println("removeFromShoppingCart event");
+        }
     }
 }

@@ -1,0 +1,29 @@
+.tree-view, .tree-cell {
+    -fx-background-color: #313244;
+    -fx-text-fill: white ;
+}
+
+.tree-cell:expanded, .tree-cell:sub-tree-item {
+    -fx-background-color: #45475a ;
+}
+.tree-cell:selected {
+    -fx-font-weight: bold ;
+    -fx-text-fill: #b7bdf8;
+}
+.tree-cell {
+    -fx-padding: 0.75em 0em 0.75em 0em ;
+}
+.tree-cell:sub-tree-item {
+    -fx-padding: 0.25em ;
+}
+
+.tree-cell > .tree-disclosure-node > .arrow  {
+    -fx-background-color: white;
+}
+.tree-cell:expanded > .tree-disclosure-node > .arrow {
+    -fx-background-color: white;
+}
+
+.virtual-flow > .corner {    
+    -fx-background-color: transparent;
+}

@@ -348,6 +348,33 @@ public class DbConnection {
         }
         return processors;
     }
+
+    public Processor getProcessorById(int id) {
+        String query = "SELECT * FROM processors WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Processor(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("cores"),
+                    rs.getInt("threads"),
+                    rs.getBigDecimal("base_clock"),
+                    rs.getBigDecimal("boost_clock"),
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
+    }
     
     public boolean deleteProcessor(Integer id) {
         String deleteProcessor = "DELETE FROM processors WHERE id = ?";
@@ -424,6 +451,31 @@ public class DbConnection {
         }
         return graphicsCards;
     }
+
+    public GraphicCard getGraphicCardById(int id) {
+        String query = "SELECT * FROM graphic_cards WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new GraphicCard(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("memory_size"),
+                    rs.getString("memory_type"),
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
+    }
     
     public boolean deleteGraphicCard(Integer id) {
         String deleteGraphicsCard = "DELETE FROM graphic_cards WHERE id = ?";
@@ -498,6 +550,31 @@ public class DbConnection {
         }
         return powerSupplies;
     }
+
+    public PowerSupply getPowerSupplyById(int id) {
+        String query = "SELECT * FROM power_supplies WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new PowerSupply(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("wattage"),
+                    rs.getString("efficiency_rating"),
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
+    }
     
     public boolean deletePowerSupply(Integer id) {
         String deletePowerSupply = "DELETE FROM power_supplies WHERE id = ?";
@@ -570,6 +647,31 @@ public class DbConnection {
             AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return rams;
+    }
+
+    public RAM getRAMById(int id) {
+        String query = "SELECT * FROM rams WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new RAM(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getInt("capacity"), // in GB
+                    rs.getInt("speed"), // in MHz
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
     }
     
     public boolean deleteRAM(Integer id) {
@@ -647,6 +749,32 @@ public class DbConnection {
         }
         return motherboards;
     }
+
+    public Motherboard getMotherboardById(int id) {
+        String query = "SELECT * FROM motherboards WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Motherboard(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getString("socket_type"),
+                    rs.getString("form_factor"),
+                    rs.getInt("max_memory"),
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
+    }
     
     public boolean deleteMotherboard(Integer id) {
         String deleteMotherboard = "DELETE FROM motherboards WHERE id = ?";
@@ -723,6 +851,31 @@ public class DbConnection {
         }
         return coolers;
     }
+
+    public Cooler getCoolerById(int id) {
+        String query = "SELECT * FROM coolers WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Cooler(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getString("type"),
+                    rs.getBigDecimal("cooling_capacity"),
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
+    }
     
     public boolean deleteCooler(Integer id) {
         String deleteCooler = "DELETE FROM coolers WHERE id = ?";
@@ -795,6 +948,31 @@ public class DbConnection {
             AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
         return cases;
+    }
+
+    public Case getCaseById(int id) {
+        String query = "SELECT * FROM cases WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Case(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("brand"),
+                    rs.getString("form_factor"),
+                    rs.getString("color"),
+                    rs.getString("link")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
     }
     
     public boolean deleteCase(Integer id) {

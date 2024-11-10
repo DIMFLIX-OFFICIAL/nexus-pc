@@ -1,12 +1,21 @@
-.parent {
-    -fx-background-color: #fff
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
 }
-.sidebar {
-    -fx-background-color: gray
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
-.bt {
-    -fx-background-color: #404040;
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
 }
-.bt:hover {
-    -fx-background-color: #303030; 
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #b7bdf8;
+    -fx-background-radius: 5em;
 }

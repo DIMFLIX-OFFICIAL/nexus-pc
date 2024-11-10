@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="825.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.MainPanelController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="825.0" style="-fx-background-color: #313244;" stylesheets="@styles/mainpanel.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.MainPanelController">
    <left>
       <VBox prefHeight="601.0" prefWidth="160.0" spacing="10.0" style="-fx-background-color: #1e1e2e;" BorderPane.alignment="CENTER">
          <children>
@@ -72,13 +72,16 @@
                         <Insets />
                      </opaqueInsets>
                      <HBox.margin>
-                        <Insets right="4.0" />
+                        <Insets right="6.0" />
                      </HBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </HBox>
          </children>
          <BorderPane.margin>

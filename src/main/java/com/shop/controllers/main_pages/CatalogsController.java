@@ -18,13 +18,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class CatalogsController implements Initializable {
+    private MainPanelController mainController;
+
+    @FXML
+    AnchorPane root;
     @FXML 
     VBox itemsList;
-
     @FXML
     ScrollPane scrollPane;
 
@@ -36,17 +40,22 @@ public class CatalogsController implements Initializable {
 
         for (Computer computer : computersList) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/computerItem.fxml"));
-                Parent root = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/utils/computerItem.fxml"));
+                Parent computerItem = loader.load();
                 ComputerItemController controller = loader.getController();
                 controller.setProductData(computer.getImageUrl(), computer.getName(), computer.getDescription(), computer.getPrice());
-                itemsList.getChildren().add(root);
+                root.setOnMouseClicked(event -> {mainController.loadComputerInfoView(computer);});
+                itemsList.getChildren().add(computerItem);
             } catch (IOException ex) {
-                Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CatalogsController.class.getName()).log(Level.SEVERE, null, ex);
             }   
         }
 
         VBox.setVgrow(itemsList, Priority.ALWAYS);
         scrollPane.setFitToWidth(true);
+    }
+
+    public void setMainController(MainPanelController cntrl) {
+        this.mainController = cntrl;
     }
 }

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane style="-fx-background-color:  #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.CatalogsController">
+<AnchorPane fx:id="root" style="-fx-background-color:  #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.CatalogsController">
    <children>
       <ScrollPane fx:id="scrollPane" stylesheets="@../styles/scrollpane.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
