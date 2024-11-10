@@ -32,4 +32,9 @@
     -fx-text-fill: #ffffff;
 }
 
+.context-menu {
+    -fx-background-color: #303446;
+    -fx-text-fill: white;
+  }
+
               
