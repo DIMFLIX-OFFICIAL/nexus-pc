@@ -27,10 +27,24 @@
 
 .table-view .table-cell{
     -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .table-view .table-row-cell:selected {
     -fx-background-color: #b4befe;
     -fx-background-insets: 0;
     -fx-background-radius: 1;
+}
+
+.table-column-header {
+    -fx-border-color: transparent; /* Убираем границу у заголовков колонок */
+}
+
+.table-column-header {
+    -fx-border-color: transparent; /* Убираем границу у заголовков колонок */
+}
+
+.table-column-header-background {
+    -fx-background-color: transparent; /* Убираем фон у заголовков колонок */
 }
