@@ -18,8 +18,11 @@ import com.shop.helper.AlertHelper;
 import com.shop.database.models.Processor;
 import com.shop.database.models.GraphicCard;
 import com.shop.database.models.Motherboard;
+import com.shop.database.models.Order;
+import com.shop.database.models.OrderItem;
 import com.shop.database.models.PowerSupply;
 import com.shop.database.models.RAM;
+import com.shop.database.models.ShoppingCartItem;
 import com.shop.database.models.Cooler;
 import com.shop.database.models.Case;
 import com.shop.database.models.Computer;
@@ -1114,6 +1117,249 @@ public class DbConnection {
         String deleteComputer = "DELETE FROM computers WHERE id = ?";
         try (PreparedStatement pstmt = con.prepareStatement(deleteComputer)) {
             pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+
+
+
+
+
+
+    //==> SHOPPING CART CRUD
+    // ==================================================================================================================================
+    public List<ShoppingCartItem> getShoppingCartItemsByOwner(String owner) {
+        String query = "SELECT * FROM shopping_cart WHERE owner = ?";
+        List<ShoppingCartItem> items = new ArrayList<>();
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, owner);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ShoppingCartItem item = new ShoppingCartItem(
+                    rs.getInt("id"),
+                    rs.getString("owner"),
+                    rs.getInt("computer_id"),
+                    rs.getInt("quantity")
+                );
+                items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return items;
+    }
+
+    public ShoppingCartItem getShoppingCartItemById(Integer id) {
+        String query = "SELECT * FROM shopping_cart WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new ShoppingCartItem(
+                    rs.getInt("id"),
+                    rs.getString("owner"),
+                    rs.getInt("computer_id"),
+                    rs.getInt("quantity")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return null;
+    }
+
+    public boolean updateShoppingCartItem(ShoppingCartItem item) {
+        String updateQuery = "UPDATE shopping_cart SET quantity = ?, computer_id = ?, owner = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, item.getQuantity());
+            pstmt.setInt(2, item.getComputerId());
+            pstmt.setString(3, item.getOwner());
+            pstmt.setInt(4, item.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+
+    public boolean deleteShoppingCartItem(Integer item_id) {
+        String deleteQuery = "DELETE FROM shopping_cart WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(deleteQuery)) {
+            pstmt.setInt(1, item_id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+    
+    
+
+
+
+
+    //==> ORDERS CRUD
+    // ==================================================================================================================================
+    public List<Order> getOrdersByCustomer(String customer) {
+        String query = "SELECT * FROM orders WHERE customer = ?";
+        List<Order> orders = new ArrayList<>();
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, customer);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Order order = new Order(
+                    rs.getInt("id"),
+                    rs.getString("customer"),
+                    rs.getTimestamp("order_date"),
+                    rs.getBigDecimal("total_amount"),
+                    rs.getString("status")
+                );
+                orders.add(order);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return orders;
+    }
+
+    public Order getOrderById(Integer id) {
+        String query = "SELECT * FROM orders WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Order(
+                    rs.getInt("id"),
+                    rs.getString("customer"),
+                    rs.getTimestamp("order_date"),
+                    rs.getBigDecimal("total_amount"),
+                    rs.getString("status")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return null;
+    }
+
+    public boolean updateOrder(Order order) {
+        String updateQuery = "UPDATE orders SET status = ?, total_amount = ?, order_date = ?, customer = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+            pstmt.setString(1, order.getStatus());
+            pstmt.setBigDecimal(2, order.getTotalAmount());
+            pstmt.setTimestamp(3, order.getOrderDate());
+            pstmt.setString(4, order.getCustomer());
+            pstmt.setInt(5, order.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+
+    public boolean deleteOrder(Integer order_id) {
+        String deleteQuery = "DELETE FROM orders WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(deleteQuery)) {
+            pstmt.setInt(1, order_id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+    
+    
+    
+
+
+
+    //==> ORDERS CRUD
+    // ==================================================================================================================================
+    public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
+        String query = "SELECT * FROM order_items WHERE order_id = ?";
+        List<OrderItem> items = new ArrayList<>();
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, orderId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                OrderItem item = new OrderItem(
+                    rs.getInt("id"),
+                    rs.getInt("order_id"),
+                    rs.getInt("computer_id"),
+                    rs.getInt("quantity")
+                );
+                items.add(item);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return items;
+    }
+
+    public OrderItem getOrderItemById(Integer id) {
+        String query = "SELECT * FROM order_items WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new OrderItem(
+                    rs.getInt("id"),
+                    rs.getInt("order_id"),
+                    rs.getInt("computer_id"),
+                    rs.getInt("quantity")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        return null;
+    }
+    
+    public boolean updateOrderItem(OrderItem item) {
+        String updateQuery = "UPDATE order_items SET quantity = ?, computer_id = ?, order_id = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, item.getQuantity());
+            pstmt.setInt(2, item.getComputerId());
+            pstmt.setInt(3, item.getOrderId());
+            pstmt.setInt(4, item.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+
+    public boolean deleteOrderItem(Integer item_id) {
+        String deleteQuery = "DELETE FROM order_items WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(deleteQuery)) {
+            pstmt.setInt(1, item_id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
