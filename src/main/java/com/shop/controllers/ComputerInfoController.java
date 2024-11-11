@@ -77,6 +77,7 @@ public class ComputerInfoController implements Initializable {
                 Image image = new Image(imageUrl);
                 if (image.isError()) {
                     System.out.println("Ошибка загрузки изображения: " + image.getException());
+                    AlertHelper.showErrorAlert("Error loading images");
                 } else {
                     Platform.runLater(() -> {
                         String frm = String.format("-fx-image: url('%s');", imageUrl);
