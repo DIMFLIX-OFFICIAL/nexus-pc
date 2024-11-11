@@ -7,6 +7,7 @@ import com.shop.database.models.Motherboard;
 import com.shop.database.models.PowerSupply;
 import com.shop.database.models.Processor;
 import com.shop.database.models.RAM;
+import com.shop.helper.AlertHelper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,10 +15,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.awt.Desktop;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.shop.database.DbConnection;
 import com.shop.database.models.Case;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -67,7 +71,23 @@ public class ComputerInfoController implements Initializable {
         computerName.setText(pc.getName());
         computerDescription.setText(pc.getDescription());
         computerPrice.setText(String.format("%s₽", pc.getPrice()));
-        computerImage.setImage(new Image(pc.getImageUrl()));
+        new Thread(() -> {
+            try {
+                String imageUrl = pc.getImageUrl();
+                Image image = new Image(imageUrl);
+                if (image.isError()) {
+                    System.out.println("Ошибка загрузки изображения: " + image.getException());
+                } else {
+                    Platform.runLater(() -> {
+                        String frm = String.format("-fx-image: url('%s');", imageUrl);
+                        computerImage.setStyle(frm);
+                    });
+                }
+            } catch (Exception e) {
+                Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, e);
+                AlertHelper.showErrorAlert("Unknown Error. Try again");
+            }
+        }).start();
         this.processor = DbConnection.getDatabaseConnection().getProcessorById(computer.getProcessorId());
         this.graphicCard = DbConnection.getDatabaseConnection().getGraphicCardById(computer.getGraphicCardId());
         this.motherboard = DbConnection.getDatabaseConnection().getMotherboardById(computer.getMotherboardId());
@@ -204,7 +224,8 @@ public class ComputerInfoController implements Initializable {
             try {
                 Desktop.getDesktop().browse(new URI(urlString));
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, e);
+                AlertHelper.showErrorAlert("Unknown Error. Try again");
             }
         }).start();
     }

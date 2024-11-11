@@ -1,7 +1,15 @@
 package com.shop.controllers;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.shop.helper.AlertHelper;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,7 +36,22 @@ public class ComputerItemController {
     private Button addToCartBtn;
 
     public void setProductData(String imageUrl, String name, String description, BigDecimal price) {
-        computerImage.setImage(new Image(imageUrl));
+        new Thread(() -> {
+            try {
+                Image image = new Image(imageUrl);
+                if (image.isError()) {
+                    System.out.println("Ошибка загрузки изображения: " + image.getException());
+                } else {
+                    Platform.runLater(() -> {
+                        String frm = String.format("-fx-image: url('%s');", imageUrl);
+                        computerImage.setStyle(frm);
+                    });
+                }
+            } catch (Exception e) {
+                Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, e);
+                AlertHelper.showErrorAlert("Unknown Error. Try again");
+            }
+        }).start();
         computerName.setText(name);
         computerDescription.setText(description);
         computerPrice.setText(String.format("%s₽", price));
