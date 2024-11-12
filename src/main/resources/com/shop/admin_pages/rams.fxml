@@ -11,22 +11,22 @@
 <AnchorPane prefHeight="398.0" prefWidth="477.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.admin.AdminRAMsController">
    <HBox layoutX="4.0" layoutY="5.0" prefHeight="26.0" prefWidth="279.0" spacing="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-          <Button fx:id="addButton" onAction="#handleAdd" style="-fx-background-color: #a6e3a1; -fx-text-fill: #ffffff;" text="Add Row" HBox.hgrow="ALWAYS">
+          <Button fx:id="addButton" onAction="#handleAdd" style="-fx-background-color: #a6e3a1; -fx-text-fill: #ffffff; -fx-cursor: hand;" text="Add Row" HBox.hgrow="ALWAYS">
             <font>
                <Font name="System Bold" size="13.0" />
             </font>
          </Button>
-          <Button fx:id="deleteButton" onAction="#handleDelete" style="-fx-background-color: #eba0ac; -fx-text-fill: #ffffff;" text="Delete Row" HBox.hgrow="ALWAYS">
+          <Button fx:id="deleteButton" onAction="#handleDelete" style="-fx-background-color: #eba0ac; -fx-text-fill: #ffffff; -fx-cursor: hand;" text="Delete Row" HBox.hgrow="ALWAYS">
             <font>
                <Font name="System Bold" size="13.0" />
             </font>
          </Button>
-         <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #fab387; -fx-text-fill: #ffffff;" text="Save Changes" HBox.hgrow="ALWAYS">
+         <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #fab387; -fx-text-fill: #ffffff; -fx-cursor: hand;" text="Save Changes" HBox.hgrow="ALWAYS">
             <font>
                <Font name="System Bold" size="13.0" />
             </font>
          </Button>
-         <Button fx:id="refreshButton" onAction="#handleRefresh" style="-fx-background-color: #89dceb; -fx-text-fill: #ffffff;" text="Refresh" HBox.hgrow="ALWAYS">
+         <Button fx:id="refreshButton" onAction="#handleRefresh" style="-fx-background-color: #89dceb; -fx-text-fill: #ffffff; -fx-cursor: hand;" text="Refresh" HBox.hgrow="ALWAYS">
             <font>
                <Font name="System Bold" size="13.0" />
             </font>

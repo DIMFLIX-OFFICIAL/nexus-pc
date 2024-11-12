@@ -14,7 +14,7 @@
       <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fx:id="computerImage" fitHeight="94.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true" />
-            <VBox alignment="CENTER_LEFT" onMouseClicked="#showComputerInfo" prefHeight="120.0" prefWidth="476.0">
+            <VBox alignment="CENTER_LEFT" onMouseClicked="#showComputerInfo" prefHeight="120.0" prefWidth="476.0" style="-fx-cursor: hand;">
                <children>
                   <Label fx:id="computerName" prefHeight="43.0" prefWidth="301.0" text="Название компьютера" textFill="WHITE">
                      <font>
@@ -34,7 +34,7 @@
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Button fx:id="addToCartBtn" mnemonicParsing="false" onAction="#addToShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #b4befe;" text="Add to cart" textFill="WHITE">
+                  <Button fx:id="addToCartBtn" mnemonicParsing="false" onAction="#addToShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #b4befe; -fx-cursor: hand;" text="Add to cart" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

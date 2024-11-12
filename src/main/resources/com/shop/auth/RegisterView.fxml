@@ -40,14 +40,14 @@
             <TextField fx:id="username" layoutX="49.0" layoutY="183.0" prefHeight="25.0" prefWidth="202.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffff;" />
             <PasswordField fx:id="password" layoutX="49.0" layoutY="219.0" prefHeight="25.0" prefWidth="202.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffff;" />
             <PasswordField fx:id="confirmPassword" layoutX="49.0" layoutY="254.0" prefHeight="25.0" prefWidth="202.0" promptText="Confirm Password" style="-fx-background-color: transparent; -fx-border-color: #ffffff; -fx-border-width: 0px 0px 2px 0px; -fx-text-fill: #ffffff;" />
-            <Button fx:id="registerButton" layoutX="51.0" layoutY="302.0" mnemonicParsing="false" onAction="#register" prefHeight="32.0" prefWidth="201.0" style="-fx-background-color: #b4befe; -fx-background-radius: 0px;" text="Submit" textFill="WHITE">
+            <Button fx:id="registerButton" layoutX="51.0" layoutY="302.0" mnemonicParsing="false" onAction="#register" prefHeight="32.0" prefWidth="201.0" style="-fx-background-color: #b4befe; -fx-background-radius: 0px; -fx-cursor: hand;" text="Submit" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Button>
-            <Text fill="WHITE" layoutX="65.0" layoutY="360.0" onMouseClicked="#showLoginStage" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account? Login">
+            <Text fill="WHITE" layoutX="65.0" layoutY="360.0" onMouseClicked="#showLoginStage" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" text="Already have an account? Login">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

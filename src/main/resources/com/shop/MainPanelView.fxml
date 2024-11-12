@@ -14,7 +14,7 @@
    <left>
       <VBox prefHeight="601.0" prefWidth="160.0" spacing="10.0" style="-fx-background-color: #1e1e2e;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="CatalogPageButton" mnemonicParsing="false" onAction="#loadCatalogView" prefHeight="30.0" prefWidth="173.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Catalog" textAlignment="JUSTIFY">
+            <Button fx:id="CatalogPageButton" mnemonicParsing="false" onAction="#loadCatalogView" prefHeight="30.0" prefWidth="173.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Catalog" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -22,7 +22,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="ShoppingCartPageButton" mnemonicParsing="false" onAction="#loadShoppingCartView" prefHeight="30.0" prefWidth="172.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Cart" textAlignment="JUSTIFY">
+            <Button fx:id="ShoppingCartPageButton" mnemonicParsing="false" onAction="#loadShoppingCartView" prefHeight="30.0" prefWidth="172.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Cart" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -30,7 +30,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="OrdersPageButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" onAction="#loadMyOrdersView" prefHeight="35.0" prefWidth="168.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Orders" textAlignment="JUSTIFY">
+            <Button fx:id="OrdersPageButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" onAction="#loadMyOrdersView" prefHeight="35.0" prefWidth="168.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Orders" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -38,7 +38,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <SplitMenuButton fx:id="AdminPagesButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" style="-fx-background-color: #303446;" stylesheets="@styles/splitMenuButton.css" text="Admin Panel">
+            <SplitMenuButton fx:id="AdminPagesButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="168.0" style="-fx-background-color: #303446; -fx-cursor: hand;" stylesheets="@styles/splitMenuButton.css" text="Admin Panel">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -64,7 +64,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="337.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
+                  <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

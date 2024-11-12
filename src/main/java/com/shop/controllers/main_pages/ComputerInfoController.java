@@ -18,6 +18,7 @@ import java.awt.Desktop;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import com.shop.controllers.MainPanelController;
 import com.shop.controllers.SharedData;
@@ -48,6 +49,9 @@ public class ComputerInfoController implements Initializable {
     private PowerSupply powerSupply;
     private Cooler cooler;
     private Case computerCase;
+
+    private static final String URL_REGEX = "^(https?://)?(www\\.)?[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(/.*)?$";
+    private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
     @FXML
     private TreeView<String> tree;
@@ -201,6 +205,10 @@ public class ComputerInfoController implements Initializable {
                     } else { 
                         setFont(Font.font("Arial", 16));
                     }
+
+                    if (item.startsWith("Link: ")) {
+                        setStyle("-fx-cursor: hand;");
+                    }
                 }
             }
         });
@@ -225,10 +233,10 @@ public class ComputerInfoController implements Initializable {
 
         if (state) {
             addToCartBtn.setText("Add to cart");
-            addToCartBtn.setStyle("-fx-background-color: #b4befe;");
+            addToCartBtn.setStyle("-fx-background-color: #b4befe; -fx-cursor: hand;");
         } else {
             addToCartBtn.setText("Remove from cart");
-            addToCartBtn.setStyle("-fx-background-color: #eba0ac;");
+            addToCartBtn.setStyle("-fx-background-color: #eba0ac; -fx-cursor: hand;");
         }
     }
 
@@ -259,13 +267,22 @@ public class ComputerInfoController implements Initializable {
     }
 
     private void openWebpage(String urlString) {
+        if (!isValidUrl(urlString)) {
+            AlertHelper.showErrorAlert("The link is wrong. Please notify the administrator.");
+            return;
+        }
+    
         new Thread(() -> {
             try {
                 Desktop.getDesktop().browse(new URI(urlString));
             } catch (IOException | URISyntaxException e) {
                 Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, e);
-                AlertHelper.showErrorAlert("Unknown Error. Try again");
+                AlertHelper.showErrorAlert("Unknown error. Try again.");
             }
         }).start();
+    }
+    
+    private boolean isValidUrl(String url) {
+        return URL_PATTERN.matcher(url).matches();
     }
 }

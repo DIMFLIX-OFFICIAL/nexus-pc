@@ -38,7 +38,7 @@ public class ComputerItemController {
 
     public void setProductData(Computer pc) {
         computer = pc;
-        
+
         new Thread(() -> {
             try {
                 Image image = new Image(pc.getImageUrl());
@@ -80,10 +80,10 @@ public class ComputerItemController {
 
         if (state) {
             addToCartBtn.setText("Add to cart");
-            addToCartBtn.setStyle("-fx-background-color: #b4befe;");
+            addToCartBtn.setStyle("-fx-background-color: #b4befe; -fx-cursor: hand;");
         } else {
             addToCartBtn.setText("Remove from cart");
-            addToCartBtn.setStyle("-fx-background-color: #eba0ac;");
+            addToCartBtn.setStyle("-fx-background-color: #eba0ac; -fx-cursor: hand;");
         }
     }
 
