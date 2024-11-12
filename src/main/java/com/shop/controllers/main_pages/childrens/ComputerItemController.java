@@ -1,12 +1,10 @@
-package com.shop.controllers;
+package com.shop.controllers.main_pages.childrens;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.shop.controllers.MainPanelController;
 import com.shop.helper.AlertHelper;
 
 import javafx.application.Platform;

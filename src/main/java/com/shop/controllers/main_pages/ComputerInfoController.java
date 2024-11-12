@@ -1,4 +1,4 @@
-package com.shop.controllers;
+package com.shop.controllers.main_pages;
 
 import com.shop.database.models.Computer;
 import com.shop.database.models.Cooler;
@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.shop.controllers.MainPanelController;
 import com.shop.database.DbConnection;
 import com.shop.database.models.Case;
 

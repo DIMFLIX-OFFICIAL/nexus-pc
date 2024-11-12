@@ -1,6 +1,7 @@
 package com.shop.controllers;
 
 import com.shop.controllers.main_pages.CatalogsController;
+import com.shop.controllers.main_pages.ComputerInfoController;
 import com.shop.database.models.Computer;
 import com.shop.database.models.User;
 

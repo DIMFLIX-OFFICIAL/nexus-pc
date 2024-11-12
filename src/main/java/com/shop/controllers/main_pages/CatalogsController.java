@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.shop.database.models.Computer;
-import com.shop.controllers.ComputerItemController;
 import com.shop.controllers.MainPanelController;
+import com.shop.controllers.main_pages.childrens.ComputerItemController;
 import com.shop.database.DbConnection;
 
 import javafx.collections.FXCollections;
@@ -40,7 +40,7 @@ public class CatalogsController implements Initializable {
 
         for (Computer computer : computersList) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/utils/computerItem.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/childrens/computerItem.fxml"));
                 Parent computerItem = loader.load();
                 ComputerItemController controller = loader.getController();
                 controller.setProductData(computer.getImageUrl(), computer.getName(), computer.getDescription(), computer.getPrice());
