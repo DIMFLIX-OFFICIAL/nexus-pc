@@ -127,7 +127,6 @@ public class DbConnection {
                 ");";
 
         String createShoppingCartTable = "CREATE TABLE IF NOT EXISTS shopping_cart (" +
-                "id SERIAL PRIMARY KEY, " +
                 "owner TEXT NOT NULL REFERENCES users(username), " +
                 "computer_id INT NOT NULL REFERENCES computers(id), " +
                 "quantity INT NOT NULL DEFAULT 1" +
@@ -1141,7 +1140,6 @@ public class DbConnection {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 ShoppingCartItem item = new ShoppingCartItem(
-                    rs.getInt("id"),
                     rs.getString("owner"),
                     rs.getInt("computer_id"),
                     rs.getInt("quantity")
@@ -1155,15 +1153,15 @@ public class DbConnection {
         return items;
     }
 
-    public ShoppingCartItem getShoppingCartItemById(Integer id) {
-        String query = "SELECT * FROM shopping_cart WHERE id = ?";
+    public ShoppingCartItem getShoppingCartItemById(String owner, Integer computer_id) {
+        String query = "SELECT * FROM shopping_cart WHERE computer_id = ? AND owner = ?";
         
         try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setInt(1, id);
+            pstmt.setInt(1, computer_id);
+            pstmt.setString(2, owner);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new ShoppingCartItem(
-                    rs.getInt("id"),
                     rs.getString("owner"),
                     rs.getInt("computer_id"),
                     rs.getInt("quantity")
@@ -1176,14 +1174,14 @@ public class DbConnection {
         return null;
     }
 
-    public boolean updateShoppingCartItem(ShoppingCartItem item) {
-        String updateQuery = "UPDATE shopping_cart SET quantity = ?, computer_id = ?, owner = ? WHERE id = ?";
+    public boolean addShoppingCartItem(ShoppingCartItem item) {
+        String insertComputerSQL = "INSERT INTO shopping_cart (owner, computer_id, quantity) VALUES (?, ?, ?)";
         
-        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
-            pstmt.setInt(1, item.getQuantity());
+        try (PreparedStatement pstmt = con.prepareStatement(insertComputerSQL)) {
+            pstmt.setString(1, item.getOwner());
             pstmt.setInt(2, item.getComputerId());
-            pstmt.setString(3, item.getOwner());
-            pstmt.setInt(4, item.getId());
+            pstmt.setInt(3, item.getQuantity());
+
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -1192,11 +1190,27 @@ public class DbConnection {
         }
     }
 
-    public boolean deleteShoppingCartItem(Integer item_id) {
-        String deleteQuery = "DELETE FROM shopping_cart WHERE id = ?";
+    public boolean updateShoppingCartItem(ShoppingCartItem item) {
+        String updateQuery = "UPDATE shopping_cart SET quantity = ? WHERE computer_id = ? AND owner = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, item.getQuantity());
+            pstmt.setInt(2, item.getComputerId());
+            pstmt.setString(3, item.getOwner());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+
+    public boolean deleteShoppingCartItem(ShoppingCartItem item) {
+        String deleteQuery = "DELETE FROM shopping_cart WHERE computer_id = ? AND owner = ?";
         
         try (PreparedStatement pstmt = con.prepareStatement(deleteQuery)) {
-            pstmt.setInt(1, item_id);
+            pstmt.setInt(1, item.getComputerId());
+            pstmt.setString(2, item.getOwner());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,24 +1,14 @@
 package com.shop.database.models;
 
 public class ShoppingCartItem {
-    private Integer id;
     private String owner;
     private Integer computerId;
     private Integer quantity;
 
-    public ShoppingCartItem(Integer id, String owner, Integer computerId, Integer quantity) {
-        this.id = id;
+    public ShoppingCartItem(String owner, Integer computerId, Integer quantity) {
         this.owner = owner;
         this.computerId = computerId;
         this.quantity = quantity;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getOwner() {

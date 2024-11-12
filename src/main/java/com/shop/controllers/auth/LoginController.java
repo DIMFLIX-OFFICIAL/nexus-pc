@@ -2,7 +2,7 @@ package com.shop.controllers.auth;
 
 import com.shop.database.DbConnection;
 import com.shop.helper.AlertHelper;
-import com.shop.controllers.MainPanelController;
+import com.shop.controllers.SharedData;
 import com.shop.database.models.User;
 
 import java.io.IOException;
@@ -47,12 +47,10 @@ public class LoginController implements Initializable {
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.close();
 
-                FXMLLoader load = new FXMLLoader(getClass().getResource("/com/shop/MainPanelView.fxml"));
-                Parent root = load.load();
-                MainPanelController mainController = load.getController();
-                mainController.setAuthUser(user);
-                Scene scene = new Scene(root);
+                SharedData.setAuthenticatedUser(user);
 
+                Parent root = FXMLLoader.load(getClass().getResource("/com/shop/MainPanelView.fxml"));
+                Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setTitle("Admin Panel");
                 stage.show();

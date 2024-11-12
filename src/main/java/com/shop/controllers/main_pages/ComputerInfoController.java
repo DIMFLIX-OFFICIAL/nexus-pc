@@ -7,6 +7,7 @@ import com.shop.database.models.Motherboard;
 import com.shop.database.models.PowerSupply;
 import com.shop.database.models.Processor;
 import com.shop.database.models.RAM;
+import com.shop.database.models.ShoppingCartItem;
 import com.shop.helper.AlertHelper;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.shop.controllers.MainPanelController;
+import com.shop.controllers.SharedData;
 import com.shop.database.DbConnection;
 import com.shop.database.models.Case;
 
@@ -65,16 +67,25 @@ public class ComputerInfoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         HBox.setHgrow(emptySpace, Priority.ALWAYS);
-    }
 
-    public void setComputerInfo(Computer pc) {
-        this.computer = pc;
-        computerName.setText(pc.getName());
-        computerDescription.setText(pc.getDescription());
-        computerPrice.setText(String.format("%s₽", pc.getPrice()));
+        computer = SharedData.getSelectedComputer();
+        ShoppingCartItem item = DbConnection.getDatabaseConnection().getShoppingCartItemById(
+            SharedData.getAuthenticatedUser().getUsername(),
+            computer.getId()
+        );
+
+        if (item != null) {
+            setStateBtn(false);
+        } else {
+            setStateBtn(true);
+        }
+
+        computerName.setText(computer.getName());
+        computerDescription.setText(computer.getDescription());
+        computerPrice.setText(String.format("%s₽", computer.getPrice()));
         new Thread(() -> {
             try {
-                String imageUrl = pc.getImageUrl();
+                String imageUrl = computer.getImageUrl();
                 Image image = new Image(imageUrl);
                 if (image.isError()) {
                     System.out.println("Ошибка загрузки изображения: " + image.getException());
@@ -208,16 +219,42 @@ public class ComputerInfoController implements Initializable {
         });
     }
 
+    private void setStateBtn(Boolean state) {
+        // If state is True - btn has text "Add to cart"
+        // Else - btn has text "Remove from cart"
+
+        if (state) {
+            addToCartBtn.setText("Add to cart");
+            addToCartBtn.setStyle("-fx-background-color: #b4befe;");
+        } else {
+            addToCartBtn.setText("Remove from cart");
+            addToCartBtn.setStyle("-fx-background-color: #eba0ac;");
+        }
+    }
+
     @FXML
     private void addToShoppingCart() {
         if (addToCartBtn.getText().equals("Add to cart")) { 
-            addToCartBtn.setText("Remove from cart");
-            addToCartBtn.setStyle("-fx-background-color: #eba0ac;");
-            System.out.println("addToShoppingCart event");
-        } else {
-            addToCartBtn.setText("Add to cart");
-            addToCartBtn.setStyle("-fx-background-color: #b4befe;");
-            System.out.println("removeFromShoppingCart event");
+            boolean added = DbConnection.getDatabaseConnection().addShoppingCartItem(
+                new ShoppingCartItem(SharedData.getAuthenticatedUser().getUsername(), computer.getId(), 1)
+            );
+
+            if (added) {
+                setStateBtn(false);
+            } else {
+                AlertHelper.showErrorAlert("Failed to add to cart...");
+            }
+        } else {    
+            boolean deleted = DbConnection.getDatabaseConnection().deleteShoppingCartItem(
+                new ShoppingCartItem(SharedData.getAuthenticatedUser().getUsername(), computer.getId(), 1)
+            );
+
+            if (deleted) {
+                setStateBtn(true);
+            } else {
+                AlertHelper.showErrorAlert("Failed to remove item from cart...");
+            }
+
         }
     }
 

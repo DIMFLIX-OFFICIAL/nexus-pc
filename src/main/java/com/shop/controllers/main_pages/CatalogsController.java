@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.shop.database.models.Computer;
-import com.shop.controllers.MainPanelController;
 import com.shop.controllers.main_pages.childrens.ComputerItemController;
 import com.shop.database.DbConnection;
 
@@ -23,8 +22,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class CatalogsController implements Initializable {
-    private MainPanelController mainController;
-
     @FXML
     AnchorPane root;
     @FXML 
@@ -43,8 +40,7 @@ public class CatalogsController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/childrens/computerItem.fxml"));
                 Parent computerItem = loader.load();
                 ComputerItemController controller = loader.getController();
-                controller.setProductData(computer.getImageUrl(), computer.getName(), computer.getDescription(), computer.getPrice());
-                root.setOnMouseClicked(event -> {mainController.loadComputerInfoView(computer);});
+                controller.setProductData(computer);
                 itemsList.getChildren().add(computerItem);
             } catch (IOException ex) {
                 Logger.getLogger(CatalogsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,9 +49,5 @@ public class CatalogsController implements Initializable {
 
         VBox.setVgrow(itemsList, Priority.ALWAYS);
         scrollPane.setFitToWidth(true);
-    }
-
-    public void setMainController(MainPanelController cntrl) {
-        this.mainController = cntrl;
     }
 }

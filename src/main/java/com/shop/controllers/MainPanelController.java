@@ -1,8 +1,5 @@
 package com.shop.controllers;
 
-import com.shop.controllers.main_pages.CatalogsController;
-import com.shop.controllers.main_pages.ComputerInfoController;
-import com.shop.database.models.Computer;
 import com.shop.database.models.User;
 
 import java.io.IOException;
@@ -107,14 +104,9 @@ public class MainPanelController implements Initializable {
             motherboardsAdminTable, powerSuppliesAdminTable, ramsAdminTable,
             coolersAdminTable, casesAdminTable, computersAdminTable
         );
-        loadCatalogView(null); // start page
-    }
 
-    public void setAuthUser(User user) {
-        this.user = user;
-        if (this.user == null || !this.user.getRole().equals("admin")) {
-            AdminPagesButton.setVisible(false);
-        }
+        SharedData.setMainController(this);
+        loadCatalogView(null); // start page
     }
 
     @FXML
@@ -150,18 +142,7 @@ public class MainPanelController implements Initializable {
 
     @FXML
     private void loadCatalogView(ActionEvent e) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/CatalogView.fxml"));
-            Parent computerInfoPage = loader.load();
-            CatalogsController controller = loader.getController();
-            controller.setMainController(this);
-            HBox.setHgrow(computerInfoPage, Priority.ALWAYS);
-            clear();
-            pagesWindow.getChildren().add(computerInfoPage);
-            windowName.setText("Catalog");
-        } catch (IOException ex) {
-            Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        loadFXML("/com/shop/main_pages/CatalogView", "Catalog");
     }
 
     @FXML
@@ -174,18 +155,7 @@ public class MainPanelController implements Initializable {
         loadFXML("/com/shop/main_pages/MyOrdersView", "My Orders");
     }
 
-    public void loadComputerInfoView(Computer computer) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/ComputerInfoView.fxml"));
-            Parent computerInfoPage = loader.load();
-            ComputerInfoController controller = loader.getController();
-            controller.setComputerInfo(computer);
-            HBox.setHgrow(computerInfoPage, Priority.ALWAYS);
-            clear();
-            pagesWindow.getChildren().add(computerInfoPage);
-            windowName.setText(computer.getName());
-        } catch (IOException ex) {
-            Logger.getLogger(MainPanelController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void loadComputerInfoView() {
+        loadFXML("/com/shop/main_pages/ComputerInfoView", "Computer Information");
     }
 }
