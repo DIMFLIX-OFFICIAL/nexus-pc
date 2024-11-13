@@ -39,16 +39,16 @@ public class ShoppingCartController implements Initializable {
 
         for (Computer computer : computersList) {
             try {
-                ShoppingCartItem exists = DbConnection.getDatabaseConnection().getShoppingCartItemById(
+                ShoppingCartItem cartItem = DbConnection.getDatabaseConnection().getShoppingCartItemById(
                     SharedData.getAuthenticatedUser().getUsername(),
                     computer.getId()
                 );
 
-                if (exists != null) {
+                if (cartItem != null) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/shop/main_pages/childrens/shoppingCartItem.fxml"));
                     Parent computerItem = loader.load();
                     ShoppingCartItemController controller = loader.getController();
-                    controller.setProductData(computer);
+                    controller.setProductData(computer, cartItem.getQuantity());
                     itemsList.getChildren().add(computerItem);
                 }
             } catch (IOException ex) {

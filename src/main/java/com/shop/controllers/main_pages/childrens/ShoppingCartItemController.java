@@ -40,7 +40,7 @@ public class ShoppingCartItemController {
     @FXML
     private Spinner<Integer> computersCount;
 
-    public void setProductData(Computer pc) {
+    public void setProductData(Computer pc, Integer quantity) {
         computer = pc;
 
         new Thread(() -> {
@@ -65,7 +65,8 @@ public class ShoppingCartItemController {
         computerDescription.setText(pc.getDescription());
         computerPrice.setText(String.format("%s₽", pc.getPrice()));
 
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, quantity);
+        computerPrice.setText(String.format("%s₽", computer.getPrice().multiply(new BigDecimal(quantity))));
         computersCount.setValueFactory(valueFactory);
         computersCount.valueProperty().addListener((observable, oldValue, newValue) -> {
             computerPrice.setText(String.format("%s₽", computer.getPrice().multiply(new BigDecimal(newValue))));
