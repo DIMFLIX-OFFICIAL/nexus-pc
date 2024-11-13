@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.shop.controllers.MainPanelController;
 import com.shop.controllers.SharedData;
+import com.shop.controllers.main_pages.ShoppingCartController;
 import com.shop.database.DbConnection;
 import com.shop.database.models.Computer;
 import com.shop.database.models.ShoppingCartItem;
@@ -40,8 +41,10 @@ public class ShoppingCartItemController {
     @FXML
     private Spinner<Integer> computersCount;
 
-    public void setProductData(Computer pc, Integer quantity) {
+    public void setProductData(Computer pc, Integer quantity, ShoppingCartController mainController) {
         computer = pc;
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory
+            .IntegerSpinnerValueFactory(1, 100, quantity);
 
         new Thread(() -> {
             try {
@@ -63,20 +66,32 @@ public class ShoppingCartItemController {
 
         computerName.setText(pc.getName());
         computerDescription.setText(pc.getDescription());
-        computerPrice.setText(String.format("%s₽", pc.getPrice()));
 
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, quantity);
-        computerPrice.setText(String.format("%s₽", computer.getPrice().multiply(new BigDecimal(quantity))));
+        computer.setPrice(computer.getPrice().multiply(new BigDecimal(quantity)));
+        computerPrice.setText(String.format("%s₽", computer.getPrice()));
+
         computersCount.setValueFactory(valueFactory);
         computersCount.valueProperty().addListener((observable, oldValue, newValue) -> {
-            computerPrice.setText(String.format("%s₽", computer.getPrice().multiply(new BigDecimal(newValue))));
-            DbConnection.getDatabaseConnection().updateShoppingCartItem(
+            boolean update_status = DbConnection.getDatabaseConnection().updateShoppingCartItem(
                 new ShoppingCartItem(
                     SharedData.getAuthenticatedUser().getUsername(), 
                     computer.getId(), 
                     newValue
                 )
             );
+
+            if (update_status == true) {
+                computer.setPrice(computer.getPrice()
+                    .divide(new BigDecimal(oldValue))
+                    .multiply(new BigDecimal(newValue)));
+                computerPrice.setText(String.format("%s₽", computer.getPrice()));
+                
+                if (mainController != null) {
+                    mainController.updateTotalCost();
+                }
+            } else {
+                AlertHelper.showErrorAlert("Failed to update item quantity in cart...");
+            }
         });
 
         HBox.setHgrow(emptySpace, Priority.ALWAYS);
@@ -99,5 +114,9 @@ public class ShoppingCartItemController {
         } else {
             AlertHelper.showErrorAlert("Failed to remove item from cart...");
         }
+    }
+
+    public BigDecimal getPrice() {
+        return computer.getPrice();
     }
 }

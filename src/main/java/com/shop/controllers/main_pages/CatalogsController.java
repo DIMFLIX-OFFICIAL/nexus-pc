@@ -16,10 +16,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class CatalogsController implements Initializable {
     @FXML
@@ -34,6 +36,7 @@ public class CatalogsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         computersList.addAll(DbConnection.getDatabaseConnection().getAllComputers());
+        Integer count = 0;
 
         for (Computer computer : computersList) {
             try {
@@ -42,9 +45,18 @@ public class CatalogsController implements Initializable {
                 ComputerItemController controller = loader.getController();
                 controller.setProductData(computer);
                 itemsList.getChildren().add(computerItem);
+                count++;
             } catch (IOException ex) {
                 Logger.getLogger(CatalogsController.class.getName()).log(Level.SEVERE, null, ex);
             }   
+        }
+
+        if (count == 0) {
+            Label label = new Label();
+            label.setFont(Font.font("Arial", 30));
+            label.setText("Catalog is empty");
+            itemsList.getChildren().add(label);
+            scrollPane.setFitToHeight(true);
         }
 
         VBox.setVgrow(itemsList, Priority.ALWAYS);
