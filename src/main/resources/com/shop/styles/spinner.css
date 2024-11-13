@@ -16,6 +16,7 @@
     -fx-background-color: #585b70;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
+    -fx-cursor: hand;
 }
 
 .spinner .increment-arrow-button:hover,
