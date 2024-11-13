@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane style="-fx-background-color: #45475a; -fx-border-radius: 15; -fx-background-radius: 15;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.childrens.ShoppingCartItemController">
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fx:id="computerImage" fitHeight="94.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="CENTER_LEFT" onMouseClicked="#showComputerInfo" prefHeight="120.0" prefWidth="476.0" style="-fx-cursor: hand;">
+               <children>
+                  <Label fx:id="computerName" prefHeight="43.0" prefWidth="301.0" text="Название компьютера" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="computerDescription" alignment="TOP_LEFT" prefHeight="59.0" prefWidth="348.0" text="Описание компьютера" textFill="WHITE" />
+               </children>
+            </VBox>
+            <HBox fx:id="emptySpace">
+
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="120.0" prefWidth="199.0" spacing="10.0">
+               <children>
+                  <Label fx:id="computerPrice" alignment="CENTER" prefHeight="101.0" prefWidth="199.0" text="10.000₽" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Spinner fx:id="computersCount" minHeight="43.0" minWidth="60.0" prefWidth="60.0" stylesheets="@../../styles/spinner.css" />
+                        <Button fx:id="removeFromCartBtn" mnemonicParsing="false" onMouseClicked="#removeFromShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #eba0ac; -fx-cursor: hand;" text="Remove" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>

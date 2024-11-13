@@ -1,0 +1,31 @@
+.spinner {
+    -fx-background-color: #585b70; /* Цвет фона спиннера */
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.spinner .text-field {
+    -fx-text-fill : #ffffff;
+    -fx-background-color: #585b70;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #585b70;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #585b70;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-fill: #ffffff;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #ffffff;
+}

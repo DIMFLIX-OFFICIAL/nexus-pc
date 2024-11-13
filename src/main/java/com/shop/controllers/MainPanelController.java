@@ -146,7 +146,7 @@ public class MainPanelController implements Initializable {
     }
 
     @FXML
-    private void loadShoppingCartView(ActionEvent e) {
+    public void loadShoppingCartView(ActionEvent e) {
         loadFXML("/com/shop/main_pages/ShoppingCartView", "Shopping Cart");
     }
 
