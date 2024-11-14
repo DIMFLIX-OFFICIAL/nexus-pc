@@ -1479,6 +1479,57 @@ public class DbConnection {
         return orderItems;
     }
 
+    public List<OrderItem> getAllOrderItems() {
+        List<OrderItem> orderItems = new ArrayList<>();
+        
+        String itemQuery = "SELECT * FROM order_items";
+        
+        try (PreparedStatement itemStmt = con.prepareStatement(itemQuery)) {;
+            ResultSet itemRs = itemStmt.executeQuery();
+            
+            while (itemRs.next()) {
+                Integer orderId = itemRs.getInt("order_id");
+                Integer itemId = itemRs.getInt("id");
+                Integer computerId = itemRs.getInt("computer_id");
+                Integer quantity = itemRs.getInt("quantity");
+                BigDecimal price = new BigDecimal(itemRs.getDouble("price"));
+    
+                Computer pc = getComputerById(computerId);
+
+                if (pc!= null) {
+                    pc.setPrice(price.multiply(new BigDecimal(quantity)));
+                    orderItems.add(new OrderItem(
+                        itemId,
+                        orderId,
+                        pc, 
+                        quantity
+                    ));
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+        }
+        
+        return orderItems;
+    }
+
+    public boolean updateOrderItem(OrderItem item) {
+        String updateQuery = "UPDATE order_items SET order_id = ?, computer_id = ?, quantity = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, item.getOrderId());
+            pstmt.setInt(2, item.getComputer().getId());
+            pstmt.setInt(3, item.getQuantity());
+            pstmt.setInt(4, item.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return false;
+        }
+    }
+
     public boolean deleteOrderItem(Integer item_id) {
         String deleteQuery = "DELETE FROM order_items WHERE id = ?";
         
