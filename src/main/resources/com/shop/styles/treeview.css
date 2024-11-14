@@ -4,7 +4,7 @@
 }
 
 .tree-cell:expanded, .tree-cell:sub-tree-item {
-    -fx-background-color: #45475a ;
+    -fx-background-color: #313244 ;
 }
 .tree-cell:selected {
     -fx-font-weight: bold ;
