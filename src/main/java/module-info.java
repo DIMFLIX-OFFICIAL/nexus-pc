@@ -6,6 +6,7 @@ module com.shop {
     requires org.controlsfx.controls;
     requires javafx.graphics;
     requires java.desktop;
+    requires javafx.base;
 
     opens com.shop.database to javafx.fxml;
     exports com.shop;

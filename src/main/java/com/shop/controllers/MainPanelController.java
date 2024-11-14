@@ -69,6 +69,7 @@ public class MainPanelController implements Initializable {
         MenuItem coolersAdminTable = new MenuItem("Coolers");
         MenuItem casesAdminTable = new MenuItem("Cases");
         MenuItem computersAdminTable = new MenuItem("Computers");
+        MenuItem ordersAdminTable = new MenuItem("Orders");
 
 
         usersAdminTable.setOnAction((e)-> {
@@ -98,11 +99,15 @@ public class MainPanelController implements Initializable {
         computersAdminTable.setOnAction((e)-> {
             loadFXML("/com/shop/admin_pages/computers", "Computers Table");
         });
+        ordersAdminTable.setOnAction((e)-> {
+            loadFXML("/com/shop/admin_pages/orders", "Orders Table");
+        });
         
         AdminPagesButton.getItems().addAll(
             usersAdminTable,processorsAdminTable, graphicCardsAdminTable, 
             motherboardsAdminTable, powerSuppliesAdminTable, ramsAdminTable,
-            coolersAdminTable, casesAdminTable, computersAdminTable
+            coolersAdminTable, casesAdminTable, computersAdminTable,
+            ordersAdminTable
         );
 
         SharedData.setMainController(this);
