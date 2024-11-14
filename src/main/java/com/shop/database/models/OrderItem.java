@@ -3,13 +3,13 @@ package com.shop.database.models;
 public class OrderItem {
     private Integer id;
     private Integer orderId;
-    private Integer computerId;
+    private Computer computer;
     private Integer quantity;
 
-    public OrderItem(Integer id, Integer orderId, Integer computerId, Integer quantity) {
+    public OrderItem(Integer id, Integer orderId, Computer pc, Integer quantity) {
         this.id = id;
         this.orderId = orderId;
-        this.computerId = computerId;
+        this.computer = pc;
         this.quantity = quantity;
     }
 
@@ -29,12 +29,12 @@ public class OrderItem {
         this.orderId = orderId;
     }
 
-    public Integer getComputerId() {
-        return computerId;
+    public Computer getComputer() {
+        return computer;
     }
 
-    public void setComputerId(Integer computerId) {
-        this.computerId = computerId;
+    public void setComputer(Computer pc) {
+        this.computer = pc;
     }
 
     public Integer getQuantity() {

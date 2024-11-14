@@ -1,6 +1,8 @@
 package com.shop.database;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +23,7 @@ import com.shop.database.models.GraphicCard;
 import com.shop.database.models.Motherboard;
 import com.shop.database.models.Order;
 import com.shop.database.models.OrderItem;
+import com.shop.database.models.OrderResult;
 import com.shop.database.models.PowerSupply;
 import com.shop.database.models.RAM;
 import com.shop.database.models.ShoppingCartItem;
@@ -144,7 +148,8 @@ public class DbConnection {
                 "id SERIAL PRIMARY KEY, " +
                 "order_id INT NOT NULL REFERENCES orders(id), " +
                 "computer_id INT NOT NULL REFERENCES computers(id), " +
-                "quantity INT NOT NULL" +
+                "quantity INT NOT NULL, " +
+                "price DECIMAL(10,2) NOT NULL" +
                 ");";
     
         try (Statement statement = con.createStatement()) {
@@ -1058,6 +1063,39 @@ public class DbConnection {
         return computers;
     }
 
+    public Computer getComputerById(Integer id) {
+        String query = "SELECT * FROM computers WHERE id = ?";
+    
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Computer(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getBigDecimal("price"),
+                    rs.getInt("processor_id"),
+                    rs.getInt("graphic_card_id"),
+                    rs.getInt("motherboard_id"),
+                    rs.getInt("ram_id"),
+                    rs.getInt("rams_count"),
+                    rs.getInt("power_supply_id"),
+                    rs.getInt("cooler_id"),
+                    rs.getInt("case_id"),
+                    rs.getString("image_url"),
+                    rs.getInt("stock_quantity")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
+            AlertHelper.showErrorAlert("Unknown Error. Try again");
+            return null;
+        }
+    }
+
     public boolean addComputer(Computer computer) {
         String insertComputerSQL = "INSERT INTO computers (name, description, price, processor_id, graphic_card_id, " +
                 "motherboard_id, ram_id, rams_count, power_supply_id, cooler_id, case_id, image_url, stock_quantity) " +
@@ -1110,6 +1148,48 @@ public class DbConnection {
             AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
         }
+    }
+
+    private void updateStockQuantities(Map<Integer, Integer> computerIdsAndQuantities) throws SQLException {
+        String updateQuery = "UPDATE computers SET stock_quantity = stock_quantity - ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
+            for (Map.Entry<Integer, Integer> entry : computerIdsAndQuantities.entrySet()) {
+                int computerId = entry.getKey();
+                int quantityToReduce = entry.getValue();
+    
+                pstmt.setInt(1, quantityToReduce);
+                pstmt.setInt(2, computerId);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        }
+    }    
+
+    private String checkStockAvailability(Map<Integer, Integer> computerIdsAndQuantities) {
+        for (Map.Entry<Integer, Integer> entry : computerIdsAndQuantities.entrySet()) {
+            int computerId = entry.getKey();
+            int quantityRequested = entry.getValue();
+    
+            String stockCheckQuery = "SELECT stock_quantity, name FROM computers WHERE id = ?";
+            try (PreparedStatement pstmt = con.prepareStatement(stockCheckQuery)) {
+                pstmt.setInt(1, computerId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    int stockQuantity = rs.getInt("stock_quantity");
+                    String computerName = rs.getString("name");
+                    if (stockQuantity < quantityRequested) {
+                        return "Out of stock: " + computerName; // недостаточно на складе
+                    }
+                } else {
+                    return "Computer with ID " + computerId + " not found."; // Компьютер не найден
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "Error during warehouse verification: " + e.getMessage();
+            }
+        }
+        return null; // Все товары доступны
     }
 
     public boolean deleteComputer(Integer id) {
@@ -1218,6 +1298,20 @@ public class DbConnection {
             return false;
         }
     }
+
+    public boolean clearShoppingCart(String username) {
+        String deleteQuery = "DELETE FROM shopping_cart WHERE owner = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(deleteQuery)) {
+            pstmt.setString(1, username);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0; // Возвращает true, если были удалены записи
+        } catch (SQLException e) {
+            e.printStackTrace();
+            AlertHelper.showErrorAlert("Ошибка при очистке корзины: " + e.getMessage());
+            return false;
+        }
+    }
     
     
 
@@ -1226,50 +1320,94 @@ public class DbConnection {
 
     //==> ORDERS CRUD
     // ==================================================================================================================================
-    public List<Order> getOrdersByCustomer(String customer) {
-        String query = "SELECT * FROM orders WHERE customer = ?";
+    public List<Order> getUserOrders(String username) {
         List<Order> orders = new ArrayList<>();
+    
+        String orderQuery = "SELECT * FROM orders WHERE customer = ?";
+        
+        try (PreparedStatement orderStmt = con.prepareStatement(orderQuery)) {
+            orderStmt.setString(1, username);
+            ResultSet orderRs = orderStmt.executeQuery();
+    
+            while (orderRs.next()) {
+                Integer orderId = orderRs.getInt("id");
+                List<OrderItem> orderItems = getOrderItems(orderId);
 
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setString(1, customer);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Order order = new Order(
-                    rs.getInt("id"),
-                    rs.getString("customer"),
-                    rs.getTimestamp("order_date"),
-                    rs.getBigDecimal("total_amount"),
-                    rs.getString("status")
-                );
-                orders.add(order);
+                orders.add(new Order(
+                    orderId,
+                    orderRs.getString("customer"),
+                    orderRs.getTimestamp("order_date"),
+                    new BigDecimal(orderRs.getDouble("total_amount")),
+                    orderRs.getString("status"),
+                    orderItems
+                ));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
             AlertHelper.showErrorAlert("Unknown Error. Try again");
         }
+        
         return orders;
     }
 
-    public Order getOrderById(Integer id) {
-        String query = "SELECT * FROM orders WHERE id = ?";
-        
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return new Order(
-                    rs.getInt("id"),
-                    rs.getString("customer"),
-                    rs.getTimestamp("order_date"),
-                    rs.getBigDecimal("total_amount"),
-                    rs.getString("status")
-                );
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            AlertHelper.showErrorAlert("Unknown Error. Try again");
+    public OrderResult createOrder(String customerUsername, Map<Integer, Integer> computerIdsAndQuantities) {
+        String checkStatus = checkStockAvailability(computerIdsAndQuantities);
+        if (checkStatus != null) {
+            return new OrderResult(false, checkStatus);
         }
-        return null;
+    
+        try {
+            con.setAutoCommit(false); // Отключаем автоматическое подтверждение
+            String orderInsertQuery = "INSERT INTO orders (customer, total_amount) VALUES (?, ?) RETURNING id";
+            PreparedStatement orderStmt = con.prepareStatement(orderInsertQuery);
+            orderStmt.setString(1, customerUsername);
+            double totalAmount = calculateTotalAmount(computerIdsAndQuantities);
+            orderStmt.setDouble(2, totalAmount);
+            
+            ResultSet generatedKeys = orderStmt.executeQuery();
+            if (generatedKeys.next()) {
+                int orderId = generatedKeys.getInt(1);
+                createOrderItems(orderId, computerIdsAndQuantities);
+                updateStockQuantities(computerIdsAndQuantities);
+                con.commit(); // Подтверждаем транзакцию
+                return new OrderResult(true, "The order has been successfully created!");
+            }
+        } catch (SQLException e) {
+            try {
+                con.rollback(); // Откат транзакции в случае ошибки
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+                return new OrderResult(false, "Error on transaction rollback: " + rollbackEx.getMessage());
+            }
+            e.printStackTrace();
+            return new OrderResult(false, "Error when creating an order");
+        } finally {
+            try {
+                con.setAutoCommit(true); // Включаем автоматическое подтверждение обратно
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return new OrderResult(false, "Failed to create an order. Try again later");
+    }
+
+    private double calculateTotalAmount(Map<Integer, Integer> computerIdsAndQuantities) throws SQLException {
+        double totalAmount = 0.0;
+        for (Map.Entry<Integer, Integer> entry : computerIdsAndQuantities.entrySet()) {
+            int computerId = entry.getKey();
+            int quantityRequested = entry.getValue();
+
+            String priceQuery = "SELECT price FROM computers WHERE id = ?";
+            try (PreparedStatement pstmt = con.prepareStatement(priceQuery)) {
+                pstmt.setInt(1, computerId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    double price = rs.getDouble("price");
+                    totalAmount += price * quantityRequested;
+                }
+            }
+        }
+        return totalAmount;
     }
 
     public boolean updateOrder(Order order) {
@@ -1309,64 +1447,36 @@ public class DbConnection {
 
     //==> ORDERS CRUD
     // ==================================================================================================================================
-    public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
-        String query = "SELECT * FROM order_items WHERE order_id = ?";
-        List<OrderItem> items = new ArrayList<>();
-
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setInt(1, orderId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                OrderItem item = new OrderItem(
-                    rs.getInt("id"),
-                    rs.getInt("order_id"),
-                    rs.getInt("computer_id"),
-                    rs.getInt("quantity")
-                );
-                items.add(item);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            AlertHelper.showErrorAlert("Unknown Error. Try again");
-        }
-        return items;
-    }
-
-    public OrderItem getOrderItemById(Integer id) {
-        String query = "SELECT * FROM order_items WHERE id = ?";
+    private List<OrderItem> getOrderItems(Integer orderId) throws SQLException {
+        List<OrderItem> orderItems = new ArrayList<>();
         
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return new OrderItem(
-                    rs.getInt("id"),
-                    rs.getInt("order_id"),
-                    rs.getInt("computer_id"),
-                    rs.getInt("quantity")
-                );
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            AlertHelper.showErrorAlert("Unknown Error. Try again");
-        }
-        return null;
-    }
+        String itemQuery = "SELECT * FROM order_items WHERE order_id = ?";
+        
+        try (PreparedStatement itemStmt = con.prepareStatement(itemQuery)) {
+            itemStmt.setInt(1, orderId);
+            ResultSet itemRs = itemStmt.executeQuery();
+            
+            while (itemRs.next()) {
+                Integer itemId = itemRs.getInt("id");
+                Integer computerId = itemRs.getInt("computer_id");
+                Integer quantity = itemRs.getInt("quantity");
+                BigDecimal price = new BigDecimal(itemRs.getDouble("price"));
     
-    public boolean updateOrderItem(OrderItem item) {
-        String updateQuery = "UPDATE order_items SET quantity = ?, computer_id = ?, order_id = ? WHERE id = ?";
-        
-        try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
-            pstmt.setInt(1, item.getQuantity());
-            pstmt.setInt(2, item.getComputerId());
-            pstmt.setInt(3, item.getOrderId());
-            pstmt.setInt(4, item.getId());
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
-            AlertHelper.showErrorAlert("Unknown Error. Try again");
-            return false;
+                Computer pc = getComputerById(computerId);
+
+                if (pc!= null) {
+                    pc.setPrice(price.multiply(new BigDecimal(quantity)));
+                    orderItems.add(new OrderItem(
+                        itemId,
+                        orderId,
+                        pc, 
+                        quantity
+                    ));
+                }
+            }
         }
+        
+        return orderItems;
     }
 
     public boolean deleteOrderItem(Integer item_id) {
@@ -1379,6 +1489,29 @@ public class DbConnection {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
             AlertHelper.showErrorAlert("Unknown Error. Try again");
             return false;
+        }
+    }
+
+    private void createOrderItems(int orderId, Map<Integer, Integer> computerIdsAndQuantities) throws SQLException {
+        String orderItemInsertQuery = "INSERT INTO order_items (order_id, computer_id, quantity, price) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(orderItemInsertQuery)) {
+            for (Map.Entry<Integer, Integer> entry : computerIdsAndQuantities.entrySet()) {
+                int computerId = entry.getKey();
+                int quantityRequested = entry.getValue();
+    
+                Computer computer = getComputerById(computerId);
+
+                if (computer != null) {
+                    pstmt.setInt(1, orderId);
+                    pstmt.setInt(2, computerId);
+                    pstmt.setInt(3, quantityRequested);
+                    pstmt.setBigDecimal(4, computer.getPrice());
+                    pstmt.addBatch();
+                } else {
+                    throw new SQLException("Computer with ID " + computerId + " not found.");
+                }
+            }
+            pstmt.executeBatch();
         }
     }
 }   

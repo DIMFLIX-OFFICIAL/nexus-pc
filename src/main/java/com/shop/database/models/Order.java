@@ -2,6 +2,7 @@ package com.shop.database.models;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Order {
     private Integer id;
@@ -9,13 +10,15 @@ public class Order {
     private Timestamp orderDate;
     private BigDecimal totalAmount;
     private String status;
+    private List<OrderItem> items;
 
-    public Order(Integer id, String customer, Timestamp orderDate, BigDecimal totalAmount, String status) {
+    public Order(Integer id, String customer, Timestamp orderDate, BigDecimal totalAmount, String status, List<OrderItem> items) {
         this.id = id;
         this.customer = customer;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.status = status;
+        this.items = items;
     }
 
     public Integer getId() {
@@ -57,5 +60,12 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
-}
 
+    public void setItems(List<OrderItem> itms) {
+        this.items = itms;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+}

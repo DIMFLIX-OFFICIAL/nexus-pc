@@ -119,4 +119,12 @@ public class ShoppingCartItemController {
     public BigDecimal getPrice() {
         return computer.getPrice();
     }
+
+    public Computer getComputer() {
+        return computer;
+    }
+
+    public Integer getQuantity() {
+        return computersCount.getValue();
+    }
 }

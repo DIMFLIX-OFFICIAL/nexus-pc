@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,14 +15,14 @@ import com.shop.controllers.SharedData;
 import com.shop.controllers.main_pages.childrens.ShoppingCartItemController;
 import com.shop.database.DbConnection;
 import com.shop.database.models.Computer;
+import com.shop.database.models.OrderResult;
 import com.shop.database.models.ShoppingCartItem;
+import com.shop.helper.AlertHelper;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -49,14 +51,11 @@ public class ShoppingCartController implements Initializable {
     @FXML
     Label totalCost;
 
-    private ObservableList<Computer> computersList = FXCollections.observableArrayList();
-     private List<ShoppingCartItemController> itemControllers = new ArrayList<>();
+    private List<ShoppingCartItemController> itemControllers = new ArrayList<>();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        computersList.addAll(DbConnection.getDatabaseConnection().getAllComputers());
-
-        for (Computer computer : computersList) {
+        for (Computer computer : FXCollections.observableArrayList(DbConnection.getDatabaseConnection().getAllComputers())) {
             try {
                 ShoppingCartItem cartItem = DbConnection.getDatabaseConnection().getShoppingCartItemById(
                     SharedData.getAuthenticatedUser().getUsername(),
@@ -98,5 +97,31 @@ public class ShoppingCartController implements Initializable {
             total = total.add(itemController.getPrice());
         }
         totalCost.setText(String.format("Total cost: %s₽", total));
+    }
+
+    @FXML
+    private void makeOrder() {
+        Map<Integer, Integer> computerIdsAndQuantities = new HashMap<>();
+        for (ShoppingCartItemController itemController : itemControllers) {
+            computerIdsAndQuantities.put(
+                itemController.getComputer().getId(), 
+                itemController.getQuantity()
+            );
+        }
+
+        OrderResult result = DbConnection.getDatabaseConnection().createOrder(
+            SharedData.getAuthenticatedUser().getUsername(), 
+            computerIdsAndQuantities
+        );
+
+        if (result.isSuccess()) {
+            AlertHelper.showSuccessAlert("Order created successfully!");
+            DbConnection.getDatabaseConnection().clearShoppingCart(
+                SharedData.getAuthenticatedUser().getUsername()
+            );
+            SharedData.getMainController().loadShoppingCartView(null);
+        } else {
+            AlertHelper.showErrorAlert(result.getMessage());
+        }
     }
 }

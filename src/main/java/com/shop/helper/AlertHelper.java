@@ -2,7 +2,6 @@ package com.shop.helper;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Window;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -31,6 +30,6 @@ public class AlertHelper {
     }
 
     public static void showSuccessAlert(String message) {
-        AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, "Success", message);
+        AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", message);
     }
 }

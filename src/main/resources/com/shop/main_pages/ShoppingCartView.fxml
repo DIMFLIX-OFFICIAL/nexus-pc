@@ -15,7 +15,7 @@
          <children>
             <HBox fx:id="leftControlsBar" alignment="CENTER_LEFT">
                <children>
-                  <Button fx:id="makeOrderBtn" mnemonicParsing="false" style="-fx-background-color: #b4befe; -fx-text-fill: #ffffff; -fx-cursor: hand;" text="Make an order" HBox.hgrow="ALWAYS">
+                  <Button fx:id="makeOrderBtn" mnemonicParsing="false" onMouseClicked="#makeOrder" style="-fx-background-color: #b4befe; -fx-text-fill: #ffffff; -fx-cursor: hand;" text="Make an order" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font></Button>
