@@ -151,6 +151,27 @@ public class DbConnection {
                 "quantity INT NOT NULL, " +
                 "price DECIMAL(10,2) NOT NULL" +
                 ");";
+
+        String createOrderFunction = "CREATE OR REPLACE FUNCTION update_order_total() " +
+                "RETURNS TRIGGER AS $$ " +
+                "BEGIN " +
+                "    UPDATE orders " +
+                "    SET total_amount = ( " +
+                "        SELECT COALESCE(SUM(price * quantity), 0) " +
+                "        FROM order_items " +
+                "        WHERE order_id = NEW.order_id " +
+                "    ) " +
+                "    WHERE id = NEW.order_id; " +
+                "    RETURN NEW; " +
+                "END; $$ LANGUAGE plpgsql;";
+
+        String createOrderTrigger = "DO $$ BEGIN " +
+                "IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'order_total_update') THEN " +
+                "CREATE TRIGGER order_total_update " +
+                "AFTER INSERT OR UPDATE OR DELETE ON order_items " +
+                "FOR EACH ROW EXECUTE FUNCTION update_order_total(); " +
+                "END IF; END $$;";
+
     
         try (Statement statement = con.createStatement()) {
             statement.executeUpdate(createUsersTable);
@@ -165,6 +186,8 @@ public class DbConnection {
             statement.executeUpdate(createShoppingCartTable);
             statement.executeUpdate(createOrdersTable);
             statement.executeUpdate(createOrderItemsTable);
+            statement.executeUpdate(createOrderFunction);
+            statement.executeUpdate(createOrderTrigger);
         } catch (Exception ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
             AlertHelper.showErrorAlert("Unknown Error. Try again");
