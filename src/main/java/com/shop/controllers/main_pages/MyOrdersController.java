@@ -135,11 +135,11 @@ public class MyOrdersController implements Initializable {
                         setFont(Font.font("Arial", 16));
                     }
 
-                    if (item.equals("Status: Pending")) {
+                    if (item.equals("Status: pending")) {
                         setStyle("-fx-background-color: #fab387; -fx-font-weight: bold;");
                     }
 
-                    if (item.equals("Status: Delivered")) {
+                    if (item.equals("Status: delivered")) {
                         setStyle("-fx-background-color: #a6e3a1; -fx-font-weight: bold;");
                     }
 

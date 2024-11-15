@@ -102,7 +102,7 @@ public class AdminOrdersController implements Initializable {
         totalAmountColumn.setEditable(false);
 
         ObservableList<String> statuses = FXCollections.observableArrayList();
-        statuses.addAll("Pending", "Delivered");
+        statuses.addAll("pending", "delivered");
         setupComboColumn(statusColumn, "status", statuses, Order::setStatus);
         
         setupColumn(commentColumn, "comment", Order::setComment);
