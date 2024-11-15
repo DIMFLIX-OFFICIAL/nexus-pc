@@ -22,6 +22,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button fx:id="FiltersPageButton" maxHeight="35.0" minHeight="35.0" mnemonicParsing="false" onAction="#loadFiltersView" prefHeight="35.0" prefWidth="168.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Filters" textAlignment="JUSTIFY">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
             <Button fx:id="ShoppingCartPageButton" mnemonicParsing="false" onAction="#loadShoppingCartView" prefHeight="30.0" prefWidth="172.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #303446; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Cart" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="17.0" />

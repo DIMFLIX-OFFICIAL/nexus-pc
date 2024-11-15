@@ -167,4 +167,9 @@ public class MainPanelController implements Initializable {
     public void loadComputerInfoView() {
         loadFXML("/com/shop/main_pages/ComputerInfoView", "Computer Information");
     }
+
+    @FXML
+    public void loadFiltersView() {
+        loadFXML("/com/shop/main_pages/FiltersView", "Filters");
+    }
 }
