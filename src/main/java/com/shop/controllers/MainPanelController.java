@@ -114,6 +114,10 @@ public class MainPanelController implements Initializable {
             ordersAdminTable, orderItemsAdminTable
         );
 
+        if (SharedData.getAuthenticatedUser().getRole() != "admin") {
+            AdminPagesButton.setVisible(false);
+        }
+
         SharedData.setMainController(this);
         loadCatalogView(null); // start page
     }
