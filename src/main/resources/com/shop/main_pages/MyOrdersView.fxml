@@ -3,7 +3,7 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="499.0" prefWidth="766.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.MyOrdersController">
+<AnchorPane fx:id="root" prefHeight="499.0" prefWidth="766.0" style="-fx-background-color: #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.MyOrdersController">
    <children>
       <TreeView fx:id="tree" prefHeight="499.0" prefWidth="766.0" style="-fx-background-color: #313244;" stylesheets="@../styles/treeview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>

@@ -8,11 +8,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import javax.swing.GroupLayout.Alignment;
 
 import com.shop.controllers.MainPanelController;
 import com.shop.controllers.SharedData;
@@ -24,12 +27,17 @@ import com.shop.helper.AlertHelper;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
 public class MyOrdersController implements Initializable {
+    @FXML
+    private AnchorPane root;
     @FXML
     private TreeView<String> tree;
 
@@ -49,14 +57,37 @@ public class MyOrdersController implements Initializable {
     }
 
     private void setInfoInTreeView() {
+
+        if (ordersList == null || ordersList.size() == 0) {
+            root.getChildren().remove(tree);
+            Label label = new Label();
+            label.setFont(Font.font("Arial", 30));
+            label.setStyle("-fx-text-fill: #ffffff;");
+            label.setText("You have no orders");
+            label.setAlignment(Pos.CENTER);
+
+            AnchorPane.setTopAnchor(label, 0.0);
+            AnchorPane.setBottomAnchor(label, 0.0);
+            AnchorPane.setLeftAnchor(label, 0.0);
+            AnchorPane.setRightAnchor(label, 0.0);
+
+            root.getChildren().add(label);
+            
+            
+        }
+
+
+
         TreeItem<String> rootItem = new TreeItem<>("Your orders");
         rootItem.setExpanded(true);
+        Collections.reverse(ordersList);
 
         for (Order order : ordersList) {
             TreeItem<String> item = new TreeItem<>(String.format("Order from %s in the amount of %s₽", sdf.format(order.getOrderDate()), order.getTotalAmount()));
             item.getChildren().add(new TreeItem<>(String.format("Time: %s", sdf.format(order.getOrderDate()))));
             item.getChildren().add(new TreeItem<>(String.format("Total Amount: %s₽", order.getTotalAmount())));
             item.getChildren().add(new TreeItem<>(String.format("Status: %s", order.getStatus())));
+            item.getChildren().add(new TreeItem<>(String.format("Comment: %s", order.getComment())));
 
             TreeItem<String> selected_computers = new TreeItem<>("Selected computers");
             for (OrderItem order_item : order.getItems()) {
@@ -104,8 +135,12 @@ public class MyOrdersController implements Initializable {
                         setFont(Font.font("Arial", 16));
                     }
 
-                    if (item.equals("Status: pending")) {
+                    if (item.equals("Status: Pending")) {
                         setStyle("-fx-background-color: #fab387; -fx-font-weight: bold;");
+                    }
+
+                    if (item.equals("Status: Delivered")) {
+                        setStyle("-fx-background-color: #a6e3a1; -fx-font-weight: bold;");
                     }
 
                     if (item.startsWith("Order from")) {
