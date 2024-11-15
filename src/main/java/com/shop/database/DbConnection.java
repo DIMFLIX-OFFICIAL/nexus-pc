@@ -149,7 +149,8 @@ public class DbConnection {
                 "order_id INT NOT NULL REFERENCES orders(id), " +
                 "computer_id INT NOT NULL REFERENCES computers(id), " +
                 "quantity INT NOT NULL, " +
-                "price DECIMAL(10,2) NOT NULL" +
+                "price DECIMAL(10,2) NOT NULL, " +
+                "comment TEXT" +
                 ");";
 
         String createOrderFunction = "CREATE OR REPLACE FUNCTION update_order_total() " +
@@ -1362,6 +1363,7 @@ public class DbConnection {
                     orderRs.getTimestamp("order_date"),
                     new BigDecimal(orderRs.getDouble("total_amount")),
                     orderRs.getString("status"),
+                    orderRs.getString("comment"),
                     orderItems
                 ));
             }
@@ -1373,7 +1375,7 @@ public class DbConnection {
         return orders;
     }
 
-    public OrderResult createOrder(String customerUsername, Map<Integer, Integer> computerIdsAndQuantities) {
+    public OrderResult createOrder(String customerUsername, String comment, Map<Integer, Integer> computerIdsAndQuantities) {
         String checkStatus = checkStockAvailability(computerIdsAndQuantities);
         if (checkStatus != null) {
             return new OrderResult(false, checkStatus);
@@ -1381,11 +1383,11 @@ public class DbConnection {
     
         try {
             con.setAutoCommit(false); // Отключаем автоматическое подтверждение
-            String orderInsertQuery = "INSERT INTO orders (customer, total_amount) VALUES (?, ?) RETURNING id";
+            String orderInsertQuery = "INSERT INTO orders (customer, comment, total_amount) VALUES (?, ?, ?) RETURNING id";
             PreparedStatement orderStmt = con.prepareStatement(orderInsertQuery);
             orderStmt.setString(1, customerUsername);
-            double totalAmount = calculateTotalAmount(computerIdsAndQuantities);
-            orderStmt.setDouble(2, totalAmount);
+            orderStmt.setString(2, comment);
+            orderStmt.setDouble(3, calculateTotalAmount(computerIdsAndQuantities));
             
             ResultSet generatedKeys = orderStmt.executeQuery();
             if (generatedKeys.next()) {
@@ -1434,14 +1436,12 @@ public class DbConnection {
     }
 
     public boolean updateOrder(Order order) {
-        String updateQuery = "UPDATE orders SET status = ?, total_amount = ?, order_date = ?, customer = ? WHERE id = ?";
+        String updateQuery = "UPDATE orders SET status = ?, comment = ? WHERE id = ?";
         
         try (PreparedStatement pstmt = con.prepareStatement(updateQuery)) {
             pstmt.setString(1, order.getStatus());
-            pstmt.setBigDecimal(2, order.getTotalAmount());
-            pstmt.setTimestamp(3, order.getOrderDate());
-            pstmt.setString(4, order.getCustomer());
-            pstmt.setInt(5, order.getId());
+            pstmt.setString(2, order.getComment());
+            pstmt.setInt(3, order.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -1468,7 +1468,7 @@ public class DbConnection {
 
 
 
-    //==> ORDERS CRUD
+    //==> ORDER ITEMS CRUD
     // ==================================================================================================================================
     private List<OrderItem> getOrderItems(Integer orderId) throws SQLException {
         List<OrderItem> orderItems = new ArrayList<>();

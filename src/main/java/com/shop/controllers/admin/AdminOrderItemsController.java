@@ -2,16 +2,6 @@ package com.shop.controllers.admin;
 
 import com.shop.database.DbConnection;
 import com.shop.database.models.OrderItem;
-import com.shop.database.models.Cooler;
-import com.shop.database.models.GraphicCard;
-import com.shop.database.models.Identifiable;
-import com.shop.database.models.Motherboard;
-import com.shop.database.models.Order;
-import com.shop.database.models.OrderItem;
-import com.shop.database.models.PowerSupply;
-import com.shop.database.models.Processor;
-import com.shop.database.models.RAM;
-import com.shop.database.models.Case;
 import com.shop.database.models.Computer;
 import com.shop.helper.AlertHelper;
 
@@ -60,14 +50,14 @@ public class AdminOrderItemsController implements Initializable {
         idColumn.setEditable(false);
 
         setupIntegerColumn(orderIdColumn, "orderId", OrderItem::setOrderId);
-        idColumn.setEditable(false);
+        orderIdColumn.setEditable(false);
 
         ObservableList<Computer> computers = FXCollections.observableArrayList(DbConnection.getDatabaseConnection().getAllComputers());
         setupComboColumn(computerColumn, "computer", computers, OrderItem::setComputer);
         computerColumn.setEditable(false);
 
         setupIntegerColumn(quantityColumn, "quantity", OrderItem::setQuantity);
-        quantityColumn.setEditable(true);
+        quantityColumn.setEditable(false);
 
         loadData();
         tableView.setItems(orderItemsList);

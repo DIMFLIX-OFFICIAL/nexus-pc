@@ -38,6 +38,7 @@
             <TableColumn fx:id="orderDateColumn" text="Order Date" />
             <TableColumn fx:id="totalAmountColumn" text="Total Amount" />
             <TableColumn fx:id="statusColumn" text="Status" />
+            <TableColumn fx:id="commentColumn" text="Comment" />
         </columns>
       <columnResizePolicy>
          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

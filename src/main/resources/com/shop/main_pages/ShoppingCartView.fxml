@@ -4,12 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="253.0" prefWidth="200.0" style="-fx-background-color:  #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.ShoppingCartController">
+<AnchorPane fx:id="root" prefHeight="394.0" prefWidth="200.0" style="-fx-background-color:  #313244;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shop.controllers.main_pages.ShoppingCartController">
    <children>
       <HBox fx:id="controlsBar" maxHeight="60.0" minHeight="26.0" prefHeight="60.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,7 +41,8 @@
             <Insets bottom="20.0" top="20.0" />
          </padding>
       </HBox>
-      <ScrollPane fx:id="scrollPane" layoutY="60.0" prefHeight="193.0" prefWidth="200.0" stylesheets="@../styles/scrollpane.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+      <TextArea fx:id="commentInput" layoutY="61.0" prefHeight="139.0" prefWidth="200.0" promptText="Enter a comment on your order." stylesheets="@../styles/textArea.css" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
+      <ScrollPane fx:id="scrollPane" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/scrollpane.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="194.0">
          <content>
             <VBox fx:id="itemsList" alignment="CENTER" spacing="10.0">
                <padding>

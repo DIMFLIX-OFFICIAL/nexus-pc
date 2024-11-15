@@ -2,6 +2,7 @@ package com.shop.controllers.admin;
 
 import com.shop.controllers.SharedData;
 import com.shop.database.DbConnection;
+import com.shop.database.models.Motherboard;
 import com.shop.database.models.Order;
 import com.shop.database.models.User;
 import com.shop.helper.AlertHelper;
@@ -66,6 +67,8 @@ public class AdminOrdersController implements Initializable {
     private TableColumn<Order, BigDecimal> totalAmountColumn;
     @FXML
     private TableColumn<Order, String> statusColumn;
+    @FXML
+    private TableColumn<Order, String> commentColumn;
 
     Window window;
 
@@ -90,6 +93,7 @@ public class AdminOrdersController implements Initializable {
             .collect(Collectors.toList()) // Собираем результаты в список
         );
         setupComboColumn(customerColumn, "customer", usernames,  Order::setCustomer);
+        customerColumn.setEditable(false);
 
         setupTimestampColumn(orderDateColumn, "orderDate", Order::setOrderDate);
         orderDateColumn.setEditable(false);
@@ -100,9 +104,20 @@ public class AdminOrdersController implements Initializable {
         ObservableList<String> statuses = FXCollections.observableArrayList();
         statuses.addAll("Pending", "Delivered");
         setupComboColumn(statusColumn, "status", statuses, Order::setStatus);
+        
+        setupColumn(commentColumn, "comment", Order::setComment);
 
         loadData();
         tableView.setItems(ordersList);
+    }
+
+    private void setupColumn(TableColumn<Order, String> column, String column_name, BiConsumer<Order, String> setter) {
+        column.setCellValueFactory(new PropertyValueFactory<>(column_name));
+        column.setCellFactory(TextFieldTableCell.forTableColumn());
+        column.setOnEditCommit(event -> {
+            Order order = event.getRowValue();
+            setter.accept(order, event.getNewValue());
+        });
     }
 
     private void setupIntegerColumn(TableColumn<Order, Integer> column, String column_name, BiConsumer<Order, Integer> setter) {

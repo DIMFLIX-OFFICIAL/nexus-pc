@@ -27,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -50,6 +51,8 @@ public class ShoppingCartController implements Initializable {
     Button makeOrderBtn;
     @FXML
     Label totalCost;
+    @FXML
+    TextArea commentInput;
 
     private List<ShoppingCartItemController> itemControllers = new ArrayList<>();
     
@@ -80,8 +83,15 @@ public class ShoppingCartController implements Initializable {
             label.setFont(Font.font("Arial", 30));
             label.setText("Your cart is empty");
             itemsList.getChildren().add(label);
+            root.getChildren().remove(controlsBar);
+            root.getChildren().remove(commentInput);
             scrollPane.setFitToHeight(true);
-            controlsBar.setVisible(false);
+            AnchorPane.setTopAnchor(scrollPane, 0.0);
+        } else {
+            if (!(SharedData.getAuthenticatedUser().getRole().equals("admin"))) {
+                root.getChildren().remove(commentInput);
+                AnchorPane.setTopAnchor(scrollPane, 60.0);
+            }
         }
 
         VBox.setVgrow(itemsList, Priority.ALWAYS);
@@ -107,10 +117,13 @@ public class ShoppingCartController implements Initializable {
                 itemController.getComputer().getId(), 
                 itemController.getQuantity()
             );
-        }
+        }  
+
+        System.out.println(commentInput.getText());
 
         OrderResult result = DbConnection.getDatabaseConnection().createOrder(
-            SharedData.getAuthenticatedUser().getUsername(), 
+            SharedData.getAuthenticatedUser().getUsername(),
+            commentInput.getText().equals("") ? null : commentInput.getText(),
             computerIdsAndQuantities
         );
 

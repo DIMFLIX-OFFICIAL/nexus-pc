@@ -1,0 +1,23 @@
+.text-area {
+    -fx-background-color: #45475a;
+    -fx-text-fill: #ffffff;
+
+    -fx-background-radius: 15; /* Радиус закругления фона */
+    -fx-border-radius: 15; /* Радиус закругления границы */
+    -fx-border-color: transparent; /* Цвет границы */
+    -fx-border-width: 2; 
+}
+
+.text-area .content {
+    -fx-background-color: #45475a;
+    -fx-padding: 10px;
+    -fx-highlight-fill: #b4befe;
+}
+
+.text-area:focused .content {
+    -fx-background-color: #45475a;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #b4befe;
+}

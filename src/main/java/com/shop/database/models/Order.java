@@ -9,16 +9,18 @@ public class Order {
     private String customer;
     private Timestamp orderDate;
     private BigDecimal totalAmount;
+    private String comment;
     private String status;
     private List<OrderItem> items;
 
-    public Order(Integer id, String customer, Timestamp orderDate, BigDecimal totalAmount, String status, List<OrderItem> items) {
+    public Order(Integer id, String customer, Timestamp orderDate, BigDecimal totalAmount, String status, String comment, List<OrderItem> items) {
         this.id = id;
         this.customer = customer;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.status = status;
         this.items = items;
+        this.comment = comment;
     }
 
     public Integer getId() {
@@ -67,5 +69,13 @@ public class Order {
 
     public List<OrderItem> getItems() {
         return items;
+    }
+
+    public void setComment(String value) {
+        this.comment = value;
+    }
+
+    public String getComment() {
+        return comment;
     }
 }
