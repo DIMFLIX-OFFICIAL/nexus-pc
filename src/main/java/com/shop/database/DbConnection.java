@@ -1488,7 +1488,7 @@ public class DbConnection {
                 Computer pc = getComputerById(computerId);
 
                 if (pc!= null) {
-                    pc.setPrice(price.multiply(new BigDecimal(quantity)));
+                    pc.setPrice(price);
                     orderItems.add(new OrderItem(
                         itemId,
                         orderId,

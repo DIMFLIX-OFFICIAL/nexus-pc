@@ -3,6 +3,7 @@ package com.shop.controllers.main_pages;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,7 +27,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class MyOrdersController implements Initializable {
@@ -65,12 +65,9 @@ public class MyOrdersController implements Initializable {
                 TreeItem<String> pc_item = new TreeItem<>(pc.getName());
                 pc_item.getChildren().add(new TreeItem<>(String.format("Quantity: %s", order_item.getQuantity())));
                 pc_item.getChildren().add(new TreeItem<>(String.format("Cost per one: %s", pc.getPrice())));
-                pc_item.getChildren().add(new TreeItem<>(String.format(
-                    "Total cost: %s",  
-                    pc.getPrice().multiply(
-                        new BigDecimal(order_item.getQuantity())
-                    )
-                )));
+                pc_item.getChildren().add(new TreeItem<>(String.format("Total cost: %s", pc.getPrice().multiply(
+                    new BigDecimal(order_item.getQuantity())
+                ))));
 
                 TreeItem<String> viewInfoItem = new TreeItem<>(String.format("View information about computer number %s", pc.getId()));
                 pc_item.getChildren().add(viewInfoItem);
