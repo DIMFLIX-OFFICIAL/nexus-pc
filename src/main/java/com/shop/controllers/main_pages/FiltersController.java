@@ -141,7 +141,7 @@ public class FiltersController implements Initializable {
         SpinnerValueFactory<Integer> ramsCountFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
             0,
             1000000000,
-            0
+            SharedData.getCountRAMFilter()
         );
         ramsCountInput.setValueFactory(ramsCountFactory);
         ramsCountInput.valueProperty().addListener((observable, oldValue, newValue) -> {
