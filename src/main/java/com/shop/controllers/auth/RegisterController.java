@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -40,11 +41,26 @@ public class RegisterController implements Initializable {
     @FXML
     private Button registerButton;
 
+    @FXML
+    private BorderPane rootPane;
+
     Window window;
+
+    private double mouseX;
+    private double mouseY;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        rootPane.setOnMousePressed(event -> {
+            mouseX = event.getScreenX() - ((Stage) rootPane.getScene().getWindow()).getX();
+            mouseY = event.getScreenY() - ((Stage) rootPane.getScene().getWindow()).getY();
+        });
 
+        rootPane.setOnMouseDragged(event -> {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setX(event.getScreenX() - mouseX);
+            stage.setY(event.getScreenY() - mouseY);
+        });
     }
 
     @FXML

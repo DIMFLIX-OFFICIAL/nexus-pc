@@ -34,15 +34,6 @@ public class MainPanelController implements Initializable {
     private HBox pagesWindow;
 
     @FXML
-    private AreaChart<?, ?> chartPurchase;
-
-    @FXML
-    private AreaChart<?, ?> chartSale;
-
-    @FXML
-    private LineChart<?, ?> chartReceipt;
-
-    @FXML
     private Button CatalogPageButton;
 
     @FXML
@@ -57,9 +48,25 @@ public class MainPanelController implements Initializable {
     @FXML
     private Label windowName;
 
+    @FXML
+    private HBox topPanel;
+
+    private double mouseX;
+    private double mouseY;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        topPanel.setOnMousePressed(event -> {
+            mouseX = event.getScreenX() - ((Stage) topPanel.getScene().getWindow()).getX();
+            mouseY = event.getScreenY() - ((Stage) topPanel.getScene().getWindow()).getY();
+        });
+
+        topPanel.setOnMouseDragged(event -> {
+            Stage stage = (Stage) topPanel.getScene().getWindow();
+            stage.setX(event.getScreenX() - mouseX);
+            stage.setY(event.getScreenY() - mouseY);
+        });
+
         MenuItem usersAdminTable = new MenuItem("Users");
         MenuItem processorsAdminTable = new MenuItem("Processors");
         MenuItem graphicCardsAdminTable = new MenuItem("Graphic Cards");
@@ -114,12 +121,13 @@ public class MainPanelController implements Initializable {
             ordersAdminTable, orderItemsAdminTable
         );
 
-        if (SharedData.getAuthenticatedUser().getRole() != "admin") {
+        if (!(SharedData.getAuthenticatedUser().getRole().equals("admin"))) {
             AdminPagesButton.setVisible(false);
         }
 
         SharedData.setMainController(this);
         loadCatalogView(null); // start page
+        
     }
 
     @FXML

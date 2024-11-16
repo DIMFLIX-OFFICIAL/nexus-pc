@@ -58,7 +58,7 @@
       </VBox>
    </left>
    <top>
-      <HBox alignment="CENTER" prefHeight="39.0" prefWidth="1360.0" style="-fx-background-color: #181825;" BorderPane.alignment="CENTER">
+      <HBox fx:id="topPanel" alignment="CENTER" prefHeight="39.0" prefWidth="1360.0" style="-fx-background-color: #181825;" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="39.0" prefWidth="298.0" HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="39.0" prefWidth="343.0" HBox.hgrow="ALWAYS">
