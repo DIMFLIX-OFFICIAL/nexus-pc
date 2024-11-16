@@ -60,7 +60,15 @@
    <top>
       <HBox fx:id="topPanel" alignment="CENTER" prefHeight="39.0" prefWidth="1360.0" style="-fx-background-color: #181825;" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="39.0" prefWidth="298.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="298.0" spacing="5.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button ellipsisString="" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #eba0ac; -fx-background-radius: 10; -fx-border-radius: 10;" />
+                  <Button ellipsisString="" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleMinimizeButton" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #fab387; -fx-background-radius: 10; -fx-border-radius: 10;" />
+                  <Button ellipsisString="" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleMaximizeButton" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #a6e3a1; -fx-background-radius: 10; -fx-border-radius: 10;" />
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin></HBox>
             <HBox alignment="CENTER" prefHeight="39.0" prefWidth="343.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label fx:id="windowName" text="Catalog" textFill="WHITE">

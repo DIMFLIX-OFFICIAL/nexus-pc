@@ -23,6 +23,7 @@
                   <Font size="18.0" />
                </font>
             </Text>
+            <Button ellipsisString="" layoutX="14.0" layoutY="14.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #eba0ac; -fx-background-radius: 10; -fx-border-radius: 10;" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
          </children>
       </AnchorPane>
    </left>

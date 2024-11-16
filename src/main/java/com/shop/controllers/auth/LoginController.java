@@ -112,4 +112,10 @@ public class LoginController implements Initializable {
         stage.setTitle("User Registration");
         stage.show();
     }
+
+    @FXML
+    private void handleCloseButton() {
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.close();
+    }
 }

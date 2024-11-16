@@ -184,4 +184,26 @@ public class MainPanelController implements Initializable {
     public void loadFiltersView() {
         loadFXML("/com/shop/main_pages/FiltersView", "Filters");
     }
+
+    @FXML
+    private void handleCloseButton() {
+        Stage stage = (Stage) topPanel.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    private void handleMinimizeButton() {
+        Stage stage = (Stage) topPanel.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void handleMaximizeButton() {
+        Stage stage = (Stage) topPanel.getScene().getWindow();
+        if (!stage.isMaximized()) {
+            stage.setMaximized(true);
+        } else {
+            stage.setMaximized(false); 
+        }
+    }
 }
