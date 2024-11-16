@@ -50,8 +50,9 @@ public class ShoppingCartItemController {
             try {
                 Image image = new Image(pc.getImageUrl());
                 if (image.isError()) {
-                    System.out.println("Ошибка загрузки изображения: " + image.getException());
-                    AlertHelper.showErrorAlert("Error loading images");
+                    Platform.runLater(() -> {
+                        computerImage.setImage(new Image(getClass().getResource("/com/shop/pc.png").toString()));
+                    });
                 } else {
                     Platform.runLater(() -> {
                         String frm = String.format("-fx-image: url('%s');", pc.getImageUrl());

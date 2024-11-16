@@ -1,5 +1,6 @@
 package com.shop.controllers.main_pages.childrens;
 
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,8 +43,9 @@ public class ComputerItemController {
             try {
                 Image image = new Image(pc.getImageUrl());
                 if (image.isError()) {
-                    System.out.println("Ошибка загрузки изображения: " + image.getException());
-                    AlertHelper.showErrorAlert("Error loading images");
+                    Platform.runLater(() -> {
+                        computerImage.setImage(new Image(getClass().getResource("/com/shop/pc.png").toString()));
+                    });
                 } else {
                     Platform.runLater(() -> {
                         String frm = String.format("-fx-image: url('%s');", pc.getImageUrl());

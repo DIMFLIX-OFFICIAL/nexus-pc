@@ -89,14 +89,14 @@ public class ComputerInfoController implements Initializable {
         computerPrice.setText(String.format("%s₽", computer.getPrice()));
         new Thread(() -> {
             try {
-                String imageUrl = computer.getImageUrl();
-                Image image = new Image(imageUrl);
+                Image image = new Image(computer.getImageUrl());
                 if (image.isError()) {
-                    System.out.println("Ошибка загрузки изображения: " + image.getException());
-                    AlertHelper.showErrorAlert("Error loading images");
+                    Platform.runLater(() -> {
+                        computerImage.setImage(new Image(getClass().getResource("/com/shop/pc.png").toString()));
+                    });
                 } else {
                     Platform.runLater(() -> {
-                        String frm = String.format("-fx-image: url('%s');", imageUrl);
+                        String frm = String.format("-fx-image: url('%s');", computer.getImageUrl());
                         computerImage.setStyle(frm);
                     });
                 }
