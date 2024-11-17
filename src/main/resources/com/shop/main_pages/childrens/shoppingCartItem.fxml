@@ -28,7 +28,7 @@
             <HBox fx:id="emptySpace">
 
             </HBox>
-            <VBox alignment="CENTER" prefHeight="120.0" prefWidth="199.0" spacing="10.0" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" prefHeight="120.0" prefWidth="199.0" spacing="10.0">
                <children>
                   <VBox alignment="CENTER">
                      <children>
