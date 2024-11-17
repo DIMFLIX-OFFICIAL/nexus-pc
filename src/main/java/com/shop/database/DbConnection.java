@@ -141,7 +141,8 @@ public class DbConnection {
                 "customer TEXT NOT NULL REFERENCES users(username), " +
                 "order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
                 "total_amount DECIMAL(10,2) NOT NULL, " +
-                "status VARCHAR(25) NOT NULL DEFAULT 'pending'" +
+                "status VARCHAR(25) NOT NULL DEFAULT 'pending', " +
+                "comment TEXT" +
                 ");";
 
         String createOrderItemsTable = "CREATE TABLE IF NOT EXISTS order_items (" +
@@ -149,8 +150,7 @@ public class DbConnection {
                 "order_id INT NOT NULL REFERENCES orders(id), " +
                 "computer_id INT NOT NULL REFERENCES computers(id), " +
                 "quantity INT NOT NULL, " +
-                "price DECIMAL(10,2) NOT NULL, " +
-                "comment TEXT" +
+                "price DECIMAL(10,2) NOT NULL" +
                 ");";
 
         String createOrderFunction = "CREATE OR REPLACE FUNCTION update_order_total() " +
