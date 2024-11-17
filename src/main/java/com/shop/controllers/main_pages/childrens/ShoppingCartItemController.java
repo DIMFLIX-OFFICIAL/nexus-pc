@@ -37,6 +37,8 @@ public class ShoppingCartItemController {
     @FXML
     private Label computerPrice;
     @FXML
+    private Label inStockLabel;
+    @FXML
     private Button removeFromCartBtn;
     @FXML
     private Spinner<Integer> computersCount;
@@ -70,6 +72,8 @@ public class ShoppingCartItemController {
 
         computer.setPrice(computer.getPrice().multiply(new BigDecimal(quantity)));
         computerPrice.setText(String.format("%s₽", computer.getPrice()));
+
+        inStockLabel.setText(String.format("In stock: %s", computer.getStockQuantity()));
 
         computersCount.setValueFactory(valueFactory);
         computersCount.valueProperty().addListener((observable, oldValue, newValue) -> {

@@ -28,17 +28,26 @@
             <HBox fx:id="emptySpace">
 
             </HBox>
-            <VBox alignment="CENTER" prefHeight="120.0" prefWidth="199.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="120.0" prefWidth="199.0" spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="computerPrice" alignment="CENTER" prefHeight="101.0" prefWidth="199.0" text="10.000₽" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="computerPrice" alignment="CENTER" prefHeight="16.0" prefWidth="199.0" text="10.000₽" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="inStockLabel" alignment="CENTER" prefHeight="0.0" prefWidth="199.0" text="In stock: " textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="45.0" prefWidth="199.0" spacing="10.0">
                      <children>
                         <Spinner fx:id="computersCount" minHeight="43.0" minWidth="60.0" prefWidth="60.0" stylesheets="@../../styles/spinner.css" />
-                        <Button fx:id="removeFromCartBtn" mnemonicParsing="false" onMouseClicked="#removeFromShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #eba0ac; -fx-cursor: hand;" text="Remove" textFill="WHITE">
+                        <Button fx:id="removeFromCartBtn" mnemonicParsing="false" onMouseClicked="#removeFromShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #eba0ac; -fx-cursor: hand; -fx-background-radius: 10px;" text="Remove" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
