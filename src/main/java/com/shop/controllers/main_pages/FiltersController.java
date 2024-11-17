@@ -153,4 +153,10 @@ public class FiltersController implements Initializable {
             SharedData.setCaseFilter(newValue);
         });
     }
+
+    @FXML
+    private void resetFilters() {
+        SharedData.resetFilters();
+        SharedData.getMainController().loadFiltersView();
+    }
 }

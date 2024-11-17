@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
@@ -35,7 +36,7 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Spinner fx:id="maxCostInput" prefHeight="30.0" style="-fx-text-fill: #ffffff;" stylesheets="@../styles/spinner.css" />
+                              <Spinner fx:id="maxCostInput" editable="true" prefHeight="30.0" style="-fx-text-fill: #ffffff;" stylesheets="@../styles/spinner.css" />
                            </children>
                         </VBox>
                      </children>
@@ -52,6 +53,11 @@
                   </HBox>
                   <ComboBox fx:id="coolerFilter" prefHeight="30.0" prefWidth="349.0" promptText="Cooler" stylesheets="@../styles/combobox.css" />
                   <ComboBox fx:id="caseFilter" prefHeight="30.0" prefWidth="349.0" promptText="Case" stylesheets="@../styles/combobox.css" />
+                  <Button mnemonicParsing="false" onAction="#resetFilters" prefHeight="30.0" prefWidth="348.0" style="-fx-background-color: #b4befe;" text="Reset filters" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

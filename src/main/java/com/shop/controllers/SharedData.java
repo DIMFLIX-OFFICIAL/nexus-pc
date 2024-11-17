@@ -131,4 +131,17 @@ public class SharedData {
     public static void setCaseFilter(Case value) {
         caseFilter = value;
     }
+
+    public static void resetFilters() {
+        processorFilter = null;
+        graphicCardFilter = null;
+        motherboardFilter = null;
+        powerSupplyFilter = null;
+        ramFilter = null;
+        countRAMFilter = 0;
+        coolerFilter = null;
+        caseFilter = null;
+        minCostFilter = 1;
+        maxCostFilter = 1000000000;
+    }
 }
