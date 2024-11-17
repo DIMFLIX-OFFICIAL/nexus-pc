@@ -80,7 +80,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="337.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1; -fx-cursor: hand;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
+                  <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="18.0" prefWidth="74.0" style="-fx-text-fill: #f0f0f0; -fx-background-color: #babbf1; -fx-cursor: hand; -fx-background-radius: 5;" styleClass="bt" stylesheets="@styles/mainpanel.css" text="Log Out" textAlignment="JUSTIFY">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

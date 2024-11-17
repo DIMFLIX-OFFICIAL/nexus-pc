@@ -53,7 +53,7 @@
                   </HBox>
                   <ComboBox fx:id="coolerFilter" prefHeight="30.0" prefWidth="349.0" promptText="Cooler" stylesheets="@../styles/combobox.css" />
                   <ComboBox fx:id="caseFilter" prefHeight="30.0" prefWidth="349.0" promptText="Case" stylesheets="@../styles/combobox.css" />
-                  <Button mnemonicParsing="false" onAction="#resetFilters" prefHeight="30.0" prefWidth="348.0" style="-fx-background-color: #b4befe;" text="Reset filters" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#resetFilters" prefHeight="40.0" prefWidth="348.0" style="-fx-background-color: #b4befe; -fx-background-radius: 10;" text="Reset filters" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>

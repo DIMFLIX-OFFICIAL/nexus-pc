@@ -1,6 +1,5 @@
 package com.shop.controllers.main_pages.childrens;
 
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,10 +80,10 @@ public class ComputerItemController {
 
         if (state) {
             addToCartBtn.setText("Add to cart");
-            addToCartBtn.setStyle("-fx-background-color: #b4befe; -fx-cursor: hand;");
+            addToCartBtn.setStyle("-fx-background-color: #b4befe; -fx-cursor: hand; -fx-background-radius: 10;");
         } else {
             addToCartBtn.setText("Remove from cart");
-            addToCartBtn.setStyle("-fx-background-color: #eba0ac; -fx-cursor: hand;");
+            addToCartBtn.setStyle("-fx-background-color: #eba0ac; -fx-cursor: hand; -fx-background-radius: 10;");
         }
     }
 

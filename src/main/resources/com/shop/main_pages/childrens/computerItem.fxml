@@ -34,7 +34,7 @@
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Button fx:id="addToCartBtn" mnemonicParsing="false" onAction="#addToShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #b4befe; -fx-cursor: hand;" text="Add to cart" textFill="WHITE">
+                  <Button fx:id="addToCartBtn" mnemonicParsing="false" onAction="#addToShoppingCart" prefHeight="43.0" prefWidth="255.0" style="-fx-background-color: #b4befe; -fx-cursor: hand; -fx-background-radius: 10;" text="Add to cart" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
