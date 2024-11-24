@@ -87,7 +87,10 @@ public class MyOrdersController implements Initializable {
             item.getChildren().add(new TreeItem<>(String.format("Time: %s", sdf.format(order.getOrderDate()))));
             item.getChildren().add(new TreeItem<>(String.format("Total Amount: %s₽", order.getTotalAmount())));
             item.getChildren().add(new TreeItem<>(String.format("Status: %s", order.getStatus())));
-            item.getChildren().add(new TreeItem<>(String.format("Comment: %s", order.getComment())));
+
+            if (order.getComment() != null && !order.getComment().strip().equals("")) {
+                item.getChildren().add(new TreeItem<>(String.format("Comment: %s", order.getComment())));
+            }
 
             TreeItem<String> selected_computers = new TreeItem<>("Selected computers");
             for (OrderItem order_item : order.getItems()) {
