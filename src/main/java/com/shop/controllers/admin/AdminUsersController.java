@@ -1,12 +1,17 @@
 package com.shop.controllers.admin;
 
 import com.shop.database.DbConnection;
+import com.shop.database.models.Computer;
+import com.shop.database.models.Identifiable;
 import com.shop.database.models.User;
+import com.shop.helper.AlertHelper;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
@@ -48,7 +53,10 @@ public class AdminUsersController implements Initializable {
         setupColumn(firstNameColumn, "firstName", User::setFirstName);
         setupColumn(lastNameColumn, "lastName", User::setLastName);
         setupColumn(passwordColumn, "password", User::setPassword);
-        setupColumn(roleColumn, "role", User::setRole);
+
+        ObservableList<String> roles = FXCollections.observableArrayList();
+        roles.addAll("admin", "user");
+        setupComboColumn(roleColumn, "role", roles, User::setRole);
 
         loadData();
         tableView.setItems(userList);
@@ -60,6 +68,23 @@ public class AdminUsersController implements Initializable {
         column.setOnEditCommit(event -> {
             User processor = event.getRowValue();
             setter.accept(processor, event.getNewValue());
+        });
+    }
+
+    private <T> void setupComboColumn(TableColumn<User, T> column, String columnName,
+                                       ObservableList<T> items,
+                                       BiConsumer<User, String> setter) {
+        column.setCellValueFactory(new PropertyValueFactory<>(columnName));
+        column.setCellFactory(ComboBoxTableCell.forTableColumn(items));
+        column.setOnEditCommit(event -> {
+            User user = event.getRowValue();
+            T selectedItem = event.getNewValue();
+
+            if (selectedItem!= null) {
+                setter.accept(user, selectedItem.toString());
+            } else {
+                AlertHelper.showErrorAlert("Unable to set a non-existent value");
+            }
         });
     }
 
